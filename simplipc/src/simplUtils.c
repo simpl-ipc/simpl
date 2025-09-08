@@ -1535,6 +1535,12 @@ sigaction(SIGTERM, &sigact, NULL);
 sigaction(SIGPIPE, &sigact, NULL);
 }
 
+void default_sighandler(int signum)
+{
+	signal(signum, SIG_DFL);
+	raise(signum);
+}
+
 /**********************************************************************
 FUNCTION:	void _simpl_hndlSignals(int)
 
@@ -1568,7 +1574,7 @@ switch (signo)
 		_simpl_exitFunc();
 
 		// don't call atexit() because we have already run _simpl_exitFunc()
-		_exit(0);
+		default_sighandler(signo);
 	}
 }
 
