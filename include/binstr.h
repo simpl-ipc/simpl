@@ -1,21 +1,21 @@
 /*======================================================================
 
-FILE:			binstr.h	
+FILE:			binstr.h
 
 DESCRIPTION:	This file contains header info. for binstr.c
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2000, 2002 FCSoftware Inc. 
+    Copyright (C) 2000, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -36,33 +36,33 @@ Initial revision
 ======================================================================*/
 
 #ifndef _BINSTR_H
-#define	_BINSTR_H 
+#define	_BINSTR_H
 
-typedef union 
+typedef union
 	{
 	unsigned int m;
 	unsigned int n;
 	} CUI;
 
-typedef union 
+typedef union
 	{
 	unsigned int m;
 	signed int n;
 	} CSI;
 
-typedef union 
+typedef union
 	{
 	unsigned short int m;
 	unsigned short int n;
 	} CUSI;
 
-typedef union 
+typedef union
 	{
 	unsigned short int m;
 	signed short int n;
 	} CSSI;
 
-typedef union 
+typedef union
 	{
 	unsigned int m;
 	float n;

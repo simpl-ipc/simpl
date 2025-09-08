@@ -9,11 +9,11 @@ DESCRIPTION:	This file contains useful utility functions used by the
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -39,10 +39,10 @@ initial
 /**********************************************************************
 FUNCTION:	int checkMemory(int, int)
 
-PURPOSE:	Adjust the global dynamic memory for upward growth. 
+PURPOSE:	Adjust the global dynamic memory for upward growth.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int checkMemory(int msgType, int size)
 {
@@ -59,7 +59,7 @@ if (msgType == IN)
 		// realloc memory
 		inMsgArea = realloc(inMsgArea, size);
 		if (!inMsgArea)
-			{ 
+			{
 			_simpl_log("%s: in message memory allocation error-%s\n", fn, strerror(errno));
 			return(-1);
 			}
@@ -75,7 +75,7 @@ else
 		// realloc memory
 		outMsgArea = realloc(outMsgArea, size);
 		if (!outMsgArea)
-			{	 
+			{
 			_simpl_log("%s: out message memory allocation error-%s\n", fn, strerror(errno));
 			return(-1);
 			}
@@ -98,7 +98,7 @@ PURPOSE:	Forking parents make use of this call to release zombie
 			Also helps to keep the surrogate pid array current.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void killZombies()
 {

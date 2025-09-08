@@ -6,11 +6,11 @@ This file contains some utility functions for log masking and
 AIX compatibility.
 
 -----------------------------------------------------------------------
-    Copyright (C) 1998, 2002 FCSoftware Inc. 
+    Copyright (C) 1998, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -107,7 +107,7 @@ crc generating polynomial has been retained.
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
- 
+
 unsigned long cksum(char *file)
 {
 unsigned char buf[BUFFER_SIZE];
@@ -258,7 +258,7 @@ for (i=iStrLen-1, k=1; i >= 0; i--, k++)
 			else
 				{
 				twoLongArray[1] += j * power(16, (iStrLen-i-1-8));
-				}	
+				}
 			break;
 			}
 		}

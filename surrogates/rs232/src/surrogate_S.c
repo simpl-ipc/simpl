@@ -5,16 +5,16 @@ FILE:			surrogate_S.c
 DATE:			07 July 23
 
 DESCRIPTION:	This program runs as a fork from surrogate.c
- 
+
 NOTES:			surrogate_S (parent) receives the following messages:
 				1. SUR_NAME_LOCATE_TEXT_MSG/SUR_NAME_LOCATE_MSG
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -43,7 +43,7 @@ FUNCTION:	surrogate_S()
 PURPOSE:	Acts as a receiver for remote name locate messages.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void surrogate_S()
 {
@@ -60,7 +60,7 @@ char *sender;
 #else			/********** binary message **********/
 	const static int size = sizeof(SUR_NAME_LOCATE_MSG);
 	SUR_MSG_HDR *hdr;
-#endif 
+#endif
 
 /*
 The original way to deal with "dead" children was to "wait" them out. Unless

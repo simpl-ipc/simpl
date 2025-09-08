@@ -2,23 +2,23 @@
 
 	loggerVars.h
 
-DESCRIPTION:	
+DESCRIPTION:
 This file contains definitions of various things used by
 the trace logger interface.
 
 AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1998, 2002 FCSoftware Inc. 
+    Copyright (C) 1998, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ Revision history:
 #ifndef _LOGGERVARS_DEF
 #define _LOGGERVARS_DEF
 
-#include "simpl.h"	
+#include "simpl.h"
 
 #define TRACE_MAX_BUFFER_SIZE				1024
 #define LOGGER_BUFFER_SIZE				200

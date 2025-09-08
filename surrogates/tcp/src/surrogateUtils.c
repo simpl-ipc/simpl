@@ -2,23 +2,23 @@
 
 FILE:			surrogateUtils.c
 
-DATE:			05 Oct 31 
+DATE:			05 Oct 31
 
 DESCRIPTION:	This file contains useful utility functions used by the
 				various surrogate*.c files.
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ FUNCTION:	initRsock(unsigned)
 PURPOSE:	Create and initialize a socket to be used for receiving.
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int initRsock(unsigned rport)
 {
@@ -90,7 +90,7 @@ setsockopt() and/or getsockopt().
 // address family
 rserver.sin_family = AF_INET;
 // port number converted network format if necessary
-rserver.sin_port = htons(rport); 
+rserver.sin_port = htons(rport);
 memset(&rserver.sin_addr, 0, sizeof(rserver.sin_addr));
 
 // name (assign an address) to this socket w.r.t this port
@@ -117,7 +117,7 @@ FUNCTION:	initSsock(unsigned, char *)
 PURPOSE:	Create and initialize a socket to be used for sending.
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int initSsock(unsigned sport, char *hostName)
 {
@@ -193,7 +193,7 @@ FUNCTION:	surRead(void *, unsigned)
 PURPOSE:	Read a stream for a well-defined number of bytes.
 
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int surRead(void *ptr, unsigned nBytes)
 {
@@ -224,13 +224,13 @@ int surRead(void *ptr, unsigned nBytes)
 				{
 				errno=EIO;
 				return(-1);
-				} 
+				}
 			else
 				break;
 			}
 
 		numLeft -= numRead;
-	
+
 		ptr += numRead;
 		}
 
@@ -244,7 +244,7 @@ FUNCTION:	surWrite(void *, unsigned)
 PURPOSE:	Write a stream for a well-defined number of bytes.
 
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int surWrite(void *ptr, unsigned nBytes)
 {
@@ -270,10 +270,10 @@ return(0);
 /**********************************************************************
 FUNCTION:	int adjustMemory(int)
 
-PURPOSE:	Adjust the global dynamic memory for upward growth. 
+PURPOSE:	Adjust the global dynamic memory for upward growth.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int adjustMemory(int nbytes)
 {
@@ -287,12 +287,12 @@ const static char *me = "adjustMemory";
 	const static int size = sizeof(SUR_MSG_CHR_HDR);
 #else			/********** binary message **********/
 	const static int size = sizeof(SUR_MSG_HDR);
-#endif 
+#endif
 
 // realloc memory
 memArea = realloc(memArea, nbytes + size);
 if (!memArea)
-	{ 
+	{
 	_simpl_log("%s: memory allocation error-%s\n", me, strerror(errno));
 	return(-1);
 	}
@@ -313,7 +313,7 @@ PURPOSE:	Failure reply function used by Receive surrogates to advise
 			Send() failure.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void replyFailure(char *caller)
 {
@@ -332,7 +332,7 @@ PURPOSE:	Forking parents make use of this call to release zombie
 			Also helps to keep the surrogate pid array current.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void killZombies()
 {
@@ -357,7 +357,7 @@ PURPOSE:	This function reports the results of a remote name_locate()
 			to the calling receiver surrogate.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 int nameLocateReply(int result)
 {
@@ -384,7 +384,7 @@ const static char *fn = "nameLocateReply";
 	reply->hdr.nbytes = sizeof(SUR_NAME_LOCATE_REPLY) - sizeof(SUR_MSG_HDR);
 	reply->result = result;
 #endif
-	
+
 if (surWrite(memArea, size) == -1)
 	{
 	_simpl_log("%s: write error-%s\n", fn, strerror(errno));

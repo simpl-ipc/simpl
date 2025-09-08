@@ -22,15 +22,15 @@ NOTES:			receives the following messages:
 				6. reply messages back to the local sender.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
-    If you discover a bug or add an enhancement here's how to reach us: 
+    If you discover a bug or add an enhancement here's how to reach us:
 
 	fcsoft@allstream.net
 -----------------------------------------------------------------------
@@ -67,7 +67,7 @@ PURPOSE:	Talk via tcp to the surrogate_S	process on another host
 			conduit between a local sender and a remote receiver.
 
 RETURNS:	nothing, it is a forked process and never returns.
-**********************************************************************/	
+**********************************************************************/
 
 void surrogate_r()
 {
@@ -78,7 +78,7 @@ char me[30];
 pid_t childPid;
 int fds[3];
 int maxFd;
-fd_set watchset; 
+fd_set watchset;
 fd_set inset;
 struct timeval tv;
 struct timeval *timeoutPtr;
@@ -109,10 +109,10 @@ if (hndlRemoteNameLocate(childPid, &senderInfo) == -1)
 	exit(-1);
 	}
 
-// for local simpl messages 
+// for local simpl messages
 fds[0] = whatsMyRecvfd();
 
-// for remote surrogate messages; surSock set in hndlRemoteNameLocate() above 
+// for remote surrogate messages; surSock set in hndlRemoteNameLocate() above
 fds[1] = surSock;
 
 // set select parameters
@@ -141,7 +141,7 @@ while (1)
 
 	// let select be the trigger on the file descriptors/timer
 	ret = select(maxFd, &inset, NULL, NULL, timeoutPtr);
-	if (ret > 0) 
+	if (ret > 0)
 		{
 		if (FD_ISSET(fds[0], &inset))
 			{
@@ -154,20 +154,20 @@ while (1)
 			}
 		else if (FD_ISSET(fds[1], &inset))
 			{
-			// send reply or keep alive reply from the remote surrogate 
+			// send reply or keep alive reply from the remote surrogate
 			if (hndlRemoteMsg(&kaCounter) == -1)
 				{
 				_simpl_log("%s: hndlInMsg error\n", fn);
 				exit(-1);
 				}
 			}
-		else 
+		else
 			{
 			// unknown fd error
 			_simpl_log("%s: unknown fd on select-%s\n", fn, strerror(errno));
 			}
 		}
-	else if (ret == 0) 
+	else if (ret == 0)
 		{
 		// a good opportunity to check on the local sender
 		if (simplCheckProcess(&senderInfo) == -1)
@@ -177,8 +177,8 @@ while (1)
 			// send a close message to the remote surrogate partner
 			hndlClose();
 			exit(0);
-			}	
-		
+			}
+
 		// select timer kick returns 0 --> send a keep alive message to surrogate partner
 		if (sendKeepAliveMsg(&kaCounter) == -1)
 			{
@@ -205,15 +205,15 @@ while (1)
 		}
 	}
 }
-		
+
 /**********************************************************************
 FUNCTION:	hndlRemoteNameLocate(pid_t, SENDER_REC *)
 
 PURPOSE:	Handle a simpl SUR_NAME_LOCATE call.
 			Should only be called once for each surrogate child.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int hndlRemoteNameLocate(pid_t childPid, SIMPL_REC *senderInfo)
 {
@@ -225,7 +225,7 @@ int hndlRemoteNameLocate(pid_t childPid, SIMPL_REC *senderInfo)
 // wFp is global
 const static char *fn = "hndlRemoteNameLocate";
 int fds[1];
-fd_set watchset; 
+fd_set watchset;
 int nBytes;
 struct timeval tv;
 struct timeval *timeoutPtr;
@@ -264,9 +264,9 @@ if (nBytes == -1)
 if (nBytes != sizeof(SUR_NAME_LOCATE_MSG))
 	{
 	_simpl_log("%s: incorrect message size\n", fn);
-	ReplyError(sender);	
+	ReplyError(sender);
 	return(-1);
-	} 
+	}
 
 // get the message from sender's shmem
 simplRcopy(sender, &lin, nBytes);
@@ -275,7 +275,7 @@ simplRcopy(sender, &lin, nBytes);
 if (lin.hdr.token != SUR_NAME_LOCATE)
 	{
 	_simpl_log("%s: incorrect message type\n", fn);
-	ReplyError(sender);	
+	ReplyError(sender);
 	return(-1);
 	}
 
@@ -320,14 +320,14 @@ if (fcntl(surSock, F_SETOWN, childPid) == -1)
 		}
 
 	/*
-	At his point you may want to augment the file stream functionality with 
+	At his point you may want to augment the file stream functionality with
 	calls to setbuf(), setbuffer(), setlinebuf() or setvbuf() with modes such
 	as _IOFBF, _IOLBF or _IONBF. For _IONBF (no buffering) you will not need
 	a call to fflush() after fwrite() for example. fflush() is merely a call
 	to the more primitive write() system call.
 	*/
 #endif
-	
+
 #ifdef SUR_CHR	/********** char message **********/
 	rout = (SUR_NAME_LOCATE_CHR_MSG *)memArea;
 	btosSI(SUR_NAME_LOCATE, rout->hdr.token, intWidth);
@@ -347,7 +347,7 @@ if (surWrite(rout, outSize) == -1)
 	return(-1);
 	}
 
-// block and wait for response 
+// block and wait for response
 fds[0] = surSock;
 FD_ZERO(&watchset);
 FD_SET(fds[0], &watchset);
@@ -358,7 +358,7 @@ tv.tv_usec = 0;
 timeoutPtr = &tv;
 
 ret = select(fds[0] + 1, &watchset, NULL, NULL, timeoutPtr);
-if (ret > 0) 
+if (ret > 0)
 	{
 	if (FD_ISSET(fds[0], &watchset))
 		{
@@ -373,14 +373,14 @@ if (ret > 0)
 		// interpret replied message
 		#ifdef SUR_CHR	/********** char message **********/
 			rin = (SUR_NAME_LOCATE_CHR_REPLY *)memArea;
-			// lout.hdr.token not read by sender but could be used as a check 
+			// lout.hdr.token not read by sender but could be used as a check
 			lout.hdr.token = stobSI(rin->hdr.token, intWidth);
 			// lout.hdr.nbytes is not set by surrogate_s
 			// lout.hdr.ybytes is not set by surrogate_s
 			lout.result = stobSI(rin->result, intWidth); // the important piece of info
 		#else			/********** binary message **********/
 			rin = (SUR_NAME_LOCATE_REPLY *)memArea;
-			// lout.hdr.token not read by sender but could be used as a check 
+			// lout.hdr.token not read by sender but could be used as a check
 			lout.hdr.token = rin->hdr.token;
 			// lout.hdr.nbytes = sizeof(SUR_NAME_LOCATE_REPLY);
 			// lout.hdr.ybytes is not set by surrogate_s
@@ -394,13 +394,13 @@ if (ret > 0)
 			return(-1);
 			}
 		}
-	else 
+	else
 		{
 		// unknown fd error
 		_simpl_log("%s: unknown fd on select-%s\n", fn, strerror(errno));
 		}
 	}
-else if (ret == 0) 
+else if (ret == 0)
 	{
 	// select timer kick returns 0 --> have not received a name locate reply
 	// no error log; network/hostprocess simply not there
@@ -424,7 +424,7 @@ FUNCTION:	hndlSendMsg(void)
 PURPOSE:	Handle simpl SUR_SEND call from a local sender intended
 			for a remote receiver.
 
-RETURNS:	int	
+RETURNS:	int
 
 PICTURE:
 
@@ -439,7 +439,7 @@ amemSize is the amount of memory availbale for the actual messages
 hdr is the amount of memory required for the protocol
 memArea is a pointer to the start of memArea
 amemArea is a pointer to memArea + sizeof hdr
-**********************************************************************/	
+**********************************************************************/
 
 int hndlSendMsg()
 {
@@ -459,7 +459,7 @@ int proxyValue;
 #else			/********** binary message **********/
 	const static int hdrSize = sizeof(SUR_MSG_HDR);
 	SUR_MSG_HDR *out;
-#endif 
+#endif
 
 // receive message from the local sender
 nBytes = Receive(&sender, NULL, 0);
@@ -474,7 +474,7 @@ if (nBytes < -1)
 	{
 	// get the value of the proxy
 	proxyValue = returnProxy(nBytes);
-	
+
 	// is it a close up shop proxy?
 	if (proxyValue == PROXY_SHUTDOWN)
 		{
@@ -498,7 +498,7 @@ maxBytes = (nBytes > yBytes) ? nBytes : yBytes;
 if (maxBytes > amemSize)
 	{
 	if (adjustMemory(maxBytes) == -1)
-		{ 
+		{
 		_simpl_log("%s: memory allocation error\n", fn);
 		ReplyError(sender);
 		return(-1);
@@ -508,7 +508,7 @@ if (maxBytes > amemSize)
 // get the message from sender's shmem
 simplRcopy(sender, amemArea, nBytes);
 
-// build the message going to the other box	
+// build the message going to the other box
 #ifdef SUR_CHR	/********** char message **********/
 	out = (SUR_MSG_CHR_HDR *)memArea;
 	btosSI(SUR_SEND, out->token, intWidth);
@@ -525,7 +525,7 @@ simplRcopy(sender, amemArea, nBytes);
 if (surWrite(memArea, hdrSize + nBytes) == -1)
 	{
 	_simpl_log("%s: write error on msg-%s", fn, strerror(errno));
-	ReplyError(sender);	
+	ReplyError(sender);
 	return(-1);
 	}
 
@@ -535,10 +535,10 @@ return(0);
 /**********************************************************************
 FUNCTION:	hndlRemoteMsg(int *)
 
-PURPOSE:	Handle incoming tcp messages from the remote surrogate. 
+PURPOSE:	Handle incoming tcp messages from the remote surrogate.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int hndlRemoteMsg(int *kaCounter)
 {
@@ -556,7 +556,7 @@ unsigned numBytes;
 #else			/********** binary message **********/
 	const static int hdrSize = sizeof(SUR_MSG_HDR);
 	SUR_MSG_HDR *in;
-#endif 
+#endif
 
 // socket reply message header from other box
 if (surRead(memArea, hdrSize) == -1)
@@ -564,7 +564,7 @@ if (surRead(memArea, hdrSize) == -1)
 	_simpl_log("%s: read error on msg header-%s\n", fn, strerror(errno));
 	ReplyError(sender);
 	return(-1);
-	}			
+	}
 
 // interpret the message header
 #ifdef SUR_CHR	/********** char message **********/
@@ -585,7 +585,7 @@ switch (token)
 		if (surRead(amemArea, numBytes) == -1)
 			{
 			_simpl_log("%s: read error on msg data-%s\n", fn, strerror(errno));
-			ReplyError(sender);	
+			ReplyError(sender);
 			return(-1);
 			}
 
@@ -595,21 +595,21 @@ switch (token)
 			_simpl_log("%s: reply error-%s\n", fn, whatsMyError());
 			return(-1);
 			}
-		break;		  
+		break;
 
 	case SUR_ALIVE_REPLY:
 		*kaCounter = 0;
 		break;
 
 	case SUR_ERROR:
-		ReplyError(sender);	
+		ReplyError(sender);
 		// surrogate sender always dies upon this error ==> we are not needed
 		exit(-1);
 
 	default:
 		_simpl_log("%s: unknown message token\n", fn);
 		return(-1);
-	}		  
+	}
 
 return(0);
 }
@@ -619,8 +619,8 @@ FUNCTION:	sendKeepAliveMsg(int *)
 
 PURPOSE:	Send a keep alive message to the other surrogate partner.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int sendKeepAliveMsg(int *kaCounter)
 {
@@ -645,7 +645,7 @@ const static char *fn = "sendKeepAliveMsg";
 	out->hdr.nbytes = 0;  // header only
 #endif
 
-// send the keep alive message to the other surrogate's parent 
+// send the keep alive message to the other surrogate's parent
 if (surWrite(out, outSize) == -1)
 	{
 	_simpl_log("%s: write error-%s\n", fn, strerror(errno));
@@ -665,8 +665,8 @@ PURPOSE:	Handle simpl SUR_CLOSE call. This will cause this
 			"receiving surrogate" to exit and send a close instruction
 			to its remote "send surrogate" partner.
 
-RETURNS:	void	
-**********************************************************************/	
+RETURNS:	void
+**********************************************************************/
 
 void hndlClose()
 {
@@ -703,8 +703,8 @@ FUNCTION:	hndlProxy(int)
 
 PURPOSE:	Handle sending a proxy to the remote surrogate_s.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int hndlProxy(int proxyValue)
 {

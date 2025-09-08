@@ -3,11 +3,11 @@
 #  Makefile for surrogates/tclSurrogate
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 2009 FCSoftware Inc. 
+#    Copyright (C) 2009 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
@@ -45,7 +45,7 @@ all:
 	@echo "$(PROJECT) tclSurrogate build <all> starting"
 	@echo `date`
 	@make -C $(SRC_DIR) SIMPL_BIN=$(SIMPL_BIN)
-	@make -C $(TEST_DIR) 
+	@make -C $(TEST_DIR)
 	@echo "$(PROJECT) tclSurrogate <all> done"
 	@echo `date`
 

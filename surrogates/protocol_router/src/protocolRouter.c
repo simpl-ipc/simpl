@@ -8,7 +8,7 @@ DESCRIPTION:	This program accepts "surrogate ready" messages
 				and routes a name_locate() call to the desired
 				protocal surrogate.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ DESCRIPTION:	This program accepts "surrogate ready" messages
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-    If you discover a bug or add an enhancement here's how to reach us: 
+    If you discover a bug or add an enhancement here's how to reach us:
 
 	fcsoft@allstream.net
 -----------------------------------------------------------------------
@@ -129,14 +129,14 @@ while (1)
 
 return(0);
 }
-		
+
 /**********************************************************************
 FUNCTION:	modifyProtocolTable(char *)
 
-PURPOSE:	add/remove a surrogate to/from the protocol table 
+PURPOSE:	add/remove a surrogate to/from the protocol table
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int modifyProtocolTable(char *sender)
 {
@@ -166,10 +166,10 @@ return(0);
 FUNCTION:	hndlProtocolRequest(char *)
 
 PURPOSE:	returns the name of the surrogate child which controls
-			simpl communications via the requested protocol. 
+			simpl communications via the requested protocol.
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int hndlProtocolRequest(char *sender)
 {
@@ -189,14 +189,14 @@ memset(out->programName, 0, MAX_PROGRAM_NAME_LEN + 1);
 
 if (!strcmp(in->protocolName, SIMPL_DEFAULT))
 	{
-	// take the first available protocol surrogate in the table	
+	// take the first available protocol surrogate in the table
 	for (i = 0; i < MAX_NUM_PROTOCOLS; i++)
 		{
 		if (strlen(protocolTable[i].protocolName))
 			{
-			// set reply message		
+			// set reply message
 			strcpy(out->programName, protocolTable[i].programName);
-			// reply to blocked protocol parent sender (such as surrogate_R for TCP) 
+			// reply to blocked protocol parent sender (such as surrogate_R for TCP)
 			Reply(protocolTable[i].sender, NULL, 0);
 			// clear the entry from the table
 			memset(protocolTable[i].protocolName, 0, MAX_PROTOCOL_NAME_LEN + 1);
@@ -213,9 +213,9 @@ else
 		{
 		if (!strcmp(protocolTable[i].protocolName, in->protocolName))
 			{
-			// set reply message		
+			// set reply message
 			strcpy(out->programName, protocolTable[i].programName);
-			// reply to blocked protocol parent sender (such as surrogate_R for TCP) 
+			// reply to blocked protocol parent sender (such as surrogate_R for TCP)
 			Reply(protocolTable[i].sender, NULL, 0);
 			// clear the entry from the table
 			memset(protocolTable[i].protocolName, 0, MAX_PROTOCOL_NAME_LEN + 1);
@@ -242,7 +242,7 @@ FUNCTION:	hndlProtocolDump(char *)
 PURPOSE:	returns the contects of the protocol table
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int hndlProtocolDump(char *sender)
 {

@@ -49,7 +49,7 @@ for (i = 0; i < LIMIT; i++)
 		exit(-1);
 		}
 
-	//printf("ret=%d\n", ret); 
+	//printf("ret=%d\n", ret);
 	//simplScopy(mem, ret);
 	}
 

@@ -2,22 +2,22 @@
 
 FILE:		sandboxRelayInit.c
 
-DESCRIPTION:	
+DESCRIPTION:
 This file contains initialization code for sandboxRelay
 
 AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 2007 SIMPL project. 
+    Copyright (C) 2007 SIMPL project.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact the SIMPL
-    project mailing list. 
+    project mailing list.
 
 -----------------------------------------------------------------------
 Revision history:
@@ -91,7 +91,7 @@ for(i=1; i<=argc; ++i)
 					{
 					printf("attached as <%s> myslot=%d\n",myName,myslot);
 					}
-					
+
                                 break;
 
 			case 'f':
@@ -147,7 +147,7 @@ fcLogx(__FILE__, fn,
 	0xff,
 	TRACE_MARK,
 	"otherFifoPath=<%s>",
-	otherFifoPath	
+	otherFifoPath
 	);
 
 fcLogx(__FILE__, fn,
@@ -155,7 +155,7 @@ fcLogx(__FILE__, fn,
 	TRACE_MARK,
 	"recvName=<%s> recvID=%d",
 	myName,
-	recvID	
+	recvID
 	);
 
 fcLogx(__FILE__, fn,

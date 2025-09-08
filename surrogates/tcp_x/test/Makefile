@@ -6,15 +6,15 @@
 #
 # AUTHOR:		FC Software Inc.
 #-----------------------------------------------------------------------
-#    Copyright (C) 2002, 2008 FCSoftware Inc. 
+#    Copyright (C) 2002, 2008 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
-#    If you discover a bug or add an enhancement contact us on the: 
+#    If you discover a bug or add an enhancement contact us on the:
 #
 #	SIMPL project mailing list
 #-----------------------------------------------------------------------
@@ -128,7 +128,7 @@ $(BIN_DIR)/receiver: $(RECEIVER_OBJ)
 
 $(BIN_DIR)/sender: $(SENDER_OBJ)
 	$(CC) -o $@ $< $(LDFLAGS)
-	
+
 $(BIN_DIR)/go: go
 	cp go $(BIN_DIR)/go
 

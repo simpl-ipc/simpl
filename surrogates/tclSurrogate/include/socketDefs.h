@@ -1,13 +1,13 @@
 /*************************************************************
 	FILE:		socketDefs.h
 
-	DESCRIPTION:	
+	DESCRIPTION:
 	This file contains major definitions for TCPIP messaging.
 
 	AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999, 2007 FCSoftware Inc. 
+    Copyright (C) 1999, 2007 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 

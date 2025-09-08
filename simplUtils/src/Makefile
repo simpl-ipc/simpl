@@ -1,13 +1,13 @@
 ###############################################
 #
-# Makefile - for simplUtils 
+# Makefile - for simplUtils
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 2007,2008 SIMPL project. 
+#    Copyright (C) 2007,2008 SIMPL project.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
@@ -106,7 +106,7 @@ DEST_LIB_DIR=../../lib
 MISC_OBJ= \
 	$(OBJ_DIR)/miscUtils.o\
 	$(OBJ_DIR)/binstr.o
-			
+
 DUMP_PROTOCOL_TABLE_OBJ = \
 	$(OBJ_DIR)/dumpProtocolTable.o
 
@@ -180,24 +180,24 @@ description:
 #========================
 $(BIN_DIR)/sandboxRelay:	$(SANDBOX_RELAY_OBJ) $(LIB_DIR)/$(MY_LIBRARY)
 	$(CC) -o $(BIN_DIR)/sandboxRelay $(SANDBOX_RELAY_OBJ) $(LDFLAGS2)
-	
+
 $(BIN_DIR)/dumpProtocolTable:	$(DUMP_PROTOCOL_TABLE_OBJ)
 	$(CC) -o $@ $? $(LDFLAGS)
-	
+
 $(BIN_DIR)/fcslay:	$(FCSLAY_OBJ)
 	$(CC) -o $@ $? $(LDFLAGS)
-	
+
 $(BIN_DIR)/fcshow:	$(FCSHOW_OBJ)
 	$(CC) -o $@ $? $(LDFLAGS)
-	
+
 #=====================================================================
 # static library
 #=====================================================================
 $(LIB_DIR)/libsimplmisc.a: $(MISC_OBJ)
-	ar vrs $@ $?	
+	ar vrs $@ $?
 
 $(LIB_DIR)/i386/libsimplmisc.a: $(MISC_OBJ)
-	ar vrs $(LIB_DIR)/i386/libsimplmisc.a $?	
+	ar vrs $(LIB_DIR)/i386/libsimplmisc.a $?
 	ln -s $(LIB_DIR)/i386/libsimplmisc.a $(LIB_DIR)/libsimplmisc.a
 
 #=====================================================================
@@ -207,7 +207,7 @@ $(LIB_DIR)/libsimplmisc.so: $(LIB_DIR)/$(SONAME)
 	ln -sf $(LIB_DIR)/$(SONAME)	$(LIB_DIR)/libsimplmisc.so
 
 $(LIB_DIR)/$(SONAME): $(LIB_DIR)/libsimplmisc.so.$(VERSION)
-	ln -sf $(LIB_DIR)/libsimplmisc.so.$(VERSION) $(LIB_DIR)/$(SONAME)	
+	ln -sf $(LIB_DIR)/libsimplmisc.so.$(VERSION) $(LIB_DIR)/$(SONAME)
 
 $(LIB_DIR)/libsimplmisc.so.$(VERSION): $(MISC_OBJ)
 	$(CC) -shared -Wl,-soname,$(SONAME) -o $@ $? -lc
@@ -221,10 +221,10 @@ $(LIB_DIR)/i386/libsimplmisc.so: $(MISC_OBJ)
 #===================
 $(OBJ_DIR)/miscUtils.o:	miscUtils.c
 	$(CC) -c $(LIBFLAGS) $(ARCHFLAGS) $(CFLAGS) -o $@ $<
-			
+
 $(OBJ_DIR)/binstr.o:	binstr.c
 	$(CC) -c $(LIBFLAGS) $(ARCHFLAGS) $(CFLAGS) -o $@ $<
-			
+
 $(OBJ_DIR)/dumpProtocolTable.o:	dumpProtocolTable.c
 	$(CC) -c $(ARCHFLAGS) $(CFLAGS) -o $@ $<
 
@@ -256,7 +256,7 @@ clean:
 	@echo simplUtils/src clean
 
 #===================
-#  install 
+#  install
 #===================
 install:\
      title \
@@ -274,7 +274,7 @@ install:\
 	@echo simplUtils/src install
 
 #===================
-#  uninstall 
+#  uninstall
 #===================
 uninstall:\
      title

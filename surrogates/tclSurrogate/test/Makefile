@@ -4,11 +4,11 @@
 #
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 2009 FCSoftware Inc. 
+#    Copyright (C) 2009 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #

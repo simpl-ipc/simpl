@@ -3,20 +3,20 @@
 
 Description:
 This module can be run as a trace logger.  It uses
-the FCipc library to become a "receiver".  Other 
+the FCipc library to become a "receiver".  Other
 processes can send it messages which it will write
 to stdout.
 
 -----------------------------------------------------------------------
-    Copyright (C) 1998, 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 1998, 2002, 2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
-    If you discover a bug or add an enhancement contact us on the 
+    If you discover a bug or add an enhancement contact us on the
     SIMPL project mailing list.
 
 -----------------------------------------------------------------------
@@ -107,7 +107,7 @@ while(1)
 
 		printf("%.512s\n", msg);
 		fflush(stdout);
-	
+
 		Reply(fromWhom, NULL, 0);
 		}
 	}
@@ -141,7 +141,7 @@ for(i=1; i<=argc; ++i)
                         {
                         case 'n':
 //                                for(;*p != 0; p++);
-				
+
 //				name_attach(++p, NULL);
 				name_attach(argv[++i], NULL);
                                 break;

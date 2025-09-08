@@ -7,16 +7,16 @@ DESCRIPTION:	This program kills a SIMPL process based on its SIMPL
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2000, 2002, 2004 FCSoftware Inc. 
+    Copyright (C) 2000, 2002, 2004 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ while ( (file = readdir(directory)) != NULL )
 			char name[128];
 
 // remove Receive fifo
-			sprintf(name, "%s/%s",		
+			sprintf(name, "%s/%s",
 				fifoPath,
 				file->d_name);
 			remove(name);

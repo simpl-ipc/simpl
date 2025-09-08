@@ -6,11 +6,11 @@
 #
 # AUTHOR:		FC Software Inc.
 #-----------------------------------------------------------------------
-#    Copyright (C) 2005, 2008 FCSoftware Inc. 
+#    Copyright (C) 2005, 2008 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
@@ -125,7 +125,7 @@ $(BIN_DIR)/surrogate: $(SURROGATE_OBJ)
 
 $(BIN_DIR)/rs232_rw: $(RS232_OBJ)
 	$(CC) -o $@ $(RS232_OBJ) $(LDFLAGS)
-	
+
 #=====================================================================
 # compiling
 #=====================================================================
@@ -163,7 +163,7 @@ clean:
 	@echo surrogate clean
 
 #=====================================================================
-#  install 
+#  install
 #=====================================================================
 install: \
     title \

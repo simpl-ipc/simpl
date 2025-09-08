@@ -60,7 +60,7 @@ var0.john5 = 42.420000;
 // convert to hex char protocol
 // NOTE: the clip numbers are 0 because we are 32-bit sending to 32-bit
 btosSI(var0.token, var1.token, 0);
-strcpy(var1.john0, var0.john0); 
+strcpy(var1.john0, var0.john0);
 btosUSI(var0.john1, var1.john1, 0);
 btosSSI(var0.john2, var1.john2, 0);
 btosUI(var0.john3, var1.john3, 0);

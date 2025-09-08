@@ -1,23 +1,23 @@
 /*************************************************************
 	FILE:		tclSurroInit.c
 
-	DESCRIPTION:	
+	DESCRIPTION:
 	This file contains the surrogate initialization for Tcl/Tk
 	surrogate process.
 
 	AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999, 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 1999, 2002, 2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 	Revision history:
@@ -134,14 +134,14 @@ trustedNetworkFlag=0; // defaults to untrusted
 /*=========================================================
 	process command line arguments
 =========================================================*/
-for (i=1; i<=argc; ++i) 
-	{	
+for (i=1; i<=argc; ++i)
+	{
 	char *p = argv[i];
 
 	if (p == NULL) continue;
 
 	if (*p == '-')
-		{             
+		{
 		switch (*++p)
 			{
 			case 'n':
@@ -165,14 +165,14 @@ for (i=1; i<=argc; ++i)
 
 			case 'p':
 //				if(*++p == 0) p++;
-//				myport=atoi(p); 
-				myport=atoi(argv[++i]); 
+//				myport=atoi(p);
+				myport=atoi(argv[++i]);
 				break;
 
 			case 'a':
 //				if(*++p == 0) p++;
-//				maxAckTime=atoi(p); 
-				maxAckTime=atoi(argv[++i]); 
+//				maxAckTime=atoi(p);
+				maxAckTime=atoi(argv[++i]);
 				break;
 
 			case 'm':
@@ -190,7 +190,7 @@ for (i=1; i<=argc; ++i)
 				printf("Bad command line switch `%c'\n", *p);
 			} // end switch
 		} // end if p
-	} // end for i	
+	} // end for i
 
 // if manditory name is not supplied show usage
 if(parentsName[0] == 0)

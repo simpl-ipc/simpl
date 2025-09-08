@@ -1,22 +1,22 @@
 /*************************************************************
 FILE:		tclSurrogate.h
 
-DESCRIPTION:	
+DESCRIPTION:
 This file is the main include file for tclSurrogate
 
 AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999, 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 1999, 2002, 2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 Revision history:

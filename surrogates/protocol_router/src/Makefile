@@ -6,7 +6,7 @@
 #
 # AUTHOR:		FC Software Inc.
 #-----------------------------------------------------------------------
-#    Copyright (C) 2000, 2008 FCSoftware Inc. 
+#    Copyright (C) 2000, 2008 FCSoftware Inc.
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#    If you discover a bug or add an enhancement contact us on the: 
+#    If you discover a bug or add an enhancement contact us on the:
 #
 #	SIMPL project mailing list
 #-----------------------------------------------------------------------
@@ -86,7 +86,7 @@ ARCHFLAGS =
 #=====================================================================
 all: \
     title \
-    $(BIN_DIR)/protocolRouter 
+    $(BIN_DIR)/protocolRouter
 	@echo protocolRouter all
 
 title:
@@ -104,7 +104,7 @@ description:
 #=====================================================================
 $(BIN_DIR)/protocolRouter: $(PROTOCOL_ROUTER_OBJ)
 	$(CC) -o $@ $? $(LDFLAGS)
-	
+
 #=====================================================================
 # compiling
 #=====================================================================
@@ -120,16 +120,16 @@ clean:
 	@echo protocolRouter clean
 
 #=====================================================================
-#  install 
+#  install
 #=====================================================================
 install: \
     title \
-    $(BIN_DIR)/protocolRouter 
+    $(BIN_DIR)/protocolRouter
 	-cp $(BIN_DIR)/protocolRouter $(SIMPL_BIN)
 	@echo protocolRouter install
 
 #=====================================================================
-#  uninstall 
+#  uninstall
 #=====================================================================
 uninstall: \
     title

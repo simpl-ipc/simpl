@@ -8,7 +8,7 @@ DESCRIPTION:	This file contains the global variable error definitions
 AUTHOR:			FC Software Inc.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2000,2005,2007 FCSoftware Inc. 
+    Copyright (C) 2000,2005,2007 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ AUTHOR:			FC Software Inc.
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-    If you discover a bug or add an enhancement contact us on the 
+    If you discover a bug or add an enhancement contact us on the
     SIMPL project mailing list.
 
 -----------------------------------------------------------------------
@@ -110,7 +110,7 @@ typedef enum
 
 #ifdef _SIMPL_PRIMARY
 _ALLOC SIMPL_ERROR _simpl_errno = NO_ERROR;
-_ALLOC char *_simpl_errstr[MAX_ERROR_TYPES] = 
+_ALLOC char *_simpl_errstr[MAX_ERROR_TYPES] =
 	{
 	"no error",
 	"no simpl name supplied",
@@ -152,7 +152,7 @@ _ALLOC char *_simpl_errstr[MAX_ERROR_TYPES] =
 	};
 #else
 _ALLOC SIMPL_ERROR _simpl_errno;
-_ALLOC char *_simpl_errstr[MAX_ERROR_TYPES]; 
+_ALLOC char *_simpl_errstr[MAX_ERROR_TYPES];
 #endif
 
 #endif

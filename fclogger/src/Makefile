@@ -1,17 +1,17 @@
 ###############################################
 #
-# Makefile - for fclogger 
+# Makefile - for fclogger
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 1998, 2002, 2008 FCSoftware Inc. 
+#    Copyright (C) 1998, 2002, 2008 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
-#    If you discover a bug or add an enhancement contact us on the 
+#    If you discover a bug or add an enhancement contact us on the
 #    SIMPL project mailing list.
 #-----------------------------------------------------------------------
 #
@@ -126,7 +126,7 @@ CFLAGS= \
         -I $(INCL_DIR)\
         -I $(SIMPLIPC_INCL_DIR)
 
-LDFLAGS=-L$(LOCAL_SIMPLLIB_DIR) -lsimpl 
+LDFLAGS=-L$(LOCAL_SIMPLLIB_DIR) -lsimpl
 LIBFLAGS=
 ARCHFLAGS=
 
@@ -157,17 +157,17 @@ description:
 #========================
 $(BIN_DIR)/fclogger:	$(LOGGER_OBJ)
 	$(CC) -o $(BIN_DIR)/fclogger $(LOGGER_OBJ) $(LDFLAGS)
-	
+
 #=====================================================================
 # static library
 #=====================================================================
 $(LIB_DIR)/libsimpllog.a: $(SIMPLLOG_OBJ)
-	ar vrs $(LIB_DIR)/libsimpllog.a $?	
-			
+	ar vrs $(LIB_DIR)/libsimpllog.a $?
+
 $(LIB_DIR)/i386/libsimpllog.a: $(SIMPLLOG_OBJ)
-	ar vrs $(LIB_DIR)/i386/libsimpllog.a $?	
+	ar vrs $(LIB_DIR)/i386/libsimpllog.a $?
 	ln -s $(LIB_DIR)/i386/libsimpllog.a $(LIB_DIR)/libsimpllog.a
-			
+
 #=====================================================================
 # dynamic library
 #=====================================================================
@@ -175,7 +175,7 @@ $(LIB_DIR)/libsimpllog.so: $(LIB_DIR)/$(SONAME)
 	ln -sf $(LIB_DIR)/$(SONAME) $(LIB_DIR)/libsimpllog.so
 
 $(LIB_DIR)/$(SONAME): $(LIB_DIR)/libsimpllog.so.$(VERSION)
-	ln -sf $(LIB_DIR)/libsimpllog.so.$(VERSION) $(LIB_DIR)/$(SONAME)	
+	ln -sf $(LIB_DIR)/libsimpllog.so.$(VERSION) $(LIB_DIR)/$(SONAME)
 
 $(LIB_DIR)/libsimpllog.so.$(VERSION): $(SIMPLLOG_OBJ)
 	$(CC) -shared -Wl,-soname,$(SONAME) -o $@ $? -lc
@@ -220,7 +220,7 @@ install:\
 # uninstall
 #===================
 uninstall:\
-     title 
+     title
 	rm $(SIMPL_BIN)/fclogger
 	rm $(SIMPL_LIB)/libsimpllog.*
 	rm $(SIMPL_INCL)/loggerVars.h

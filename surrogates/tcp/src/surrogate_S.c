@@ -5,21 +5,21 @@ FILE:			surrogate_S.c
 DATE:			05 Oct 31
 
 DESCRIPTION:	This program runs as a fork from surrogate.c
- 
+
 NOTES:			surrogate_S (parent) receives the following messages:
 				1. SUR_NAME_LOCATE_TEXT_MSG/SUR_NAME_LOCATE_MSG
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on
-    the SIMPL project mailing list.  
+    the SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ FUNCTION:	surrogate_S()
 PURPOSE:	Acts as a receiver for remote name locate messages.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void surrogate_S()
 {
@@ -67,8 +67,8 @@ void surrogate_S()
 // wrFp is global;
 char *me = SURROGATE_TCP_S_PARENT;
 int fds[1];
-fd_set watchset; 
-fd_set inset; 
+fd_set watchset;
+fd_set inset;
 int sock;
 int token;
 pid_t childPid;
@@ -79,7 +79,7 @@ pid_t childPid;
 #else			/********** binary message **********/
 	const static int hdrSize = sizeof(SUR_MSG_HDR);
 	SUR_MSG_HDR *msg;
-#endif 
+#endif
 
 /*
 The original way to deal with "dead" children was to "wait" them out. Unless
@@ -131,7 +131,7 @@ while (1)
 		{
 		_simpl_log("%s: select error-%s\n", me, strerror(errno));
 		continue;
-		}	
+		}
 
 	// socket message from an external surrogate
 	// accept this connection
@@ -141,7 +141,7 @@ while (1)
 		_simpl_log("%s: accept error-%s\n", me, strerror(errno));
 		exit(-1);
 		}
-	
+
 	#ifdef BUFFERED
 		// open a file pointer for reading alone
 		rFp = fdopen(surSock, "r");
@@ -150,10 +150,10 @@ while (1)
 			_simpl_log("%s: rFp error-%s\n", me, strerror(errno));
 			exit(-1);
 			}
-	
+
 		// make a duplicate of surSock
 		dupSock = dup(surSock);
-	
+
 		// open a file pointer for writing alone
 		wFp = fdopen(dupSock, "w");
 		if (wFp == NULL)
@@ -163,21 +163,21 @@ while (1)
 			}
 
 		/*
-		At his point you may want to augment the file stream functionality with 
+		At his point you may want to augment the file stream functionality with
 		calls to setbuf(), setbuffer(), setlinebuf() or setvbuf() with modes
 		such as _IOFBF, _IOLBF or _IONBF. For _IONBF (no buffering) you will not
 		need a call to fflush() after fwrite() for example. fflush() is merely a
 		call to the more primitive write() system call.
 		*/
 	#endif
-		
+
 	// read the message header
 	if (surRead(memArea, hdrSize) == -1)
 		{
 		_simpl_log("%s: read error on header-%s\n", me, strerror(errno));
 		exit(-1);
 		}
-		
+
 	// interpret message header
 	#ifdef SUR_CHR	/********** char message **********/
 		msg = (SUR_MSG_CHR_HDR *)memArea;

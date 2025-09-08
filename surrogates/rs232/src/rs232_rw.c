@@ -9,11 +9,11 @@ DESCRIPTION:	This program immediately forks into two separate
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -45,7 +45,7 @@ if (initialize(argc, argv) == -1)
 	exit(-1);
 	}
 
-// fork off into surrogate receiver and sender parent processes 
+// fork off into surrogate receiver and sender parent processes
 childPid = fork();
 if (childPid < 0) // failure
 	{
@@ -67,9 +67,9 @@ return(0);
 FUNCTION:	initialize(int, char **argv)
 
 PURPOSE:	set serial port parameters
-  
+
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int initialize(int argc, char **argv)
 {
@@ -83,7 +83,7 @@ int fd;
 // initialize global memory
 memArea = (char *)malloc(1024);
 if (!memArea)
-	{ 
+	{
 	_simpl_log("%s: memory allocation error-%s\n", fn, strerror(errno));
 	return(-1);
 	}
@@ -102,8 +102,8 @@ verbose = 0;
 intWidth = INT_WIDTH_32;
 
 // process command line arguments (if any)
-for (i = 1; i <= argc; ++i) 
-	{	
+for (i = 1; i <= argc; ++i)
+	{
 	char *p = argv[i];
 
 	if (p == NULL)
@@ -112,7 +112,7 @@ for (i = 1; i <= argc; ++i)
 		}
 
 	if (*p == '-')
-		{             
+		{
 		switch (*++p)
 			{
 			case 'i':
@@ -120,7 +120,7 @@ for (i = 1; i <= argc; ++i)
 					{
 					p++;
 					}
-				intWidth = atoi(p); 
+				intWidth = atoi(p);
 				break;
 
 			case 's': // serial device
@@ -140,7 +140,7 @@ for (i = 1; i <= argc; ++i)
 				return(-1);
 			}
 		}
-	}	
+	}
 
 // open the serial port
 fd = open(serialDevice, OPEN_FLAGS);
@@ -196,9 +196,9 @@ FUNCTION:	rs232_r(void)
 
 PURPOSE:	receive messages via serial port and SIMPL send them to the
 			 appropriate surrogate.
-  
+
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void rs232_r()
 {
@@ -240,7 +240,7 @@ if (fd <  0)
 while (1)
 	{
 	// all incoming messages start with a standard header
-	numRead = readSerial(fd, hdrSize, (char *)&hdr);	
+	numRead = readSerial(fd, hdrSize, (char *)&hdr);
 	if (numRead == -1)
 		{
 		_simpl_log("%s: problem reading header from %s-%s\n", fn,
@@ -369,15 +369,15 @@ while (1)
 	// close the name located id
 	close(id);
 	}
-}	
+}
 
 /**********************************************************************
 FUNCTION:	readSerial(int fd, int numBytes)
 
 PURPOSE:	read numBytes from a serial line
-  
+
 RETURNS:	number of bytes read
-**********************************************************************/	
+**********************************************************************/
 
 int readSerial(int fd, int numBytes, char *mem)
 {
@@ -399,7 +399,7 @@ while (numLeft > 0)
 			{
 			errno = EIO;
 			return(-1);
-			} 
+			}
 		else
 			{
 			break;
@@ -418,9 +418,9 @@ return(numRead);
 FUNCTION:	rs232_w(void)
 
 PURPOSE:	receive messages from surrogates to write out via serial port
-  
+
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void rs232_w()
 {
@@ -456,7 +456,7 @@ while(1)
 		_simpl_log("%s: receive error-%s\n",fn, whatsMyError());
 		continue;
 		}
-	
+
 	// increase memory if necessary
 	if (nBytes > memSize)
 		{
@@ -487,10 +487,10 @@ while(1)
 /**********************************************************************
 FUNCTION:	int upMemory(int)
 
-PURPOSE:	Adjust the global dynamic memory for upward growth. 
+PURPOSE:	Adjust the global dynamic memory for upward growth.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int upMemory(int nbytes)
 {
@@ -501,7 +501,7 @@ const static char *fn = "upMemory";
 // realloc memory
 memArea = (char *)realloc(memArea, nbytes);
 if (!memArea)
-	{ 
+	{
 	_simpl_log("%s: memory allocation error-%s\n", fn, strerror(errno));
 	return(-1);
 	}

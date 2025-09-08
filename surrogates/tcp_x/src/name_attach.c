@@ -6,16 +6,16 @@ this code needs to migrate to the simplipc core library
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ else
 		}
 	sprintf(_simpl_fifoPath,"%s",p);
 	}
-	
+
 if (access(_simpl_fifoPath,F_OK) == -1)
 	{
 	_simpl_setErrorCode(NO_FIFO_PATH);
@@ -85,7 +85,7 @@ _simpl_myStuff.pid = getpid();
 
 // store the name and truncate it if necessary
 sprintf(_simpl_myStuff.whom, "%.*s", MAX_PROGRAM_NAME_LEN, myName);
-	
+
 // check whether name is already in use
 if (_simpl_statFifoName(_simpl_myStuff.whom, REMOVE) != -1)
 	{
@@ -114,7 +114,7 @@ _simpl_myStuff.shmSize = 0;
 _simpl_myStuff.myExit = myExit;
 
 /*
-add a signal handler, _simpl_myStuff.myExit must be added to 
+add a signal handler, _simpl_myStuff.myExit must be added to
 as an atexit() function and the signal handler
 */
 _simpl_initSignalHandling();
@@ -123,7 +123,7 @@ _simpl_initSignalHandling();
 add the user exit functionality
 note that the user exit stuff will be run prior to the internal simpl
 stuff because the user may need the simpl capabilities. multiple atexit
-calls lierally stack up exit functions in LIFO style such that the last 
+calls lierally stack up exit functions in LIFO style such that the last
 lsted is the first run
 */
 atexit(_simpl_exitFunc);
@@ -162,7 +162,7 @@ if (_simpl_check() == -1)
 	return(-1);
 	}
 
-// extract the protocol (if any), host (if any) and process names 
+// extract the protocol (if any), host (if any) and process names
 /*
 ******************************************************************************
 _simpl-getNames() nulls out the protocolName, hostName and processName strings
@@ -228,7 +228,7 @@ else
 				_simpl_setErrorCode(LOCAL_HOST_PROBLEM);
 				return(-1);
 				}
-	
+
 			// look through all ip entries
 			for (i = 0; local->h_addr_list[i]; i++)
 				{
@@ -257,7 +257,7 @@ FUNCTION:	initRsock(unsigned)
 PURPOSE:	Create and initialize a socket to be used for receiving.
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int initRsock(unsigned rport)
 {
@@ -289,7 +289,7 @@ setsockopt() and/or getsockopt().
 // address family
 rserver.sin_family = AF_INET;
 // port number converted network format if necessary
-rserver.sin_port = htons(rport); 
+rserver.sin_port = htons(rport);
 memset(&rserver.sin_addr, 0, sizeof(rserver.sin_addr));
 
 // name (assign an address) to this socket w.r.t this port
@@ -316,7 +316,7 @@ FUNCTION:	initSsock(unsigned, char *)
 PURPOSE:	Create and initialize a socket to be used for sending.
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int initSsock(unsigned sport, char *hostName)
 {
@@ -392,7 +392,7 @@ FUNCTION:	surRead(void *, unsigned)
 PURPOSE:	Read a stream for a well-defined number of bytes.
 
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int surRead(void *ptr, unsigned nBytes)
 {
@@ -423,13 +423,13 @@ int surRead(void *ptr, unsigned nBytes)
 				{
 				errno=EIO;
 				return(-1);
-				} 
+				}
 			else
 				break;
 			}
 
 		numLeft -= numRead;
-	
+
 		ptr += numRead;
 		}
 
@@ -443,7 +443,7 @@ FUNCTION:	surWrite(void *, unsigned)
 PURPOSE:	Write a stream for a well-defined number of bytes.
 
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int surWrite(void *ptr, unsigned nBytes)
 {
@@ -469,10 +469,10 @@ return(0);
 /**********************************************************************
 FUNCTION:	int adjustMemory(int)
 
-PURPOSE:	Adjust the global dynamic memory for upward growth. 
+PURPOSE:	Adjust the global dynamic memory for upward growth.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int adjustMemory(int nbytes)
 {
@@ -486,12 +486,12 @@ const static char *me = "adjustMemory";
 	const static int size = sizeof(SUR_MSG_CHR_HDR);
 #else			/********** binary message **********/
 	const static int size = sizeof(SUR_MSG_HDR);
-#endif 
+#endif
 
 // realloc memory
 memArea = realloc(memArea, nbytes + size);
 if (!memArea)
-	{ 
+	{
 	_simpl_log("%s: memory allocation error-%s\n", me, strerror(errno));
 	return(-1);
 	}
@@ -512,7 +512,7 @@ PURPOSE:	Failure reply function used by Receive surrogates to advise
 			Send() failure.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void replyFailure(char *caller)
 {
@@ -530,7 +530,7 @@ PURPOSE:	Forking parents make use of this call to release zombie
 			Also helps to keep the surrogate pid array current.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void killZombies()
 {
@@ -554,7 +554,7 @@ PURPOSE:	This function reports the results of a remote name_locate()
 			to the calling receiver surrogate.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 int nameLocateReply(int result)
 {
@@ -581,7 +581,7 @@ const static char *fn = "nameLocateReply";
 	reply->hdr.nbytes = sizeof(SUR_NAME_LOCATE_REPLY) - sizeof(SUR_MSG_HDR);
 	reply->result = result;
 #endif
-	
+
 if (surWrite(memArea, size) == -1)
 	{
 	_simpl_log("%s: write error-%s\n", fn, strerror(errno));
@@ -598,7 +598,7 @@ PURPOSE:	This function reports the results of a remote name_attach()
 			to the calling sender surrogate.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 int nameAttachReply(int result)
 {
@@ -625,7 +625,7 @@ const static char *fn = "nameAttachReply";
 	reply->hdr.nbytes = sizeof(SUR_NAME_ATTACH_REPLY) - sizeof(SUR_MSG_HDR);
 	reply->result = result;
 #endif
-	
+
 if (surWrite(memArea, size) == -1)
 	{
 	_simpl_log("%s: write error-%s\n", fn, strerror(errno));

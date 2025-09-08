@@ -2,13 +2,13 @@
 
 FILE:			simpl.c
 
-DESCRIPTION:	This file contains the function calls for the 
+DESCRIPTION:	This file contains the function calls for the
 				simpl library used by application programs.
 
 AUTHOR:			FC Software Inc.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2000 FCSoftware Inc. 
+    Copyright (C) 2000 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ AUTHOR:			FC Software Inc.
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -145,7 +145,7 @@ Revision 1.15  2002/11/22 16:35:44  root
 #include <sys/shm.h>
 #include <sys/stat.h>
 
-// simpl headers 
+// simpl headers
 #include <simplDefs.h>
 #include <simplProto.h>
 #include <simplLibProto.h>
@@ -162,7 +162,7 @@ Revision 1.15  2002/11/22 16:35:44  root
 /**********************************************************************
 FUNCTION:	int name_attach(const char *, void (*myExit)())
 
-PURPOSE:	Initializes required SIMPL functionality. 
+PURPOSE:	Initializes required SIMPL functionality.
 
 RETURNS:	success:  0
 			failure: -1
@@ -201,7 +201,7 @@ else
 		}
 	sprintf(_simpl_fifoPath,"%s",p);
 	}
-	
+
 if (access(_simpl_fifoPath,F_OK) == -1)
 	{
 	_simpl_setErrorCode(NO_FIFO_PATH);
@@ -214,7 +214,7 @@ _simpl_myStuff.pid = getpid();
 
 // store the name and truncate it if necessary
 sprintf(_simpl_myStuff.whom, "%.*s", MAX_PROGRAM_NAME_LEN, myName);
-	
+
 // check whether name is already in use
 if (_simpl_statFifoName(_simpl_myStuff.whom, REMOVE) != -1)
 	{
@@ -243,7 +243,7 @@ _simpl_myStuff.shmSize = 0;
 _simpl_myStuff.myExit = myExit;
 
 /*
-add a signal handler, _simpl_myStuff.myExit must be added to 
+add a signal handler, _simpl_myStuff.myExit must be added to
 as an atexit() function and the signal handler
 */
 _simpl_initSignalHandling();
@@ -252,7 +252,7 @@ _simpl_initSignalHandling();
 add the user exit functionality
 note that the user exit stuff will be run prior to the internal simpl
 stuff because the user may need the simpl capabilities. multiple atexit
-calls lierally stack up exit functions in LIFO style such that the last 
+calls lierally stack up exit functions in LIFO style such that the last
 lsted is the first run
 */
 atexit(_simpl_exitFunc);
@@ -328,7 +328,7 @@ else
 		}
 	sprintf(_simpl_fifoPath,"%s",p);
 	}
-	
+
 if (access(_simpl_fifoPath,F_OK) == -1)
 	{
 	_simpl_setErrorCode(NO_FIFO_PATH);
@@ -339,7 +339,7 @@ if (access(_simpl_fifoPath,F_OK) == -1)
 // for checking purposes
 _simpl_myStuff.pid = getpid();
 
-// extract the protocol (if any), host (if any) and process names 
+// extract the protocol (if any), host (if any) and process names
 /*
 ******************************************************************************
 _simpl-getNames() nulls out the protocolName, hostName and processName strings
@@ -412,7 +412,7 @@ else
 				_simpl_setErrorCode(LOCAL_HOST_PROBLEM);
 				return(-1);
 				}
-	
+
 			// look through all ip entries
 			for (i = 0; local->h_addr_list[i]; i++)
 				{
@@ -451,7 +451,7 @@ int name_detach()
 {
 //const static char *fn = "name_detach";
 register int i;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // int _simpl_remoteReceiverId[] is global
 // char *_simpl_blockedSenderId[] is global
 
@@ -469,7 +469,7 @@ for (i = 0; i < MAX_NUM_BLOCKED_SENDERS; i++)
 		{
 		ReplyError(_simpl_blockedSenderId[i]);
 		_simpl_blockedSenderId[i] = (char *)NULL;
-		}		
+		}
 	}
 
 // remove any surrogates
@@ -479,7 +479,7 @@ for (i = 0; i < MAX_NUM_REMOTE_RECEIVERS; i++)
 		{
 		Trigger(_simpl_remoteReceiverId[i], PROXY_SHUTDOWN);
 		_simpl_remoteReceiverId[i] = -1;
-		}		
+		}
 	}
 
 // close the receive file descriptor
@@ -530,7 +530,7 @@ RETURNS:	success: 0
 int child_detach()
 {
 //const static char *fn = "child_detach";
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 
 // is this program name attached?
 if (_simpl_check() == -1)
@@ -569,7 +569,7 @@ return(0);
 FUNCTION:	int sur_detach(int)
 
 PURPOSE:	This function sends a closure message to a surrogate
-			receiver. 
+			receiver.
 
 RETURNS:	success: 0
 			failure: -1
@@ -587,7 +587,7 @@ if (_simpl_check() == -1)
 	return(-1);
 	}
 
-// remove surrogate from the remote receiver table 
+// remove surrogate from the remote receiver table
 for (i = 0; i < MAX_NUM_REMOTE_RECEIVERS; i++)
 	{
 	if (_simpl_remoteReceiverId[i] == fd)
@@ -628,7 +628,7 @@ if (_simpl_check() == -1)
 	return(-1);
 	}
 
-// extract the protocol (if any), host (if any) and process names 
+// extract the protocol (if any), host (if any) and process names
 /*
 ******************************************************************************
 _simpl-getNames() nulls out the protocolName, hostName and processName strings
@@ -694,7 +694,7 @@ else
 				_simpl_setErrorCode(LOCAL_HOST_PROBLEM);
 				return(-1);
 				}
-	
+
 			// look through all ip entries
 			for (i = 0; local->h_addr_list[i]; i++)
 				{
@@ -733,7 +733,7 @@ const static char *fn = "Receive";
 char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
 FCMSG_REC *msgRec;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // char *_simpl_fifoPath is global
 // int _simpl_sender_shmid is global
 
@@ -755,7 +755,7 @@ if (_simpl_readFifoMsg(_simpl_myStuff.fd, fifoBuf) != sizeof(FIFO_MSG))
 	close(_simpl_myStuff.fd);
 	_simpl_myStuff.fd = -1;
 	return(-1);
-	} 
+	}
 
 // set the global for sender's shmid for Relay to work
 _simpl_sender_shmid = fifoMsg->shmid;
@@ -768,7 +768,7 @@ if (fifoMsg->shmid < 0)
 
 /*
 Attach the sender's shmem to this process.
-Known to fail if sender suddenly disappears. 
+Known to fail if sender suddenly disappears.
 Saving this value allows the Reply() to use the same shmem.
 */
 #ifdef _EXPMTL
@@ -784,7 +784,7 @@ if (*sender == (char *)-1)
 	return(-1);
 	}
 
-// line up on the message 
+// line up on the message
 msgRec = (FCMSG_REC *)*sender;
 
 // copy the data out of the shmem or not?
@@ -799,7 +799,7 @@ if (inBuffer != NULL)
 		return(-1);
 		}
 
-	// copy the message 
+	// copy the message
 	memcpy(inBuffer, (void *)&msgRec->data, msgRec->nbytes);
 	}
 
@@ -826,7 +826,7 @@ char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
 unsigned bufSize;
 FCMSG_REC *msgPtr;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // char *_simpl_fifoPath is global
 
 // is this program name attached?
@@ -856,8 +856,8 @@ if (_simpl_myStuff.shmSize < (bufSize + sizeof(FCMSG_REC)))
 //		_simpl_deleteShmem();
 		_simpl_detachShmem();
 		}
-	
-	// create new shmem	
+
+	// create new shmem
 	if (_simpl_createShmem(bufSize) == -1)
 		{
 		return(-1);
@@ -908,7 +908,7 @@ if (inBuffer != NULL)
 	{
 	// copy the reply message
 	if (msgPtr->nbytes)
-		{ 
+		{
 		memcpy(inBuffer, (void *)&msgPtr->data, msgPtr->nbytes);
 		}
 	}
@@ -935,7 +935,7 @@ FCMSG_REC *msgPtr;
 char fifoName[128];
 int fd;
 int ret = -1;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // char *_simpl_fifoPath is global
 // int _simpl_sender_shmid is global
 
@@ -963,7 +963,7 @@ if (nbytes > msgPtr->ybytes)
 	}
 else
 	{
-	// set up fifo trigger message for success 
+	// set up fifo trigger message for success
 	fifoMsg->shmid = 0;
 
 	// set the reply message header
@@ -1001,7 +1001,7 @@ if (write(fd, fifoBuf, sizeof(FIFO_MSG)) != sizeof(FIFO_MSG))
 	return(-1);
 	}
 
-// close the sender's fifo 
+// close the sender's fifo
 close(fd);
 
 // reset the _simpl_sender_shmid
@@ -1027,7 +1027,7 @@ int Relay(char *sender, int fd)
 const static char *fn = "Relay";
 char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // int _simpl_sender_shmid is global
 
 fifoMsg->shmid = _simpl_sender_shmid;
@@ -1103,7 +1103,7 @@ return(0);
 /**********************************************************************
 FUNCTION:	char *whatsMyName(void)
 
-PURPOSE:	Return the attached simpl name. 
+PURPOSE:	Return the attached simpl name.
 
 RET:URNS:	success: name
 			failure: NULL
@@ -1121,16 +1121,16 @@ if (_simpl_check() == -1)
 	}
 
 return(_simpl_myStuff.whom);
-} 
+}
 
 /**********************************************************************
 FUNCTION:	int whatsMyRecvfd(void)
 
 PURPOSE:	Return the receive fifo file descriptor of the calling
-			process. 
+			process.
 
 			If there isn't one, a fifo will be made.
- 
+
 RETURNS:	success: file descriptor >= 0
 			failure: -1
 ***********************************************************************/
@@ -1162,20 +1162,20 @@ if (_simpl_myStuff.fd == -1)
 		_simpl_setErrorCode(FIFO_OPEN_FAILURE);
 		_simpl_log("%s: unable to open reply fifo %s-%s\n", fn, fifoName, strerror(errno));
 		return(-1);
-		} 
+		}
 	}
 
 return(_simpl_myStuff.fd);
-} 
+}
 
 /**********************************************************************
 FUNCTION:	int whatsMyReplyfd(void)
 
 PURPOSE:	Return the reply fifo file descriptor of the calling
-			process. 
+			process.
 
 			If there isn't one, a fifo will be made.
- 
+
 RETURNS:	success: file descriptor >= 0
 			failure: -1
 ***********************************************************************/
@@ -1207,7 +1207,7 @@ if (_simpl_myStuff.y_fd == -1)
 		_simpl_setErrorCode(FIFO_OPEN_FAILURE);
 		_simpl_log("%s: unable to open reply fifo %s-%s\n", fn, fifoName, strerror(errno));
 		return(-1);
-		} 
+		}
 	}
 
 return(_simpl_myStuff.y_fd);
@@ -1216,7 +1216,7 @@ return(_simpl_myStuff.y_fd);
 /**********************************************************************
 FUNCTION:	char *whatsMyError(void)
 
-PURPOSE:	Return the text description based on the _simpl_errno. 
+PURPOSE:	Return the text description based on the _simpl_errno.
 
 RETURNS:	Pointer to the global error string array
 ***********************************************************************/
@@ -1227,7 +1227,7 @@ inline char *whatsMyError()
 
 return(_simpl_errstr[_simpl_errno]);
 }
- 
+
 /**********************************************************************
 FUNCTION:	char *whatsThisShmPtr(char *)
 
@@ -1242,7 +1242,7 @@ char *whatsThisShmPtr(char *sender)
 FCMSG_REC *msgPtr = (FCMSG_REC *)sender;
 
 return(&msgPtr->data);
-} 
+}
 
 /**********************************************************************
 FUNCTION:	char *whatsMyShmPtr()
@@ -1259,7 +1259,7 @@ char *whatsMyShmPtr()
 FCMSG_REC *msgPtr = (FCMSG_REC *)_simpl_myStuff.shmPtr;
 
 return(&msgPtr->data);
-} 
+}
 
 /**********************************************************************
 FUNCTION:	void simplSetReceiverParms(char *, SIMPL_REC *)
@@ -1289,7 +1289,7 @@ rec->pid = atoi(fifoName + strlen(_simpl_fifoPath) + 1 + strlen(name) + 1);
 
 return(0);
 }
- 
+
 /**********************************************************************
 FUNCTION:	void simplSetSenderParms(char *, SIMPL_REC *)
 
@@ -1306,7 +1306,7 @@ FCMSG_REC *ptr = (FCMSG_REC *)sender;
 memcpy(rec->whom, ptr->whom, MAX_PROGRAM_NAME_LEN + 1);
 rec->pid = ptr->pid;
 }
- 
+
 /**********************************************************************
 FUNCTION:	int simplCheckProcess(SIMPL_REC *)
 
@@ -1345,13 +1345,13 @@ if (getpriority(PRIO_PROCESS, rec->pid) == -1)
 	}
 
 return(ret);
-} 
+}
 
 /**********************************************************************
 FUNCTION:	void simplRcopy(char *, void *, unsigned)
 
 PURPOSE:	Copy unsigned nbytes from the sender's shmem pointer
-			to the desired address void *dst 
+			to the desired address void *dst
 
 			Follows a Receiver(&id, NULL, 0) call.
 
@@ -1363,13 +1363,13 @@ void simplRcopy(char *sender, void *dst, unsigned nbytes)
 FCMSG_REC *msgPtr = (FCMSG_REC *)sender;
 
 memcpy(dst, (void *)&msgPtr->data, nbytes);
-} 
- 
+}
+
 /**********************************************************************
 FUNCTION:	void simplScopy(void *, unsigned)
 
 PURPOSE:	Copy unsigned nbytes from the sender's global shmem pointer
-			to the desired address void * 
+			to the desired address void *
 
 			Follows a Send(id, void *, NULL, outSize, inSize) call
 
@@ -1382,7 +1382,7 @@ FCMSG_REC *msgPtr = (FCMSG_REC *)_simpl_myStuff.shmPtr;
 
 memcpy(dst, (void *)&msgPtr->data, nbytes);
 }
- 
+
 /**********************************************************************
 FUNCTION:	int simplReplySize(char *)
 
@@ -1402,12 +1402,12 @@ FCMSG_REC *msgPtr;
 msgPtr = (FCMSG_REC *)sender;
 
 return(msgPtr->ybytes);
-} 
+}
 
 /**********************************************************************
 FUNCTION:	int returnProxy(int)
 
-PURPOSE:	Return the true value of a received proxy. 
+PURPOSE:	Return the true value of a received proxy.
 
 RETURNS:	The value of the proxy should be > 0.
 		(the value entered should be <= -2)

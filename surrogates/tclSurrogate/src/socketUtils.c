@@ -1,22 +1,22 @@
 /*======================================================
 FILE:		socketUtils.c
 
-DESCRIPTION:	
+DESCRIPTION:
 This file contains
 
 AUTHOR:		R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999,2002,2006 FCSoftware Inc. 
+    Copyright (C) 1999,2002,2006 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
-    If you discover a bug or add an enhancement contact us on the 
-    SIMPL project mailing list. 
+    If you discover a bug or add an enhancement contact us on the
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 Revision history:
@@ -147,7 +147,7 @@ if (fifoPath == NULL)
 	fcLogx(__FILE__, fn,
 		TCL_SURROGATE_MISC,
 		TCL_SURROGATE_MISC,
-	"Unable to obtain fifo path-%s", 
+	"Unable to obtain fifo path-%s",
 	strerror(errno));
 
 	return(-1);
@@ -178,7 +178,7 @@ while ( (file = readdir(directory)) != NULL )
 		pid = atoi(&file->d_name[len + 1]);
 
 		if (mypid == pid)
-			{	
+			{
 		// kill this process
 			rc=kill(pid, SIGTERM);
 			if(rc == -1)
@@ -186,7 +186,7 @@ while ( (file = readdir(directory)) != NULL )
 			char name[128];
 
 // remove Receive fifo
-			sprintf(name, "%s/%s",		
+			sprintf(name, "%s/%s",
 				fifoPath,
 				file->d_name);
 			remove(name);
@@ -323,9 +323,9 @@ if (s == -1)
    printf("File:%s line:%d process:%s %s %d - error %d\n"
                ,__FILE__
                ,__LINE__
-               , fn 
+               , fn
                ,"unable to create socket"
-	       , hostport	 	
+	       , hostport
                , errno
                );
     return (-1);
@@ -356,7 +356,7 @@ if (rc == -1)
          printf("File:%s line:%d process:%s %s %d - error %d: %s\n"
                ,__FILE__
                ,__LINE__
-               , fn 
+               , fn
                ,"unable to bind address to socket"
                , hostport
                , errno
@@ -433,7 +433,7 @@ return(ns);
 /*===========================================
 	connectSocket - entry point
 ===========================================*/
-int connectSocket(char *hostname, int ihostport) 
+int connectSocket(char *hostname, int ihostport)
 {
 static char *fn="connectSocket";
 struct hostent      *hp;
@@ -516,7 +516,7 @@ return(s);
 	non blocking send
 ===========================================*/
 int relayToSocket( int s,
-	char *outbuf, 
+	char *outbuf,
 	int outlen)
 {
 static char *fn="relayToSocket";
@@ -561,7 +561,7 @@ return(rc);
 	sendToSocket - entry point
 ===========================================*/
 int sendToSocket( int s,
-	char *outbuf, 
+	char *outbuf,
 	int outlen,
 	char *inbuf,
 	int inlen)
@@ -609,7 +609,7 @@ fcLogx(__FILE__, fn,
 	globalMask,
 	TCL_SURROGATE_MISC,
 	"reply expecting %d bytes ... got %d bytes so far",
-	incoming->nbytes, 
+	incoming->nbytes,
 	tbytes);
 #endif
 	}
@@ -624,7 +624,7 @@ fcLogx(__FILE__, fn,
 	globalMask,
 	TCL_SURROGATE_MISC,
 	"reply expecting %d bytes ... got %d bytes so far",
-	incoming->nbytes, 
+	incoming->nbytes,
 	tbytes);
 #endif
 
@@ -667,7 +667,7 @@ incoming = (SG_SEND_MSG *)inbuf;
 // on first pass read just header
 numBytes=sizeof(int);
 rbytes = readBytesFromSocket(ns, numBytes, p);
-if(rbytes == -1 )   
+if(rbytes == -1 )
 	{
 	fcLogx(__FILE__, fn,
 		TCL_SURROGATE_MARK,
@@ -700,7 +700,7 @@ fcLogx(__FILE__, fn,
 #endif
 
 rbytes = readBytesFromSocket(ns, numBytes, p);
-if(rbytes == -1 )   
+if(rbytes == -1 )
 	{
 	fcLogx(__FILE__, fn,
 		TCL_SURROGATE_MARK,
@@ -732,7 +732,7 @@ fcLogx(__FILE__, fn,
 
 p +=rbytes;
 p[0]=0; // null terminate
-	
+
 return(rc);
 
 } /* end receiveFromSocket */
@@ -760,7 +760,7 @@ rc = recv(ns, inbuf, rbytes, MSG_WAITALL);
 #else
 rc = recvWAITALL(ns, inbuf, rbytes);
 #endif
-if(rc < rbytes )   
+if(rc < rbytes )
 	{
 	fcLogx(__FILE__, fn,
 		TCL_SURROGATE_MARK,
@@ -899,7 +899,7 @@ FUNCTION:	killZombies(void)
 PURPOSE:	release zombie children by retrieving their exit status.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void killZombies()
 {
