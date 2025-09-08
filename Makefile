@@ -85,7 +85,7 @@
 #Initial revision
 #
 #
-MYPWD=`pwd`
+MYPWD := $(CURDIR)
 
 SIMPL_BIN=$(MYPWD)/bin
 SIMPL_LIB=$(MYPWD)/lib
@@ -100,9 +100,12 @@ BENCHMARK_DIR=benchmarks/src
 #===================================
 # entry point for simple make
 #===================================
-all:
+all: dirs
 	@echo SIMPL Top Level Build all starting
 	@echo `date`
+	mkdir -p $(SIMPL_BIN)
+	mkdir -p $(SIMPL_LIB)
+	mkdir -p $(SIMPL_INCL)
 	make -C $(SIMPL_IPC_DIR) SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	make -C $(FCLOGGER_DIR) SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	make -C $(SIMPL_UTILS_DIR) SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
@@ -110,6 +113,24 @@ all:
 	make -C $(BENCHMARK_DIR)
 	@echo Done SIMPL TOP LEVEL all done
 	@echo `date`
+
+# List of modules
+MODULES := benchmarks fclogger simplUtils simplipc \
+           surrogates/protocol_router \
+           surrogates/rs232 \
+           surrogates/tclSurrogate \
+           surrogates/tcp \
+           surrogates/tcp_x
+
+# Target to create directories
+.PHONY: dirs
+dirs:
+	@for mod in $(MODULES); do \
+	    mkdir -p $$mod/lib; \
+	    mkdir -p $$mod/bin; \
+	    mkdir -p $$mod/src/obj; \
+	    mkdir -p $$mod/test/obj; \
+	done
 
 #=================================
 # to force a total rebuild

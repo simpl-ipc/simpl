@@ -1221,7 +1221,7 @@ PURPOSE:	Return the text description based on the _simpl_errno.
 RETURNS:	Pointer to the global error string array
 ***********************************************************************/
 
-inline char *whatsMyError()
+char *whatsMyError()
 {
 // int _simpl_errno is global: it is set by _simpl_setErrorCode()
 
@@ -1413,7 +1413,7 @@ RETURNS:	The value of the proxy should be > 0.
 		(the value entered should be <= -2)
 ***********************************************************************/
 
-inline int returnProxy(int value)
+int returnProxy(int value)
 {
 return( abs(value + 1) );
 }

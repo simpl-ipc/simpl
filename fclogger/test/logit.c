@@ -66,6 +66,8 @@ int nbytes;
 char outArea[8192];
 char inArea[8192];
 
+int initialize(int argc, char **argv);
+
 #include "loggerProto.h"
 
 /*--------------------------------------

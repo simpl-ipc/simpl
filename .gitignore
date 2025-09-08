@@ -1,0 +1,8 @@
+# ignore build artifacts
+bin/
+obj/
+lib/
+surrogates/tcp/test/receiver.c
+surrogates/tcp/test/sender.c
+surrogates/tcp_x/test/receiver.c
+surrogates/tcp_x/test/sender.c
