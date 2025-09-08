@@ -2,20 +2,20 @@
 	sender.h
 
 -----------------------------------------------------------------------
-    Copyright (C) 1998 FCSoftware Inc. 
+    Copyright (C) 1998 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 ============================================*/
-/* 
+/*
  *$Log: sender.h,v $
  *Revision 1.3  2011/03/23 16:39:57  bobfcsoft
  *bigger buffers

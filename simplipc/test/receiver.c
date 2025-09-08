@@ -4,7 +4,7 @@
 
 #define LIMIT	500
 
-unsigned maxSize = 100 * LIMIT;  
+unsigned maxSize = 100 * LIMIT;
 
 int main(int argc, char **argv)
 {

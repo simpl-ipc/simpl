@@ -1,17 +1,17 @@
 ###############################################
 #
-# Makefile - for fclogger test code 
+# Makefile - for fclogger test code
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 1998, 2002, 2007 FCSoftware Inc. 
+#    Copyright (C) 1998, 2002, 2007 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
-#    If you discover a bug or add an enhancement contact us on the 
+#    If you discover a bug or add an enhancement contact us on the
 #    SIMPL project mailing list.
 #-----------------------------------------------------------------------
 #$Log: Makefile,v $
@@ -126,9 +126,9 @@ description:
 #========================
 # Link
 #========================
-$(BIN_DIR)/logit:	$(LOGIT_OBJ) 
+$(BIN_DIR)/logit:	$(LOGIT_OBJ)
 	$(CC) -o $(BIN_DIR)/logit $(LOGIT_OBJ) $(LDFLAGS)
-	
+
 #===================
 # Compiles
 #===================

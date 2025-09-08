@@ -3,12 +3,12 @@
 FILE:			simplProto.h
 
 DESCRIPTION:	This file contains the function protoype definitions
-				contained in the simpl library. 
+				contained in the simpl library.
 
 AUTHOR:			FC Software Inc.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 2002, 2007 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public

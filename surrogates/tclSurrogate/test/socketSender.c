@@ -1,22 +1,22 @@
 /*************************************************************
 FILE:		socketSender.c
 
-DESCRIPTION:	
+DESCRIPTION:
 This module acts as Tcl/Tk GUI place holder.
 
 AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999, 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 1999, 2002, 2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 Revision history:
@@ -189,7 +189,7 @@ printf("top of loop my_fds[0]=%d my_fds[1]=%d\n",
 				{
 				SG_REPLY_MSG *inMsg;
 				SG_NAME_ATTACH_MSG *replyMsg;
-				
+
 				inMsg=(SG_REPLY_MSG *)inArea;
 				replyMsg=(SG_NAME_ATTACH_MSG *)&inMsg->dataMark;
 
@@ -377,7 +377,7 @@ fcLogx(__FILE__, fn,
 				{
 				SG_REPLY_MSG *inMsg;
 				SURRO_TEST_MSG *wrapMsg;
-				
+
 				inMsg=(SG_REPLY_MSG *)inArea;
 				wrapMsg=(SURRO_TEST_MSG *)&inMsg->dataMark;
 fcLogx(__FILE__, fn,
@@ -391,7 +391,7 @@ fcLogx(__FILE__, fn,
 				}
 				break;
 
-			case 'S':  // send no reply 
+			case 'S':  // send no reply
 				{
 				SG_SEND_MSG *outMsg;
 				SURRO_TEST_MSG *wrapMsg;
@@ -430,7 +430,7 @@ fcLogx(__FILE__, fn,
 				}
 				break;
 
-			case 'a':  // send ACK 
+			case 'a':  // send ACK
 				{
 				SG_ACK_MSG *outMsg;
 
@@ -546,14 +546,14 @@ testMode=0;
 /*=========================================================
 	process command line arguments
 =========================================================*/
-for (i=1; i<=argc; ++i) 
-	{	
+for (i=1; i<=argc; ++i)
+	{
 	char *p = argv[i];
 
 	if (p == NULL) continue;
 
 	if (*p == '-')
-		{             
+		{
 		switch (*++p)
 			{
 			case 'n':
@@ -579,13 +579,13 @@ for (i=1; i<=argc; ++i)
 
 			case 't':
 				testMode=1;
-				break;	
+				break;
 
 			default:
 				printf("Bad command line switch `%c'\n", *p);
 			}
 		}
-	}	
+	}
 
 // connect to logger
 logger_ID = is_logger_upx(logger_name);

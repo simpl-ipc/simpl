@@ -6,16 +6,16 @@ DESCRIPTION:	This program displays current SIMPL processes.
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2000, 2002 FCSoftware Inc. 
+    Copyright (C) 2000, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ if (p == NULL)
 	sprintf(fifoPath,DEFAULT_FIFO_PATH);
 else
 	sprintf(fifoPath,"%s",p);
-	
+
 if (access(fifoPath,F_OK) == -1)
 	{
 	printf("Unable to obtain fifo path-%s\n", strerror(errno));
@@ -113,9 +113,9 @@ while ( (file = readdir(directory)) != NULL )
 			}
 
 		memset(name, 0, 50);
-		memcpy(name, file->d_name, i);		
+		memcpy(name, file->d_name, i);
 		pid = atoi(file->d_name + i + 1);
-		
+
 		if (pid > 0)
 			printf("%-30s  %d\n", name, pid);
 		}

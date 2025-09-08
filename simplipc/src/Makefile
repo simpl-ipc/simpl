@@ -6,7 +6,7 @@
 #
 # AUTHOR:		FC Software Inc.
 #-----------------------------------------------------------------------
-#    Copyright (C) 2000,2007,2008 FCSoftware Inc. 
+#    Copyright (C) 2000,2007,2008 FCSoftware Inc.
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -143,10 +143,10 @@ whichOS:
 # static library
 #=====================================================================
 $(LIB_DIR)/libsimpl.a: $(SIMPL_OBJ)
-	ar vrs $(LIB_DIR)/libsimpl.a $?	
+	ar vrs $(LIB_DIR)/libsimpl.a $?
 
 $(LIB_DIR)/i386/libsimpl.a: $(SIMPL_OBJ)
-	ar vrs $(LIB_DIR)/i386/libsimpl.a $?	
+	ar vrs $(LIB_DIR)/i386/libsimpl.a $?
 	ln -s $(LIB_DIR)/i386/libsimpl.a $(LIB_DIR)/libsimpl.a
 
 #=====================================================================
@@ -156,7 +156,7 @@ $(LIB_DIR)/libsimpl.so: $(LIB_DIR)/$(SONAME)
 	ln -sf $(LIB_DIR)/$(SONAME)	$(LIB_DIR)/libsimpl.so
 
 $(LIB_DIR)/$(SONAME): $(LIB_DIR)/libsimpl.so.$(VERSION)
-	ln -sf $(LIB_DIR)/libsimpl.so.$(VERSION) $(LIB_DIR)/$(SONAME)	
+	ln -sf $(LIB_DIR)/libsimpl.so.$(VERSION) $(LIB_DIR)/$(SONAME)
 
 $(LIB_DIR)/libsimpl.so.$(VERSION): $(SIMPL_OBJ)
 	$(CC) -shared -Wl,-soname,$(SONAME) -o $@ $? -lc
@@ -184,7 +184,7 @@ clean:
 	@echo simpl clean
 
 #=====================================================================
-#  install 
+#  install
 #=====================================================================
 install: \
      title \
@@ -196,10 +196,10 @@ install: \
 	@echo simpl install
 
 #=====================================================================
-#  uninstall 
+#  uninstall
 #=====================================================================
 uninstall: \
-     title 
+     title
 	rm $(SIMPL_LIB)/libsimpl.*
 	rm $(SIMPL_INCL)/simpl.h
 	rm $(SIMPL_INCL)/simplProto.h

@@ -9,11 +9,11 @@ DESCRIPTION:	This file contains the initialize procedures used by
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -39,7 +39,7 @@ FUNCTION:	initialize(int argc, char **argv)
 PURPOSE:	read command line parameters
 
 RETURNS:	int: 0=success, -1=failure
-**********************************************************************/	
+**********************************************************************/
 
 int initialize(int argc, char **argv)
 {
@@ -69,8 +69,8 @@ namelocTimeout = NAMELOC_TIMEOUT;
 kaTimeout = KEEP_ALIVE_TIMEOUT;
 
 // process command line arguments (if any)
-for (i = 1; i <= argc; ++i) 
-	{	
+for (i = 1; i <= argc; ++i)
+	{
 	char *p = argv[i];
 
 	if (p == NULL)
@@ -87,7 +87,7 @@ for (i = 1; i <= argc; ++i)
 					{
 					p++;
 					}
-				intWidth = atoi(p); 
+				intWidth = atoi(p);
 				break;
 
 			case 'k':
@@ -95,7 +95,7 @@ for (i = 1; i <= argc; ++i)
 					{
 					p++;
 					}
-				kaTimeout = atoi(p); 
+				kaTimeout = atoi(p);
 				break;
 
 			case 'n':
@@ -103,7 +103,7 @@ for (i = 1; i <= argc; ++i)
 					{
 					p++;
 					}
-				namelocTimeout = atoi(p); 
+				namelocTimeout = atoi(p);
 				break;
 
 			default:
@@ -111,7 +111,7 @@ for (i = 1; i <= argc; ++i)
 				return(-1);
 			}
 		}
-	}	
+	}
 
 return(0);
 }

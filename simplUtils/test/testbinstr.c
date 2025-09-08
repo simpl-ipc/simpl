@@ -6,15 +6,15 @@ DESCRIPTION:	This program tests the binstr library.
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2000, 2002 FCSoftware Inc. 
+    Copyright (C) 2000, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
-    If you discover a bug or add an enhancement here's how to reach us: 
+    If you discover a bug or add an enhancement here's how to reach us:
 
 	fcsoft@attcanada.ca
 -----------------------------------------------------------------------
@@ -33,7 +33,7 @@ Initial revision
 ======================================================================*/
 
 #include <stdio.h>
-#include "simplmiscProto.h" 
+#include "simplmiscProto.h"
 
 void test_UI(void);
 void test_SI(void);
@@ -43,11 +43,11 @@ void test_F(void);
 
 int main()
 {
-test_UI(); 
-test_SI(); 
-test_USI(); 
-test_SSI(); 
-test_F(); 
+test_UI();
+test_SI();
+test_USI();
+test_SSI();
+test_F();
 
 return(1);
 }
@@ -75,7 +75,7 @@ printf("number=%d str=%d-%d-%d-%d-%d-%d-%d-%d\n",
 			str[7]);
 
 number = stobUI(str, 0);
-printf("number=%d\n", number); 
+printf("number=%d\n", number);
 }
 
 /*-------------------------------------------------------------------*/
@@ -99,7 +99,7 @@ printf("number=%d str=%d-%d-%d-%d-%d-%d-%d-%d\n",
 			str[7]);
 
 number = stobSI(str, 0);
-printf("number=%d\n", number); 
+printf("number=%d\n", number);
 }
 
 /*-------------------------------------------------------------------*/
@@ -119,7 +119,7 @@ printf("number=%d str=%d-%d-%d-%d\n",
 			str[3]);
 
 number = stobUSI(str, 0);
-printf("number=%d\n", number); 
+printf("number=%d\n", number);
 }
 
 /*-------------------------------------------------------------------*/
@@ -139,7 +139,7 @@ printf("number=%d str=%d-%d-%d-%d\n",
 			str[3]);
 
 number = stobSSI(str, 0);
-printf("number=%d\n", number); 
+printf("number=%d\n", number);
 }
 
 /*-------------------------------------------------------------------*/
@@ -163,5 +163,5 @@ printf("number=%f str=%d-%d-%d-%d-%d-%d-%d-%d\n",
 			str[7]);
 
 number = stobF(str, 0);
-printf("number=%f\n", number); 
+printf("number=%f\n", number);
 }

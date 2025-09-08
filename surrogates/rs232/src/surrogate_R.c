@@ -6,15 +6,15 @@ DATE:			07 July 19
 
 DESCRIPTION:	This program is run as a fork from surrogate.c
 
-NOTES:			surrogate_R (parent) sends the following messages: 
+NOTES:			surrogate_R (parent) sends the following messages:
 				1. SUR_PROTOCOL_MSG to protocolRouter
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -41,9 +41,9 @@ initial
 FUNCTION:	surrogate_R(void)
 
 PURPOSE:	sends "child" messages to protocol_router.
-  
+
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void surrogate_R()
 {
@@ -96,7 +96,7 @@ while (1)
 		_simpl_log("%s: forkSurrogate failure\n", fn);
 		exit(-1);
 		}
-	
+
 	/*
 	send pid of latest available surrogate child and become send blocked by the
 	protocol router who will unblock when the latest surrogate has been assigned
@@ -108,14 +108,14 @@ while (1)
 		}
 	}
 }
-		
+
 /**********************************************************************
 FUNCTION:	forkSurrogate(void)
 
 PURPOSE:	Fork a surrogate receiver if possible.
 
-RETURNS:	pid_t to the parent process	
-**********************************************************************/	
+RETURNS:	pid_t to the parent process
+**********************************************************************/
 
 pid_t forkSurrogate()
 {
@@ -150,7 +150,7 @@ FUNCTION:	sendSurrogateMsg(int, pid_t)
 PURPOSE:	Send a surrogate child message to the protocol router.
 
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int sendSurrogateMsg(int pr, pid_t pid)
 {
@@ -159,7 +159,7 @@ SUR_PROTOCOL_MSG outMsg;
 
 // build message to protocol router
 outMsg.hdr.token = SUR_SURROGATE_READY;
-outMsg.hdr.nbytes = sizeof(SUR_PROTOCOL_MSG); 
+outMsg.hdr.nbytes = sizeof(SUR_PROTOCOL_MSG);
 strcpy(outMsg.protocolName, SIMPL_RS232);
 sprintf(outMsg.programName, "%s_%d", SURROGATE_RS232_R_CHILD, pid);
 

@@ -7,21 +7,21 @@ DESCRIPTION:	This program is run as a fork from surrogate.c
 NOTES:			surrogate_R (parent) receives the following messages:
 				1. SUR_REQUEST_PROTOCOL_MSG
 
-				surrogate_R (parent) sends the following messages: 
+				surrogate_R (parent) sends the following messages:
 				1. SUR_PROTOCOL_MSG (de)registering with protocolRouter
 				2. SUR_PROTOCOL_REPLY_MSG
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005-2010 FCSoftware Inc. 
+    Copyright (C) 2005-2010 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -47,9 +47,9 @@ v3.0 changes
 FUNCTION:	surrogate_cparent(void)
 
 PURPOSE:	receives "child" messages from protocol_router.
-  
+
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void surrogate_cparent()
 {
@@ -112,7 +112,7 @@ while (1)
 		_simpl_log("forkSurrogate failure\n");
 		exit(-1);
 		}
-	
+
 	/*
 	send pid of latest available surrogate child and become send blocked by the
 	protocol router who will unblock when the latest surrogate has been assigned
@@ -124,25 +124,25 @@ while (1)
 		}
 	}
 }
-		
+
 /**********************************************************************
 FUNCTION:	sendSurrogateMsg(int, pid_t)
 
 PURPOSE:	Send a surrogate child message to the protocol router.
 
 RETURNS:	int
-**********************************************************************/	
+**********************************************************************/
 
 int sendSurrogateMsg(int pr, pid_t pid)
 {
-// memArea is global 
+// memArea is global
 const static char *fn = "sendSurrogateMsg";
 SUR_PROTOCOL_MSG *outMsg;
 
 // build message to protocol router
 outMsg = (SUR_PROTOCOL_MSG *)memArea;
 outMsg->hdr.token = SUR_SURROGATE_READY;
-outMsg->hdr.nbytes = sizeof(SUR_PROTOCOL_MSG); 
+outMsg->hdr.nbytes = sizeof(SUR_PROTOCOL_MSG);
 strcpy(outMsg->protocolName, SIMPL_X_TCP);
 sprintf(outMsg->programName, "%s_%d", SURROGATE_X_TCP_R_CHILD, pid);
 
@@ -161,8 +161,8 @@ FUNCTION:	forkSurrogate(void)
 
 PURPOSE:	Fork a surrogate receiver if possible.
 
-RETURNS:	pid_t to the parent process	
-**********************************************************************/	
+RETURNS:	pid_t to the parent process
+**********************************************************************/
 
 pid_t forkSurrogate()
 {

@@ -1,23 +1,23 @@
 /*************************************************************
 	FILE:		tclSurrogate.c
 
-	DESCRIPTION:	
+	DESCRIPTION:
 	This file contains the socket server code Tcl/Tk
 	surrogate process.
 
 	AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999,2002,2007 FCSoftware Inc. 
+    Copyright (C) 1999,2002,2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 	Revision history:
@@ -175,7 +175,7 @@ if(FD_ISSET(my_fds[0], &inset))  //  socket is ready
 		globalMask,
 		TCL_SURROGATE_MISC,
 		"got message on socket=%d",
-		my_fds[0] 
+		my_fds[0]
 		);
 
 	socket_fd=acceptSocket(mySocket);
@@ -205,7 +205,7 @@ if(FD_ISSET(my_fds[0], &inset))  //  socket is ready
 		FD_SET(my_fds[0], &watchset);
 		FD_SET(my_fds[1], &watchset);
 		FD_SET(my_fds[2], &watchset);
-		
+
 		for(maxfd=my_fds[0],i=1; i<3; i++)
 			{
 			if(my_fds[i] > maxfd) maxfd=my_fds[i];
@@ -227,7 +227,7 @@ if(FD_ISSET(my_fds[0], &inset))  //  socket is ready
 		counter++;
 		if(counter > 999) counter=0;
 		}
-			
+
 	} // end if socket
 
 else
@@ -238,7 +238,7 @@ if(FD_ISSET(my_fds[1], &inset))  //  fifo is ready
 		globalMask,
 		TCL_SURROGATE_MISC,
 		"got message on fifo=%d",
-		my_fds[1] 
+		my_fds[1]
 		);
 
 	hndlParentFifo();
@@ -286,7 +286,7 @@ if(FD_ISSET(my_fds[0], &inset))  //  socket is ready
 		globalMask,
 		TCL_SURROGATE_MISC,
 		"got message on socket=%d",
-		my_fds[0] 
+		my_fds[0]
 		);
 
 	clrWaitingForAck();
@@ -302,7 +302,7 @@ if(FD_ISSET(my_fds[1], &inset))  //  fifo is ready
 		globalMask,
 		TCL_SURROGATE_MISC,
 		"got message on fifo fd=%d",
-		my_fds[1] 
+		my_fds[1]
 		);
 
 	if(hndlChildFifo() == -1)
@@ -311,7 +311,7 @@ if(FD_ISSET(my_fds[1], &inset))  //  fifo is ready
 else
 
 // Is this from reply fifo
-if(FD_ISSET(my_fds[2], &inset))  // should never come here 
+if(FD_ISSET(my_fds[2], &inset))  // should never come here
 	{
 	char myBuf[10];
 #if 0

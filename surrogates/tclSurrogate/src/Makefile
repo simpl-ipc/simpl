@@ -1,17 +1,17 @@
 ###############################################
 #
-# Makefile - for tclSurrogate 
+# Makefile - for tclSurrogate
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 2009 FCSoftware Inc. 
+#    Copyright (C) 2009 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
-#    If you discover a bug or add an enhancement contact us on the 
+#    If you discover a bug or add an enhancement contact us on the
 #    SIMPL project mailing list.
 #
 # $Log: Makefile,v $
@@ -130,10 +130,10 @@ description:
 #========================
 $(BIN_DIR)/tclSurrogate:	$(TCL_SURROGATE_OBJ) $(LIB_DIR)/libfcsocket.a
 	$(CC) -o $(BIN_DIR)/tclSurrogate $(TCL_SURROGATE_OBJ) $(LDFLAGS)
-	
+
 $(LIB_DIR)/libfcsocket.a: $(FCSOCKET_OBJ)
 	@make -s description PROGRAM_NAME="$<" OBJ_NAME="$@"
-	ar vrs $(LIB_DIR)/libfcsocket.a $?	
+	ar vrs $(LIB_DIR)/libfcsocket.a $?
 
 #===================
 # Compiles
@@ -177,10 +177,10 @@ install:\
 	@echo tclSurrogate install
 
 #=====================================================================
-#  uninstall 
+#  uninstall
 #=====================================================================
 uninstall: \
-    title 
+    title
 	-rm $(SIMPL_BIN)/tclSurrogate
 	@echo tclSurrogate uninstall
 

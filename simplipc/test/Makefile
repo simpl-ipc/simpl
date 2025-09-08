@@ -6,7 +6,7 @@
 #
 # AUTHOR:		FC Software Inc.
 #-----------------------------------------------------------------------
-#    Copyright (C) 2000, 2008 FCSoftware Inc. 
+#    Copyright (C) 2000, 2008 FCSoftware Inc.
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#    If you discover a bug or add an enhancement contact us on the: 
+#    If you discover a bug or add an enhancement contact us on the:
 #
 #	SIMPL project mailing list
 #-----------------------------------------------------------------------
@@ -82,7 +82,7 @@ RECEIVER_OBJ = \
 	$(OBJ_DIR)/receiver.o
 
 CFLAGS = -O -Wall -I$(LOCAL_INC_DIR) -I$(INC_DIR)
-LDFLAGS = -L$(LIB_DIR) -lsimpl 
+LDFLAGS = -L$(LIB_DIR) -lsimpl
 ARCHFLAGS =
 
 #=====================================================================
@@ -102,10 +102,10 @@ title:
 #========================
 $(BIN_DIR)/sender: $(SENDER_OBJ)
 	$(CC) -o $@ $? $(LDFLAGS)
-	
+
 $(BIN_DIR)/receiver: $(RECEIVER_OBJ)
 	$(CC) -o $@ $? $(LDFLAGS)
-	
+
 #===================
 # Compiles
 #===================
@@ -116,7 +116,7 @@ $(OBJ_DIR)/sender.o: sender.c
 	$(CC) -c $(ARCHFLAGS) $(CFLAGS) -o $@ $<
 
 #===================
-#  clobber 
+#  clobber
 #===================
 clean:
 	@-rm -f $(OBJ_DIR)/*.o

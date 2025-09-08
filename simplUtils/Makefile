@@ -3,7 +3,7 @@
 #  Makefile for simplUtils tree
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 1999, 2008 FCSoftware Inc. 
+#    Copyright (C) 1999, 2008 FCSoftware Inc.
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#    If you discover a bug or add an enhancement contact us on the: 
+#    If you discover a bug or add an enhancement contact us on the:
 #
 #	SIMPL project mailing list
 #-----------------------------------------------------------------------
@@ -76,8 +76,8 @@ TEST_DIR=test
 all:
 	@echo "$(PROJECT) simplUtils build <all> starting"
 	@echo `date`
-	make -C $(SRC_DIR) SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL) 
-	make -C $(TEST_DIR) 
+	make -C $(SRC_DIR) SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
+	make -C $(TEST_DIR)
 	@echo "$(PROJECT) simplUtils <all> done"
 	@echo `date`
 
@@ -96,7 +96,7 @@ clean:
 install:
 	@echo "$(PROJECT) simplUtils build <install> starting"
 	@echo `date`
-	make -C $(SRC_DIR) install SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL) 
+	make -C $(SRC_DIR) install SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	make -C $(TEST_DIR) install
 	@echo "$(PROJECT) simplUtils <install> done"
 	@echo `date`
@@ -107,14 +107,14 @@ install:
 uninstall:
 	@echo "$(PROJECT) simplUtils build <uninstall> starting"
 	@echo `date`
-	make -C $(SRC_DIR) uninstall SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL) 
+	make -C $(SRC_DIR) uninstall SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	@echo "$(PROJECT) simplUtils <uninstall> done"
 	@echo `date`
 
 dynamic:
 	@echo "$(PROJECT) simplUtils build <dynamic> starting"
 	@echo `date`
-	make -C $(SRC_DIR) dynamic SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL) 
+	make -C $(SRC_DIR) dynamic SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	make -C $(TEST_DIR) install
 	@echo "$(PROJECT) simplUtils <dynamic> done"
 	@echo `date`
@@ -122,7 +122,7 @@ dynamic:
 i386:
 	@echo "$(PROJECT) simplUtils build <dynamic> starting"
 	@echo `date`
-	make -C $(SRC_DIR) i386 SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL) 
+	make -C $(SRC_DIR) i386 SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	make -C $(TEST_DIR) i386
 	@echo "$(PROJECT) simplUtils <dynamic> done"
 	@echo `date`
@@ -130,7 +130,7 @@ i386:
 i386_dynamic:
 	@echo "$(PROJECT) simplUtils build <dynamic> starting"
 	@echo `date`
-	make -C $(SRC_DIR) i386_dynamic SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL) 
+	make -C $(SRC_DIR) i386_dynamic SIMPL_BIN=$(SIMPL_BIN) SIMPL_LIB=$(SIMPL_LIB) SIMPL_INCL=$(SIMPL_INCL)
 	make -C $(TEST_DIR) i386
 	@echo "$(PROJECT) simplUtils <dynamic> done"
 	@echo `date`

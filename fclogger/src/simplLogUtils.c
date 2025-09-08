@@ -1,22 +1,22 @@
 /*************************************************************
 	simplLogUtils.c
 
-DESCRIPTION:	
+DESCRIPTION:
 This file contains some core functions for trace logging.
 
 AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 2001, 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 2001, 2002, 2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -85,7 +85,7 @@ if(name[0] != 0)
 	{
 	rc=name_locate(name);
 	}
- 
+
 return(rc);
 
 } // end is_logger_upx
@@ -116,7 +116,7 @@ else
 	{
 	sprintf(p,"(%s) %s:%s",fileName, who, text);
 	}
-	
+
 if(logger_ID != -1)
 	{
 	retcode=Send(logger_ID,loggerArea,NULL,LOGGER_BUFFER_SIZE,0);
@@ -163,7 +163,7 @@ if((globalMask & userMask) && logger_ID != -1)
 /* va_start : Initialize vaArgs to point to first unnamed argument         */
 /***************************************************************************/
 
-va_list   vaArgs; 
+va_list   vaArgs;
 
 /*
  *  Format a timestamp with seconds and milliseconds (00.000)

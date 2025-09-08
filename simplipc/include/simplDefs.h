@@ -8,7 +8,7 @@ DESCRIPTION:	This file contains definitions used by the simpl source
 AUTHOR:			FC Software Inc.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2000, 2005, 2007 FCSoftware Inc. 
+    Copyright (C) 2000, 2005, 2007 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ AUTHOR:			FC Software Inc.
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ a character variable to a double word boundary. In operating systems
 other than Linux, this may not occur and consequently structure
 sizes will vary. For example:
 
-typedef struct 
+typedef struct
 	{
 	int i;
 	int j;
@@ -114,7 +114,7 @@ will return 10 bytes. Linux has padded out the string k to 4 bytes.
 
 Another example:
 
-typedef struct 
+typedef struct
 	{
 	int i;
 	int j;
@@ -127,14 +127,14 @@ will return 9 bytes. Linux has added another 3 bytes to the structure.
 For compatibility, one could adjust each of the above in the following
 way:
 
-typedef struct 
+typedef struct
 	{
 	int i;
 	int j;
 	char k[4];
 	} TEST0;
 
-typedef struct 
+typedef struct
 	{
 	int i;
 	int j;
@@ -160,16 +160,16 @@ perceived differently and herein lies the rub.
 #include <unistd.h>
 
 // defines
-#define MAX_PROTOCOL_NAME_LEN		23	
+#define MAX_PROTOCOL_NAME_LEN		23
 #define MAX_HOST_NAME_LEN			51
 #define MAX_NUM_PROTOCOLS			10
 #define MAX_PROGRAM_NAME_LEN		31
 #define	MAX_NUM_REMOTE_RECEIVERS	40
 #define	MAX_NUM_BLOCKED_SENDERS		40
-#define MAX_SIMPL_LOG_SIZE			102400 // 100 kbytes	
-#define SIMPL_LOG_FILE				"/var/tmp/simpl.log"	
-#define PROXY_SHUTDOWN				0x7FFFFFFF	
-#define PROXY_CLONE				0x7FFFFFFE	
+#define MAX_SIMPL_LOG_SIZE			102400 // 100 kbytes
+#define SIMPL_LOG_FILE				"/var/tmp/simpl.log"
+#define PROXY_SHUTDOWN				0x7FFFFFFF
+#define PROXY_CLONE				0x7FFFFFFE
 #define	RECEIVE						0
 #define REPLY						1
 #define	REMOVE						1

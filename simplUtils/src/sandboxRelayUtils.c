@@ -2,22 +2,22 @@
 
 FILE:		sandboxRelayUtils.c
 
-DESCRIPTION:	
+DESCRIPTION:
 This file contains utilities for sandboxRelay
 
 AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 2007 SIMPL project. 
+    Copyright (C) 2007 SIMPL project.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the SIMPL
-    project mailing list. 
+    project mailing list.
 
 -----------------------------------------------------------------------
 Revision history:
@@ -54,7 +54,7 @@ extern WHO_AM_I _simpl_myStuff;
 /**********************************************************************
 FUNCTION:	int sb_name_attach(const char *, void (*myExit)())
 
-PURPOSE:	Initializes required SIMPL functionality. 
+PURPOSE:	Initializes required SIMPL functionality.
 
 RETURNS:	success:  0
 			failure: -1
@@ -178,7 +178,7 @@ if (rc == -1)
 		"getFifoName failure");
 
 	return(-1);
-	} 
+	}
 
 fcLogx(__FILE__, fn,
 	globalMask,
@@ -194,7 +194,7 @@ if (rc == -1)
 		TRACE_MARK,
 		"fifo %s open failure", fifoName);
 
-	} 
+	}
 
 return(rc);
 }
@@ -205,7 +205,7 @@ FUNCTION:	int _sb_getFifoName(const char *, char *)
 
 PURPOSE:	Find a receive fifo based on the simpl name.
 
-RETURNS:	success: 0 
+RETURNS:	success: 0
 			failure: -1
 ***********************************************************************/
 
@@ -271,7 +271,7 @@ char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
 unsigned bufSize;
 FCMSG_REC *msgPtr;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 
 // is this program name attached?
 if (_simpl_check() == -1)
@@ -295,8 +295,8 @@ if (_simpl_myStuff.shmSize < bufSize)
 		{
 		_simpl_deleteShmem();
 		}
-	
-	// create new shmem	
+
+	// create new shmem
 	if (_simpl_createShmem(bufSize) == -1)
 		{
 		return(-1);
@@ -336,7 +336,7 @@ if (sb_fd == -1)
 		"unable to open reply fifo %s-%s", fifoName, strerror(errno));
 
 		return(-1);
-		} 
+		}
 	}
 
 // line up the triggering message for the fifo
@@ -378,7 +378,7 @@ if (inBuffer != NULL)
 	{
 	// copy the reply message
 	if (msgPtr->nbytes)
-		{ 
+		{
 		memcpy(inBuffer, (void *)&msgPtr->data, msgPtr->nbytes);
 		}
 	}

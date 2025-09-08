@@ -6,15 +6,15 @@
 #
 # AUTHOR:		FC Software Inc.
 #-----------------------------------------------------------------------
-#    Copyright (C) 2005, 2008 FCSoftware Inc. 
+#    Copyright (C) 2005, 2008 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
-#    If you discover a bug or add an enhancement contact us on the: 
+#    If you discover a bug or add an enhancement contact us on the:
 #
 #	SIMPL project mailing list
 #-----------------------------------------------------------------------
@@ -144,7 +144,7 @@ title:
 #=====================================================================
 $(BIN_DIR)/surrogate: $(SURROGATE_OBJ)
 	$(CC) -o $@ $(SURROGATE_OBJ) $(LDFLAGS)
-	
+
 #=====================================================================
 # compiling
 #=====================================================================
@@ -178,7 +178,7 @@ clean:
 	@echo surrogate clean
 
 #=====================================================================
-#  install 
+#  install
 #=====================================================================
 install: \
     title \
@@ -187,10 +187,10 @@ install: \
 	@echo surrogate install
 
 #=====================================================================
-#  uninstall 
+#  uninstall
 #=====================================================================
 uninstall: \
-    title 
+    title
 	-rm $(SIMPL_BIN)/surrogateTcp
 	@echo surrogate uninstall
 

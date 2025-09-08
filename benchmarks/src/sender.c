@@ -6,16 +6,16 @@ This file contains code for the benchmarking
 "sender" task.
 
 -----------------------------------------------------------------------
-    Copyright (C) 1998, 2002 FCSoftware Inc. 
+    Copyright (C) 1998, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
-    If you discover a bug or add an enhancement contact us on the 
-    SIMPL project mailing list. 
+    If you discover a bug or add an enhancement contact us on the
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 ======================================*/
@@ -145,13 +145,13 @@ for(i=0; i<repeats; i++)
 	sendMsgx(toPid);
 #endif
 #ifdef _SIMPLIPC
-	if(i%10000 == 0) 
+	if(i%10000 == 0)
 		{
 		printf("i=%d\n",i);
 		fflush(stdout);
 		}
 
-	if(Send(toPid, outArea, inArea, mySize, mySize) == -1) 
+	if(Send(toPid, outArea, inArea, mySize, mySize) == -1)
 		{
 		printf("sender error: %s\n",whatsMyError());
 		x_it=1;
@@ -352,7 +352,7 @@ while((opt = getopt(argc, argv, "n:r:t:s:")) != -1)
 				printf("%s:unknown arg %s\n",fn, p);
 #endif
 				printf("%s:unknown arg %c\n",fn, optopt);
- 
+
                                 break;
                         }/*end switch*/
 #if 0

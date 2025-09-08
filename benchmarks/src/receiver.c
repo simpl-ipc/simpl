@@ -7,16 +7,16 @@ task.  It is used to form the "receiver" portion
 of the A->B "benchmark" tests.
 
 -----------------------------------------------------------------------
-    Copyright (C) 1998, 2002 FCSoftware Inc. 
+    Copyright (C) 1998, 2002 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 =============================================*/
@@ -229,7 +229,7 @@ while((opt = getopt(argc, argv, "n:")) != -1)
 				sprintf(myName,"%s",++p);
 #endif
 				sprintf(myName,"%s",optarg);
-				
+
 #ifdef _FIFO
 				attachName(myName, 8192, NULL);
 #endif

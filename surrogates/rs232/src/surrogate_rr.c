@@ -22,11 +22,11 @@ NOTES:			receives the following messages:
 				6. reply messages back to the local sender.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -60,7 +60,7 @@ PURPOSE:	Talk via serial to the rs232 reader process on another host
 			conduit between a local sender and a remote receiver.
 
 RETURNS:	nothing, it is a forked process and never returns.
-**********************************************************************/	
+**********************************************************************/
 
 void surrogate_r()
 {
@@ -69,7 +69,7 @@ void surrogate_r()
 // surRpid is global
 char me[30];
 int fds[1];
-fd_set watchset; 
+fd_set watchset;
 fd_set inset;
 struct timeval tv;
 struct timeval *timeoutPtr;
@@ -109,7 +109,7 @@ if (hndlRemoteNameLocate(&senderInfo) == -1)
 	exit(-1);
 	}
 
-// for local simpl messages 
+// for local simpl messages
 fds[0] = whatsMyRecvfd();
 
 // set select parameters
@@ -135,7 +135,7 @@ while (1)
 
 	// let select be the trigger on the file descriptor/timer
 	ret = select(fds[0]+1, &inset, NULL, NULL, timeoutPtr);
-	if (ret > 0) 
+	if (ret > 0)
 		{
 		if (FD_ISSET(fds[0], &inset))
 			{
@@ -147,14 +147,14 @@ while (1)
 				exit(-1);
 				}
 			}
-		else 
+		else
 			{
 			// unknown fd error
 			_simpl_log("%s: unknown fd on select-%s\n", me,
 				strerror(errno));
 			}
 		}
-	else if (ret == 0) 
+	else if (ret == 0)
 		{
 		// a good opportunity to check on the local sender
 		if (simplCheckProcess(&senderInfo) == -1)
@@ -164,8 +164,8 @@ while (1)
 			// send a close message to the remote surrogate partner
 			hndlClose();
 			exit(0);
-			}	
-		
+			}
+
 		// select timer kick returns 0 --> send a keep alive message to surrogate partner
 		if (sendKeepAliveMsg(&kaCounter) == -1)
 			{
@@ -192,15 +192,15 @@ while (1)
 		}
 	}
 }
-		
+
 /**********************************************************************
 FUNCTION:	hndlRemoteNameLocate(pid_t, SENDER_REC *)
 
 PURPOSE:	Handle a simpl SUR_NAME_LOCATE call.
 			Should only be called once for each surrogate child.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int hndlRemoteNameLocate(SIMPL_REC *senderInfo)
 {
@@ -208,7 +208,7 @@ int hndlRemoteNameLocate(SIMPL_REC *senderInfo)
 // surRpid is global
 const static char *fn = "hndlRemoteNameLocate_rs232";
 int fds[1];
-fd_set watchset; 
+fd_set watchset;
 int nBytes;
 struct timeval tv;
 struct timeval *timeoutPtr;
@@ -242,9 +242,9 @@ if (nBytes == -1)
 if (nBytes != sizeof(SUR_NAME_LOCATE_MSG))
 	{
 	_simpl_log("%s: incorrect message size\n", fn);
-	ReplyError(sender);	
+	ReplyError(sender);
 	return(-1);
-	} 
+	}
 
 // get the message from sender's shmem
 simplRcopy(sender, &lin, nBytes);
@@ -258,7 +258,7 @@ if (lin.hdr.token != SUR_NAME_LOCATE)
 	}
 
 /*
-the remote host surrogate_s needs to know this pid so that when it sends 
+the remote host surrogate_s needs to know this pid so that when it sends
 messages to this program the local serial_r knows how to route it here. The
 pid is used in the SIMPL name
 */
@@ -266,7 +266,7 @@ lin.hdr.surPid = surRpid;
 
 // get sender information
 simplSetSenderParms(sender, senderInfo);
-	
+
 #ifdef SUR_CHR	/********** char message **********/
 	btosSI(SUR_NAME_LOCATE, rout.hdr.token, intWidth);
 	btosSI(lin.hdr.nbytes, rout.hdr.nbytes, intWidth);
@@ -288,7 +288,7 @@ if (Send(serialWriter, &rout, NULL, outSize, 0) == -1)
 	return(-1);
 	}
 
-// block and wait for response 
+// block and wait for response
 fds[0] = whatsMyRecvfd();
 FD_ZERO(&watchset);
 FD_SET(fds[0], &watchset);
@@ -299,7 +299,7 @@ tv.tv_usec = 0;
 timeoutPtr = &tv;
 
 ret = select(fds[0] + 1, &watchset, NULL, NULL, timeoutPtr);
-if (ret > 0) 
+if (ret > 0)
 	{
 	if (FD_ISSET(fds[0], &watchset))
 		{
@@ -343,13 +343,13 @@ if (ret > 0)
 			return(-1);
 			}
 		}
-	else 
+	else
 		{
 		// unknown fd error
 		_simpl_log("%s: unknown fd on select-%s\n", fn, strerror(errno));
 		}
 	}
-else if (ret == 0) 
+else if (ret == 0)
 	{
 	// select timer kick returns 0 --> have not received a name locate reply
 	// no error log; network/hostprocess simply not there
@@ -373,8 +373,8 @@ FUNCTION:	hndlMsg(int *)
 PURPOSE:	Handle simpl SUR_SEND call from a local sender intended
 			for a remote receiver.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int hndlMsg(int *kaCounter)
 {
@@ -403,7 +403,7 @@ static char *localSender = NULL;
 	const static int hdrSize = sizeof(SUR_MSG_HDR);
 	SUR_MSG_HDR *in;
 	SUR_MSG_HDR *out;
-#endif 
+#endif
 
 // receive message from the local sender or the serial reader
 nBytes = Receive(&sender, NULL, 0);
@@ -418,7 +418,7 @@ if (nBytes < -1)
 	{
 	// get the value of the proxy
 	proxyValue = returnProxy(nBytes);
-	
+
 	// is it a close up shop proxy?
 	if (proxyValue == PROXY_SHUTDOWN)
 		{
@@ -492,7 +492,7 @@ if ( !strcmp(senderInfo.whom, RS232_READER) ) // from the serial reader
 		default:
 			_simpl_log("%s: unknown message token\n", fn);
 			return(-1);
-		}	
+		}
 	}
 else // from the local sender
 	{
@@ -507,7 +507,7 @@ else // from the local sender
 
 	// check for adequate buffer size
 	if (checkMemory(OUT, maxBytes) == -1)
-		{ 
+		{
 		_simpl_log("%s: memory allocation error\n", fn);
 		ReplyError(sender);
 		return(-1);
@@ -516,7 +516,7 @@ else // from the local sender
 	// get the message from sender's shmem
 	simplRcopy(localSender, outMsgArea + hdrSize, nBytes);
 
-	// build the message going to the other box	
+	// build the message going to the other box
 	#ifdef SUR_CHR	/********** char message **********/
 		out = (SUR_MSG_CHR_HDR *)outMsgArea;
 		btosSI(SUR_SEND, out->token, intWidth);
@@ -535,7 +535,7 @@ else // from the local sender
 	if (Send(serialWriter, outMsgArea, NULL, hdrSize + nBytes, 0) == -1)
 		{
 		_simpl_log("%s: send error on msg-%s\n", fn, whatsMyError());
-		ReplyError(sender);	
+		ReplyError(sender);
 		return(-1);
 		}
 	}
@@ -548,8 +548,8 @@ FUNCTION:	sendKeepAliveMsg(int *)
 
 PURPOSE:	Send a keep alive message to the other surrogate partner.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int sendKeepAliveMsg(int *kaCounter)
 {
@@ -570,7 +570,7 @@ const static char *fn = "sendKeepAliveMsg_rs232";
 	out.hdr.surPid = surSpid;
 #endif
 
-// send the keep alive message to the other surrogate's parent 
+// send the keep alive message to the other surrogate's parent
 if (Send(serialWriter, &out, NULL, size, 0) == -1)
 	{
 	_simpl_log("%s: send error on close msg-%s\n", fn, whatsMyError());
@@ -590,8 +590,8 @@ PURPOSE:	Handle simpl SUR_CLOSE call. This will cause this
 			"receiving surrogate" to exit and send a close instruction
 			to its remote "send surrogate" partner.
 
-RETURNS:	void	
-**********************************************************************/	
+RETURNS:	void
+**********************************************************************/
 
 void hndlClose()
 {
@@ -625,8 +625,8 @@ FUNCTION:	hndlProxy(int)
 
 PURPOSE:	Handle sending a proxy to the remote surrogate_s.
 
-RETURNS:	int	
-**********************************************************************/	
+RETURNS:	int
+**********************************************************************/
 
 int hndlProxy(int proxyValue)
 {
@@ -668,7 +668,7 @@ PURPOSE:	Failure reply function used by Receive surrogates to advise
 			Send() failure.
 
 RETURNS:	void
-**********************************************************************/	
+**********************************************************************/
 
 void replyFailure(char *caller)
 {

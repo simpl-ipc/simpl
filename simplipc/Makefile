@@ -3,7 +3,7 @@
 #    simplipc top level build
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 2002,2008 FCSoftware Inc. 
+#    Copyright (C) 2002,2008 FCSoftware Inc.
 #
 #    This library is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 #    License along with this library; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#    If you discover a bug or add an enhancement please contact us on the 
+#    If you discover a bug or add an enhancement please contact us on the
 #
 #	SIMPL project mailing list
 #-----------------------------------------------------------------------

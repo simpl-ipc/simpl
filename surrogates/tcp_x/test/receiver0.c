@@ -61,12 +61,12 @@ while (1)
 
 	var1 = (TEST_STRUCT_1 *)mem;
 
-	// get the token, all clips are 0 
+	// get the token, all clips are 0
 	var0.token = stobSI(var1->token, 0);
 
 	if (var0.token == 42)
 		{
-		strcpy(var0.john0, var1->john0); 
+		strcpy(var0.john0, var1->john0);
 		var0.john1 = stobUSI(var1->john1, 0);
 		var0.john2 = stobSSI(var1->john2, 0);
 		var0.john3 = stobUI(var1->john3, 0);

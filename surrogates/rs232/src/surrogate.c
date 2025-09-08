@@ -9,16 +9,16 @@ DESCRIPTION:	This program immediately forks into two separate
 
 AUTHOR:			FC Software Inc.
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 -----------------------------------------------------------------------
 REVISIONS:
 $Log: surrogate.c,v $
@@ -43,7 +43,7 @@ const char *fn = "surrogate_rs232";
 // allow for command line overrides
 initialize(argc, argv);
 
-// fork off into surrogate receiver and sender parent processes 
+// fork off into surrogate receiver and sender parent processes
 childPid = fork();
 if (childPid < 0) // failure
 	{

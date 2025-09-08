@@ -8,7 +8,7 @@ DESCRIPTION:	This file contains function prototype definitions
 AUTHOR:			FC Software Inc.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2000, 2002, 2007 FCSoftware Inc. 
+    Copyright (C) 2000, 2002, 2007 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ AUTHOR:			FC Software Inc.
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -118,7 +118,7 @@ int _simpl_postMsg(int, void *, unsigned, unsigned);
 int _simpl_readReply(void *, unsigned);
 
 int px_shmget(int, int, int);
-void *px_shmat(int, const void *, int); 
+void *px_shmat(int, const void *, int);
 int px_shmdt(void *);
 
 #endif

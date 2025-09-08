@@ -2,7 +2,7 @@
 
 FILE:			simplUtils.c
 
-DESCRIPTION:	This file contains the function calls used by the 
+DESCRIPTION:	This file contains the function calls used by the
 				simpl library functions.
 
 NOTES:			The functions are gathered into related groups.
@@ -10,7 +10,7 @@ NOTES:			The functions are gathered into related groups.
 AUTHOR:			FC Software Inc.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2000 FCSoftware Inc. 
+    Copyright (C) 2000 FCSoftware Inc.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ AUTHOR:			FC Software Inc.
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     If you discover a bug or add an enhancement contact us on
-    the SIMPL project mailing list. 
+    the SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 
@@ -152,7 +152,7 @@ Revision 1.9  2002/11/22 16:36:01  root
 #include <sys/mman.h>
 #endif
 
-// simpl headers 
+// simpl headers
 #include <simplDefs.h>
 #include <simplProto.h>
 #include <simplLibProto.h>
@@ -172,7 +172,7 @@ Revision 1.9  2002/11/22 16:36:01  root
 /**********************************************************************
 FUNCTION:	int _simpl_getNames(char *, char *, char *)
 
-PURPOSE:	extract the protocol, host and process names from the colon 
+PURPOSE:	extract the protocol, host and process names from the colon
 			delimited input name.
 
 RETURNS:	success: 0
@@ -180,7 +180,7 @@ RETURNS:	success: 0
 
 NOTES:		Function truncates protocol, host and process names if they
 			are too long.
-**********************************************************************/	
+**********************************************************************/
 
 int _simpl_getNames(const char *names, char *protocolName, char *hostName, char
 *processName)
@@ -203,7 +203,7 @@ if (!totalLen)
 	return(-1);
 	}
 
-// look for colons in the names string 
+// look for colons in the names string
 for (i = 1; i <= totalLen; i++)
 	{
 	if (names[i - 1] == SIMPL_NAME_DELIMITER)
@@ -214,7 +214,7 @@ for (i = 1; i <= totalLen; i++)
 			}
 		numColons++;
 		}
-	} 	
+	}
 
 // logic is based on number of delimiting colons found
 if (numColons == 0)
@@ -245,7 +245,7 @@ else if (numColons == 1)
 	// set the protocol name
 	strcpy(protocolName, SIMPL_DEFAULT);
 
-	// set the host name 
+	// set the host name
 	if ( (colons[0] - 1) <= MAX_HOST_NAME_LEN)
 		{
 		memcpy(hostName, names, colons[0] - 1);
@@ -289,7 +289,7 @@ else if (numColons == 2)
 			}
 		}
 
-	// set the host name 
+	// set the host name
 	if ( (colons[1] - colons[0] - 1) <= MAX_HOST_NAME_LEN)
 		{
 		memcpy(hostName, names + colons[0], colons[1] - colons[0] - 1);
@@ -318,7 +318,7 @@ else
 	return(-1);
 	}
 
-return(0); 			
+return(0);
 }
 
 /**********************************************************************
@@ -373,9 +373,9 @@ if (host == NULL)
 		// get rid of the EOF
 		if(name[ch-1] == 0xa)
 			name[ch-1] = 0;
-		
+
 		close(fd);
-		
+
 		}
 	}
 else
@@ -415,7 +415,7 @@ rc=_simpl_name_locate(processName);
 if (rc == -1)
 	{
 	char theprocess[32];
-	
+
 	sprintf(theprocess,"_%s", processName);
 // try the _local processName next
 	rc=_simpl_name_locate(theprocess);
@@ -486,7 +486,7 @@ rc = open(fifoName, O_WRONLY);
 if (rc == -1)
 	{
 	_simpl_setErrorCode(FIFO_OPEN_FAILURE);
-	} 
+	}
 
 return(rc);
 }
@@ -508,7 +508,7 @@ SUR_REQUEST_PROTOCOL_MSG outMsg;
 SUR_PROTOCOL_REPLY_MSG inMsg;
 SUR_NAME_LOCATE_MSG out;
 SUR_NAME_LOCATE_REPLY in;
-int rc; 
+int rc;
 // int _simpl_remoteReceiverId[] is global
 
 /*
@@ -524,7 +524,7 @@ if (rc == -1)
 
 // build message to protocol router
 outMsg.hdr.token = SUR_REQUEST_PROTOCOL;
-outMsg.hdr.nbytes = sizeof(SUR_REQUEST_PROTOCOL_MSG); 
+outMsg.hdr.nbytes = sizeof(SUR_REQUEST_PROTOCOL_MSG);
 strcpy(outMsg.protocolName, protocolName);
 
 // ask the protocol router for a surrogate
@@ -562,7 +562,7 @@ if (rc == -1)
 
 // build name locate message for the protocol surrogate
 out.hdr.token = SUR_NAME_LOCATE;
-out.hdr.nbytes = sizeof(SUR_NAME_LOCATE_MSG) - sizeof(SUR_MSG_HDR); 
+out.hdr.nbytes = sizeof(SUR_NAME_LOCATE_MSG) - sizeof(SUR_MSG_HDR);
 strcpy(out.rHostName, hostName);
 strcpy(out.rProgramName, processName);
 memset(out.sHostName, 0, MAX_HOST_NAME_LEN + 1);
@@ -625,7 +625,7 @@ int i;
 
 // store the name and truncate it if necessary
 sprintf(_simpl_myStuff.whom, "%.*s", MAX_PROGRAM_NAME_LEN, processName);
-	
+
 // check whether name is already in use
 if (_simpl_statFifoName(_simpl_myStuff.whom, REMOVE) != -1)
 	{
@@ -654,7 +654,7 @@ _simpl_myStuff.shmSize = 0;
 _simpl_myStuff.myExit = myExit;
 
 /*
-add a signal handler, _simpl_myStuff.myExit must be added to 
+add a signal handler, _simpl_myStuff.myExit must be added to
 as an atexit() function and the signal handler
 */
 _simpl_initSignalHandling();
@@ -663,7 +663,7 @@ _simpl_initSignalHandling();
 add the user exit functionality
 note that the user exit stuff will be run prior to the internal simpl
 stuff because the user may need the simpl capabilities. multiple atexit
-calls lierally stack up exit functions in LIFO style such that the last 
+calls lierally stack up exit functions in LIFO style such that the last
 lsted is the first run
 */
 atexit(_simpl_exitFunc);
@@ -704,7 +704,7 @@ SUR_REQUEST_PROTOCOL_MSG outMsg;
 SUR_PROTOCOL_REPLY_MSG inMsg;
 SUR_NAME_ATTACH_MSG out;
 SUR_NAME_ATTACH_REPLY in;
-int rc; 
+int rc;
 // int _simpl_remoteReceiverId[] is global
 
 /*
@@ -720,7 +720,7 @@ if (rc == -1)
 
 // build message to protocol router
 outMsg.hdr.token = SUR_REQUEST_PROTOCOL;
-outMsg.hdr.nbytes = sizeof(SUR_REQUEST_PROTOCOL_MSG); 
+outMsg.hdr.nbytes = sizeof(SUR_REQUEST_PROTOCOL_MSG);
 strcpy(outMsg.protocolName, protocolName);
 
 // ask the protocol router for a surrogate
@@ -746,7 +746,7 @@ if (strlen(inMsg.programName) == 0)
 	}
 
 /*
-ask the appropriate surrogate protocol program to setup a 
+ask the appropriate surrogate protocol program to setup a
 surrogate pair with remote end known as _processName
 */
 
@@ -759,7 +759,7 @@ if (rc == -1)
 
 // build name attach message for the protocol surrogate
 out.hdr.token = SUR_NAME_ATTACH;
-out.hdr.nbytes = sizeof(SUR_NAME_ATTACH_MSG) - sizeof(SUR_MSG_HDR); 
+out.hdr.nbytes = sizeof(SUR_NAME_ATTACH_MSG) - sizeof(SUR_MSG_HDR);
 strcpy(out.rHostName, hostName);
 strcpy(out.rProgramName, processName);
 strcpy(out.lProgramName, myName);
@@ -881,7 +881,7 @@ PURPOSE:	Detach shared memory used for a message passing
 
 RETURNS:	success: 0
 			failure: -1
-**********************************************************************/	
+**********************************************************************/
 
 int _simpl_detachShmem()
 {
@@ -918,7 +918,7 @@ PURPOSE:	Detach and delete shared memory used for a message passing
 
 RETURNS:	success: 0
 			failure: -1
-**********************************************************************/	
+**********************************************************************/
 
 int _simpl_deleteShmem()
 {
@@ -938,7 +938,7 @@ if (shmdt(_simpl_myStuff.shmPtr) == -1)
 	}
 
 #ifndef _EXPMTL
-// flag shmem removal, removal fails if anyone is still attached 
+// flag shmem removal, removal fails if anyone is still attached
 if (shmctl(_simpl_myStuff.shmid, IPC_RMID, NULL) == -1)
 	{
 	_simpl_setErrorCode(CANNOT_DELETE_SHMEM);
@@ -1162,7 +1162,7 @@ FUNCTION:	int _simpl_getFifoName(const char *, char *)
 
 PURPOSE:	Find a receive fifo based on the simpl name.
 
-RETURNS:	success: 0 
+RETURNS:	success: 0
 			failure: -1
 ***********************************************************************/
 
@@ -1210,7 +1210,7 @@ FUNCTION:	int _simpl_FifoRename(const char *, pid_t)
 
 PURPOSE:	rename a fifo based on the simpl name.
 
-RETURNS:	success: 0 
+RETURNS:	success: 0
 			failure: -1
 ***********************************************************************/
 
@@ -1246,7 +1246,7 @@ PURPOSE:	read any pending bytes from specified fifo fd.
 
 RETURNS:	success: sizeof(FIFO_MSG)
 			failure: != sizeof(FIFO_MSG)
-**********************************************************************/	
+**********************************************************************/
 
 int _simpl_readFifoMsg(int fd, char *buf)
 {
@@ -1357,7 +1357,7 @@ int fd;
 char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
 FCMSG_REC *msgPtr;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // char *_simpl_fifoPath is global
 
 // don't need to worry about this guy anymore
@@ -1396,7 +1396,7 @@ if (write(fd, fifoBuf, sizeof(FIFO_MSG)) != sizeof(FIFO_MSG))
 	return(-1);
 	}
 
-// close the fifo 
+// close the fifo
 close(fd);
 
 // if we got this far the message has been sent
@@ -1408,8 +1408,8 @@ FUNCTION:	void _simpl_setErrorCode(int)
 
 PURPOSE:	set the _simpl_error global variable
 
-RETURNS:	nothing	
-**********************************************************************/	
+RETURNS:	nothing
+**********************************************************************/
 
 inline void _simpl_setErrorCode(int errorNumber)
 {
@@ -1424,8 +1424,8 @@ FUNCTION:	void _simpl_log(char *, ...)
 PURPOSE:	simpl errors/messages are recorded to file that is not
 			allowed to grow past a certain limit.
 
-RETURNS:	nothing	
-**********************************************************************/	
+RETURNS:	nothing
+**********************************************************************/
 
 void _simpl_log(char *format, ...)
 {
@@ -1446,7 +1446,7 @@ year = tmPtr->tm_year;
 if (year > 99)
 	{
 	year -= 100;
-	} 
+	}
 
 // compose message string
 memset(str, 0, 150);
@@ -1498,7 +1498,7 @@ PURPOSE:	an indicator that the calling process is indeed registered
 
 RETURNS:	success: 0
 			failure: -1
-**********************************************************************/	
+**********************************************************************/
 
 inline int _simpl_check()
 {
@@ -1510,7 +1510,7 @@ return(_simpl_myStuff.pid == -1 ? -1 : 0);
 /**********************************************************************
 FUNCTION:	_simpl_initSignalHandling(void)
 
-PURPOSE:	Set up any necessary signal handling. 
+PURPOSE:	Set up any necessary signal handling.
 
 RETURNS:	nothing
 ***********************************************************************/
@@ -1609,7 +1609,7 @@ char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
 unsigned bufSize;
 FCMSG_REC *msgPtr;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // char *_simpl_fifoPath is global
 
 // is this program name attached?
@@ -1632,8 +1632,8 @@ if (_simpl_myStuff.shmSize < bufSize)
 //		_simpl_deleteShmem();
 		_simpl_detachShmem();
 		}
-	
-	// create new shmem	
+
+	// create new shmem
 	if (_simpl_createShmem(bufSize) == -1)
 		{
 		return(-1);
@@ -1663,7 +1663,7 @@ if (_simpl_myStuff.y_fd == -1)
 		_simpl_setErrorCode(FIFO_OPEN_FAILURE);
 		_simpl_log("%s: unable to open reply fifo %s-%s\n", fn, fifoName, strerror(errno));
 		return(-1);
-		} 
+		}
 	}
 #endif
 
@@ -1696,7 +1696,7 @@ const static char *fn = "_simpl_readReply";
 char fifoBuf[sizeof(FIFO_MSG)];
 FIFO_MSG *fifoMsg = (FIFO_MSG *)fifoBuf;
 FCMSG_REC *msgPtr;
-// WHO_AM_I _simpl_myStuff is global 
+// WHO_AM_I _simpl_myStuff is global
 // char *_simpl_fifoPath is global
 
 msgPtr = (FCMSG_REC *)_simpl_myStuff.shmPtr;
@@ -1724,7 +1724,7 @@ if (inBuffer != NULL)
 	{
 	// copy the reply message
 	if (msgPtr->nbytes)
-		{ 
+		{
 		memcpy(inBuffer, (void *)&msgPtr->data, msgPtr->nbytes);
 		}
 	}
@@ -1749,7 +1749,7 @@ sprintf(shmName,"/shm%08X", rc);
 //printf("px_shmget: shmName=%s mysize=%d\n",shmName, mysize);
 
 shmfd = shm_open(shmName, O_CREAT | O_EXCL | O_RDWR, S_IRWXU | S_IRWXG);
-if (shmfd < 0) 
+if (shmfd < 0)
 	{
 //printf("px_shmget: error on shm_open\n");
 	return(-1);
@@ -1779,7 +1779,7 @@ sprintf(shmName,"/shm%08X", shmid);
 //printf("px_shmat: shmName=%s\n",shmName);
 
 shmfd = shm_open(shmName, O_RDWR, S_IRWXU | S_IRWXG);
-if (shmfd < 0) 
+if (shmfd < 0)
 	{
 //printf("px_shmat: got error on shm_open\n");
 	return(NULL);

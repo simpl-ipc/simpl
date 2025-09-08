@@ -6,15 +6,15 @@ This module can be used to stimulate the fclogger.  It is written
 using the simplipc library calls.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2001,2007 FCSoftware Inc. 
+    Copyright (C) 2001,2007 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
-    If you discover a bug or add an enhancement contact us on the 
+    If you discover a bug or add an enhancement contact us on the
     SIMPL project mailing list.
 
 -----------------------------------------------------------------------
@@ -94,7 +94,7 @@ fcLogx(__FILE__, fn
 	, nbytes
 	, loggerName
 	);
-	
+
 	sleep(10);
 	}
 
@@ -130,21 +130,21 @@ for(i=1; i<=argc; ++i)
                         {
 			case 'l':
                                 for(;*p != 0; p++);
-				
+
 				sprintf(loggerName,"%s",++p);
 				logger_ID = is_logger_upx(loggerName);
 				break;
 
 			case 'm':
                                 for(;*p != 0; p++);
-				
+
 				sprintf(message,"%.79s",++p);
 				nbytes=strlen(message);
 				break;
 
                         case 'n':
                                 for(;*p != 0; p++);
-				
+
 				name_attach(++p, NULL);
                                 break;
 

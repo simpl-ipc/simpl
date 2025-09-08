@@ -1,18 +1,18 @@
 ###############################################
 #
-# Makefile - for benchmarks 
+# Makefile - for benchmarks
 #
 #-----------------------------------------------------------------------
-#    Copyright (C) 1998, 2002, 2008 FCSoftware Inc. 
+#    Copyright (C) 1998, 2002, 2008 FCSoftware Inc.
 #
 #    This software is in the public domain.
 #    Permission to use, copy, modify, and distribute this software and its
-#    documentation for any purpose and without fee is hereby granted, 
+#    documentation for any purpose and without fee is hereby granted,
 #    without any conditions or restrictions.
 #    This software is provided "as is" without express or implied warranty.
 #
 #    If you discover a bug or add an enhancement contact us on the
-#    SIMPL project mailing list. 
+#    SIMPL project mailing list.
 #
 #-----------------------------------------------------------------------
 #
@@ -158,10 +158,10 @@ description:
 #========================
 $(BIN_DIR)/sender:	$(SENDER_OBJ)
 	$(CC) -o $(BIN_DIR)/sender $(SENDER_OBJ) $(LDFLAGS)
-	
+
 $(BIN_DIR)/receiver:	$(RECEIVER_OBJ)
 	$(CC) -o $(BIN_DIR)/receiver $(RECEIVER_OBJ) $(LDFLAGS)
-	
+
 #===================
 # Compiles
 #===================
@@ -172,7 +172,7 @@ $(OBJ_DIR)/sender.o: sender.c
 	$(CC) -c $(ARCHFLAGS) $(CFLAGS) -o $(OBJ_DIR)/sender.o sender.c
 
 #===================
-#  clobber 
+#  clobber
 #===================
 clobber: clean
 clean:
@@ -182,7 +182,7 @@ clean:
 	@echo benchmark clean
 
 #===================
-#  install 
+#  install
 #===================
 install:\
      title \

@@ -1,23 +1,23 @@
 /*************************************************************
 	FILE:		tclSurroSock.c
 
-	DESCRIPTION:	
+	DESCRIPTION:
 	This file contains the socket server code Tcl/Tk
 	surrogate process.
 
 	AUTHOR:			R.D. Findlay
 
 -----------------------------------------------------------------------
-    Copyright (C) 1999, 2002, 2006 FCSoftware Inc. 
+    Copyright (C) 1999, 2002, 2006 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
     If you discover a bug or add an enhancement contact us on the
-    SIMPL project mailing list. 
+    SIMPL project mailing list.
 
 -----------------------------------------------------------------------
 	Revision history:
@@ -166,7 +166,7 @@ switch(inMsg->token)
 // no point in continuing here because my name attach failed
 // even fcLogx will now fail because they wrap SIMPL operations
 // such as Send()
-				x_it=1;  
+				x_it=1;
 				return(x_it);
 				}
 
@@ -183,7 +183,7 @@ switch(inMsg->token)
 			FD_ZERO(&watchset);
 			FD_SET(my_fds[0], &watchset);
 			FD_SET(my_fds[1], &watchset);
-			maxfd = my_fds[0] > my_fds[1] ? my_fds[0]: my_fds[1]; 
+			maxfd = my_fds[0] > my_fds[1] ? my_fds[0]: my_fds[1];
 			} // if name is supplied
 
 		replyMsg=(SG_NAME_ATTACH_MSG *)workArea;
@@ -225,7 +225,7 @@ switch(inMsg->token)
 		SG_NAME_LOCATE_MSG *replyMsg;
 		int who;
 		int rc=-1;
-	
+
 		myMsg = (SG_NAME_LOCATE_MSG *)&inMsg->dataMark;
 
 		who=name_locate(myMsg->thisName);
@@ -253,7 +253,7 @@ switch(inMsg->token)
 		int msglen;
 		int rbytes;
 		UINT16 myToken;
-	
+
 		myMsg = (SG_SEND_MSG *)inArea;
 		msglen = myMsg->nbytes-sizeof(int);
 		myToken = myMsg->token;
@@ -283,7 +283,7 @@ switch(inMsg->token)
 		{
 		SG_REPLY_MSG *myMsg;
 		int msglen;
-	
+
 		myMsg = (SG_REPLY_MSG *)inArea;
 		msglen = myMsg->nbytes-sizeof(int);
 
@@ -305,7 +305,7 @@ switch(inMsg->token)
 				);
 			}
 		else
-			{	
+			{
 			Reply(myblockedSenders[myMsg->toWhom], &myMsg->dataMark, msglen);
 #if 0
 			loadReply(myMsg->toWhom, &myMsg->dataMark, msglen);
@@ -320,7 +320,7 @@ switch(inMsg->token)
 		{
 		SG_IS_LOGGER_UP_MSG *myMsg;
 		SG_IS_LOGGER_UP_MSG *replyMsg;
-	
+
 		myMsg = (SG_IS_LOGGER_UP_MSG *)&inMsg->dataMark;
 
 		fcLogx(__FILE__, fn,
@@ -339,7 +339,7 @@ switch(inMsg->token)
 	case SG_LOGIT:
 		{
 		SG_LOGIT_MSG *myMsg;
-	
+
 		myMsg = (SG_LOGIT_MSG *)&inMsg->dataMark;
 
 #if 0

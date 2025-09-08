@@ -8,11 +8,11 @@ DESCRIPTION:	This file contains necessary headers, definitions
 				and global variables for the tcp surrogate files.
 
 -----------------------------------------------------------------------
-    Copyright (C) 2005 FCSoftware Inc. 
+    Copyright (C) 2005 FCSoftware Inc.
 
     This software is in the public domain.
     Permission to use, copy, modify, and distribute this software and its
-    documentation for any purpose and without fee is hereby granted, 
+    documentation for any purpose and without fee is hereby granted,
     without any conditions or restrictions.
     This software is provided "as is" without express or implied warranty.
 
@@ -62,7 +62,7 @@ initial
 // definitions
 #define INT_WIDTH_32				4 // the size of a 32-bit int
 #define INT_WIDTH_64				8 // the size of a 64-bit int
-#define	NAMELOC_TIMEOUT				60 // (sec) fail time on nameloc request 
+#define	NAMELOC_TIMEOUT				60 // (sec) fail time on nameloc request
 #define	KEEP_ALIVE_TIMEOUT			10 // (sec) 0 implies no keep alive
 #define	KEEP_ALIVE_FAIL_LIMIT		3 // allowed keep alive failures
 #define	KEEP_ALIVE_RESPONSE_TIMEOUT	3 // acknowledge wait time (sec)
