@@ -1411,7 +1411,7 @@ PURPOSE:	set the _simpl_error global variable
 RETURNS:	nothing
 **********************************************************************/
 
-inline void _simpl_setErrorCode(int errorNumber)
+void _simpl_setErrorCode(int errorNumber)
 {
 // int _simpl_errno is global
 
@@ -1500,7 +1500,7 @@ RETURNS:	success: 0
 			failure: -1
 **********************************************************************/
 
-inline int _simpl_check()
+int _simpl_check()
 {
 // WHO_AM_I _simpl_myStuff is global
 
