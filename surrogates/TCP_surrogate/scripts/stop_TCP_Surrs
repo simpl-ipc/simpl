@@ -1,0 +1,17 @@
+#*******************************************************************************
+# FILE:			stop_TCP_Surrs
+#
+# DATE:			January 23, 2025
+#
+# DESCRIPTION:  This shell script performs the following:
+#				1. kills the current (if any) tcp/ip surrogates.
+#
+# AUTHOR:		John Collins
+#*******************************************************************************
+
+#!/bin/sh
+
+PATH=$PATH:/sbin
+
+echo killing TCP_surrogate
+killall TCP_surrogate 1> /dev/null 2>&1

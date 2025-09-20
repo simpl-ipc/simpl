@@ -1,0 +1,85 @@
+********************************************************************************
+FILE:			explanation-surrogateTCP.txt
+
+DATE:			January 23, 2025
+
+DESCRIPTION:	Description of how to use the SIM surrogate that enables remote
+				message passing based on TCP/IP.
+
+Author:			John Collins
+********************************************************************************
+
+Introduction
+============
+
+In order for a sending program to pass a message to a remotely based receiving program some form of networking bridge is necessary. In principle, this bridge could be anything. In this particular case we are going to discuss this bridge by way of using a TCP/IP based solution.
+
+Background
+==========
+
+Take a typical sender program. This is a program which desires to send a message of some form or other to another program which will receive it, process it and then reply back accordingly. We will refer to these two programs as sender and receiver respectively. In order to accomplish this messaging the sender merely has to make a Locate() call. This call is discussed in the /.../sim-lib/sim-explanation.txt file. As an example consider the following C code snippet:
+
+// sender.c - the sender program
+
+int ret;
+	.
+	.
+	.
+
+ret = Locate(hostName, receiverName, messageSize, protocol);
+	.
+	.
+	.
+
+Let's examine the Locate() call. The return value ret will be >=3 or -1 indicating either success or failure. The success case is an integer representing a file descriptor to the receiver's receive fifo. In the case of a failure, the nature of the error can be found in the text file /var/tmp/sry.log.
+
+In the case of success, the Locate() call has managed to cause the building of a software bridge from the local host to the remote host called "hostName" and its resident receiver program with SIM name "receiverName".
+
+This software bridge gives the appearance to the local sender that it is sending  a message to a local receiver. In fact, it is. The remote receiver is functionally replaced by another program which we call a surrogate receiver. So the local sender sends his message to the local surrogate receiver. On the remote host, the program receiver thinks that it is receiving messages from a sender based on the same host. Again, it does. This is because a surrogate sender has been started up there and it's this surrogate sender that actually sends the message to the receiver.
+
+The local surrogate receiver uses TCP/IP to send messages to the
+surrogate sender on the remote host.
+
+So, the total picture looks like this:
+1. The local sender sends his message to the surrogate receiver.
+2. The surrogate receiver TCP/IP writes the message to the remote surrogate sender.
+3. The remote surrogate sender sends the message to the receiver.
+4. The receiver processes the message and replies back to the surrogate sender.
+5. The surrogate sender then TCP/IP writes back to the local surrogate receiver.
+6. The surrogate receiver then replies back to the local sender.
+
+Usage
+=====
+
+It is usually convenient to start the TCP/IP surrogates from a script at start up.
+
+/.../bin/TCP_surrogate &
+
+Command Line Arguments
+======================
+
+TCP_surrogate can take a number of arguments, they are:
+
+-c sender/receiver checking time in seconds >= 10; default 60 seconds.
+-f number of acceptable keep alive failures; default 3.
+-k keep alive flag; default is on.
+-m maximum size for a message in bytes; default 8192 bytes.
+-n maximum time for a remote name locate call in seconds; default 60 seconds.
+-p communication port number; default 50001.
+
+Example start up:
+
+TCP_surrogate -c10 -k -m1024 -n10 -p8000 &
+
+In this case, the time between checks for senders and receivers has been changed to 10 seconds, the keep alive mechanism has been turned off, the maximum allowable message size is 1 kbyte, a remote name locate may take up to 10 seconds before it fails, the TCP/IP port number has been set to 8000.
+
+***********************************************************************
+
+Homogeneous vs. Heterogeneous Networks
+======================================
+
+The TCP_surrogate code is written in such a way that the mechanism for message passing is char-based. Binary is marginally faster but is not functional in heterogeneous networks where different hosts store their binary data in different formats (big endian/little endian for example).
+
+This will ensure that all SIM remote communications will be char-based and hence byte-ordering independent.
+
+Be aware that if you are sending data between hosts on a heterogenoeous network, these messages, if binary, will also be turned around in a binary sense. You will have to change the data within the binary message to a char-based message. The library used within SIMPL is available for use and the source code can be found in /.../misc/binstr.c.

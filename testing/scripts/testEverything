@@ -1,0 +1,13 @@
+#! /bin/sh
+
+echo
+echo "***********************************************************"
+echo "CPP receiver/Python binary long message construction sender"
+echo
+../python/bin/receiver &
+sleep 1
+python3 ../python/Py/senderBin_L.py
+killall -q receiver 1>/dev/null 2>&1
+echo "***********************************************************"
+echo
+sleep 2

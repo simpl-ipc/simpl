@@ -1,0 +1,246 @@
+********************************************************************************
+FILE:			C-local-explanation.txt
+
+DATE:			January 24, 2025
+
+DESCRIPTION:	A short description of the SIM C test programs.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+The following C test programs are responsible for checking that various aspects
+of the SIM library function correctly. They also provide simple algorithmic
+examples which show how these various aspects of SIM can and should be used.
+
+*** Note: the C/local test programs are the most fundamental of all the test
+programs. As such, they are the most important for testing various aspects of
+SIM and are the first priority. Running the other test programs is important
+but the C/local should be first and foremost.
+
+As these programs can be called via the command line, the command line prompt will be designated as >. As well, most of them are automated when working together by a number of python scripts found in the ./scripts directory.
+
+The following programs are to be found in the ./bin directory.
+
+nameAttach
+==========
+
+This program attempts to enable a SIM receiver. This is done via the C function openSRY().  Whatever name is chosen to represent this SIM receiver program will be seen in the /var/tmp directory by reason of the receiver's trigger fifos and/or by running the utility /.../bin/simShow program.
+
+The program can be run as follows:
+
+>nameAttach receiverName
+
+In this way a number of tests may be run:
+
+1. >nameAttach
+without any command line arg reports that a name must be supplied.
+
+2. >nameAttach receiverNamereceiverNamereceiverName
+reports that the name is too long. The current settings are: 0 < name length <=
+50 characters.
+
+3. >nameAttach receiverName
+followed by "nameAttach receiverName" again will check that a name may be used
+only once.
+
+4. >nameAttach receiverName
+left to its own devices will eventually time out after 60s and run closeSRY().
+Following this, listing the contents of /var/tmp should show that the receiver has removed its trigger fifos. As well, running /.../bin/simShow should come up blank.
+
+* Another valuable test is to cntl-C the nameAttach program. This generates a
+SIGTERM which should be caught by nameAttach and should clean up the receiver
+trigger fifos. This tests the default exit function in the SIM library. Recall that there are unblockable signals such as SIGKILL and SIGSTOP.
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM for a receiver
+2. closeSRY()	// clean up SIM
+
+nameLocate
+==========
+
+This program tries to find a receiver by name.
+
+For example:
+1. name attach a process called "RECEIVER": >nameAttach RECEIVER
+2. do a name locate on RECEIVER: >nameLocate SENDER RECEIVER
+
+* A useful check is to run nameLocate without running nameAttach; it should
+report a failure because all receivers must be SIM name attached.
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM for a pure sender
+2. Locate()		// local receiver locate
+3. closeSRY()	// clean up SIM
+
+poller
+======
+
+This program tests the poll() capability. It is essentially a receiver with a
+call to poll() before the Receive(). It works in conjunction with sender and trigger.
+
+To run this test run ">poller R1" in one terminal window where R1 is the
+receiver name. Run ">sender S1 R1 1" in another terminal window.
+
+Another test is to run several poller/sender pairs such as:
+poller R1/sender S1 R1 1, poller R2/sender S2 R2 1, ... in various terminal windows.
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM
+2. rfd()		// module connection fd
+3. Receive()	// receive
+4. Reply()		// reply
+5. closeSRY()	// clean up SIM
+
+receiver
+========
+
+This program name attaches as some name entered on the command line. For
+example, "receiver RECEIVER". The name can actually be any string up to 50
+characters long. It is able to receive messages of up to 1024 integers which is
+4KB on a 64-bit machine. It can also receive a proxy which it prints out. It
+replies the 1024 integers back to the sender in the reverse order. It does this
+within an infinite loop which is typical of a receive-based program. It does
+not print out the messages because of the sizes involved, you are of course free
+to do so if you wish.
+
+C SIM items tested are:
+1. openSRY()		// initialize SIM
+2. Receive()		// receive
+3. returnProxy()	// proxy
+4. Reply()			// reply
+5. closeSRY()		// clean up SIM
+6. chkSender()		// check up on sender status
+7. maxRplySize()	// check sender's msg memory
+8. ReplyError()		// error reply to sender
+
+Note that the local receiver has a sleep delay before replying so that it may
+seem very slow. The delay is needed so that you may use other tools to check on
+the SIM status such as trigger fifos.
+
+recrelay
+========
+
+This program works in conjuction with receiver and sender. In a messaging sense it sits between the sender and receiver. It receives a message from sender and then relays the message receiver. It is best to run all 3 programs on separate consoles. For example:
+
+console 1> receiver RECEIVER
+console 2> recrelay RECRELAY RECEIVER
+console 3> sender SENDER RECRELAY 10
+
+where sender will send 10 messages to recrelay who then relays the message to receiver who replies the message back to sender.
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM
+2. Receive()	// receive
+3. Relay()		// relay
+5. closeSRY()	// clean up SIM
+
+selector
+========
+
+This program test the select() call. It is similar to poller in that the
+select() call precedes the Receive() call. It works in conjunction with sender and trigger.
+
+>selector REC
+
+in one terminal window and,
+
+>sender SENDER REC 1
+
+in another.
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM
+2. rfd()		// module connection fd
+3. Receive()	// receive
+4. Reply()		// reply
+5. closeSRY()	// clean up SIM
+
+sender
+======
+
+This program is a complementary program to receiver. It sends integers valued
+from 0-1023 to the receiver. It sends this message the number of times stated
+on the command line and prints the number of messages sent with each sending.
+
+>sender SENDER REC 5
+
+will try to send 5 messages to the receiver program name attached as REC.
+
+C SIM items tested are:
+1. openSRY()		// initialize SIM
+2. Locate()			// local receiver locate
+3. Send()			// Send()
+4. closeSRY()		// clean up SIM
+5. chkReceiver()	// check on receiver's status
+6. maxRecvSize()	// check receiver's msg buffer size
+
+senrec
+======
+
+This program is a sort of "middleman". It works in conjunction with a sender
+and receiver as follows.
+
+					sender <---> senrec <---> receiver
+
+If you've guessed that sender is a pure sender (only sends messages), receiver
+is pure receiver (only receives messages), then senrec is a receiver and a
+sender combined. It receives from sender, then sends to receiver, gets a reply
+from receiver and then replies back to sender.
+
+To run this test you must start the programs in the following order:
+1. >receiver REC,
+2. >senrec SENREC REC,
+3. >sender SENDER SENREC 42.
+
+sender will try to send 42 messages to senrec which in turn forwards them on to
+receiver which will then reply back to senrec each time, senrec will then also
+reply back sender in turn.
+
+The reason for the starting order is because receiver must name attach so that
+senrec can name locate it. senrec must also name attach so the sender can name
+locate it. sender simply sends some messages. To quit senrec and receiver,
+simply hit <cntl>-C (break).
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM
+2. Locate()		// local receiver locate
+3. Receive()	// Receive()
+4. Send()		// Send()
+5. Reply()		// Reply()
+6. closeSRY()	// clean up SIM bits
+
+srylog
+======
+
+This program simply writes a message to the sry log file. It tests the sryLog()
+function used within the SIM library. Note that the sry log is available as part
+of the C and C++ library.
+
+C SIM items tested are:
+1. sryLog()
+
+trigger
+=======
+
+This program sends a proxy valued 1 minus the limit placed on the command line
+to receiver. It checks that the proxy is handled properly by the required
+functionality. receiver prints out the value of the proxy received. Recall that
+a proxy is a "one off" in that the receiver receives it but does not reply to it
+because Trigger() is unblocked, unlike Send(). ie. It behaves like the top half
+of an Send().
+
+Triggering has another use, it can be used to simply "kick" a receiver. In this
+case, the receiver may not actually interested in the value of the proxy, just
+the kick to make it perform some predefined action. That said however, if you
+would like to send a number of different 'kicks' to the receiver, the proxy
+value can be of service.
+
+>trigger TRIGGER REC 5
+
+will try to send 5 proxies valued 1-5 to the receiver name attached as REC.
+
+C SIM items tested are:
+1. openSRY()	// initialize SIM
+2. Locate()		// local receiver locate
+3. Trigger()	// Trigger()
+4. closeSRY()	// clean up SIM

@@ -1,73 +1,64 @@
 #*******************************************************************************
+#
 # FILE:		Makefile
 #
-# DATE:		February 4, 2025
+# DATE:		July 2024
 #
-# DESCRIPTION:	This make file produces a SIMPL C++ benchmarking sender and
-#		receiver.
+# DESCRIPTION:	This make file produces the TCP/IP rec/sen programs.
 #
 # AUTHOR:	John Collins
+#
 #*******************************************************************************
 
 #====================================================================
 # definitions
 #====================================================================
 OBJ_DIR = ./obj
-LIB_DIR_S = ../../static-lib
-LIB_DIR_D = ../../dynamic-lib
-BIN_DIR = ../bin
-INC_DIR = ../../include
+BIN_DIR = ./bin
 
-# default for C++ standard library version to be used if not on comannd line
+REC_OBJ = $(OBJ_DIR)/recTCP.o
+SEN_OBJ = $(OBJ_DIR)/senTCP.o
+
+# default for C++ standard library version to be used if not on command line
 ifndef STL
-STL = 20
+	STL = 20
 endif
 
 CXX = g++
-CXXFLAGS = -c -std=gnu++$(STL) -Ofast -Wall -I$(INC_DIR)
-LDFLAGS = -lsimcpp
-
-# static or dynamic library link
-ifeq ($(DYNAMIC), 1)
-	# dynamic
-	LDFLAGS += -L$(LIB_DIR_D) -Wl,-R$(LIB_DIR_D)
-else
-	# static
-	LDFLAGS += -L$(LIB_DIR_S)
-endif
+CXXFLAGS = -c -std=gnu++$(STL) -O3 -Wall
 
 #=====================================================================
-# command line hooks
+# Default target
 #=====================================================================
 all: \
-	$(OBJ_DIR)/receiver.o \
-	$(OBJ_DIR)/sender.o \
-	$(BIN_DIR)/receiver \
-	$(BIN_DIR)/sender
-	@echo SIM benchmark all
-
-#=====================================================================
-# compiling
-#=====================================================================
-$(OBJ_DIR)/sender.o: sender.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
-
-$(OBJ_DIR)/receiver.o: receiver.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+	$(BIN_DIR)/recTCP \
+	$(BIN_DIR)/senTCP
+	@echo socket_sim all
 
 #=====================================================================
 # linking
 #=====================================================================
-$(BIN_DIR)/sender: $(OBJ_DIR)/sender.o
-	$(CXX) -o $@ $? $(LDFLAGS)
+$(BIN_DIR)/recTCP: $(REC_OBJ)
+	$(CXX) -o $@ $(REC_OBJ)
 
-$(BIN_DIR)/receiver: $(OBJ_DIR)/receiver.o
-	$(CXX) -o $@ $? $(LDFLAGS)
+$(BIN_DIR)/senTCP: $(SEN_OBJ)
+	$(CXX) -o $@ $(SEN_OBJ)
+	
+#=====================================================================
+# compiling
+#=====================================================================
+$(OBJ_DIR)/recTCP.o: recTCP.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+$(OBJ_DIR)/senTCP.o: senTCP.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
 #=====================================================================
 #  cleanup
 #=====================================================================
 clean:
 	@-rm -f $(OBJ_DIR)/*.o
-	@-rm -f $(BIN_DIR)/*
-	@echo SIM benchmark clean
+	@-rm -f $(BIN_DIR)/recTCP
+	@-rm -f $(BIN_DIR)/senTCP	
+	@echo socket-sim clean
+

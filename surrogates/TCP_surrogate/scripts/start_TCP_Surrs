@@ -1,0 +1,21 @@
+#*******************************************************************************
+# FILE:			start_TCP_Surrs
+#
+# DATE:			January 23, 2025
+#
+# DESCRIPTION:  This shell script performs the following:
+#			    1. kills the current (if any) tcp/ip surrogates, and
+#				2. starts new surrogate parent processes.
+#
+# AUTHOR:		John Collins
+#*******************************************************************************
+
+#!/bin/sh
+
+PATH=$PATH:/sbin
+
+echo killing TCP_surrogate
+killall TCP_surrogate 1> /dev/null 2>&1
+sleep 1
+echo starting TCP_surrogate; sender/receiver check time 10s, turn off keep alive
+../bin/TCP_surrogate -c 10 -k &

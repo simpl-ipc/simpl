@@ -1,0 +1,19 @@
+#*******************************************************************************
+# FILE:			stop_RS232_Surrs
+#
+# DATE:			Febrauary 6, 2025
+#
+# DESCRIPTION:  This shell script performs the following:
+#				1. kills the current (if any) rs232 surrogates.
+#
+# AUTHOR:		John Collins
+#*******************************************************************************
+
+#!/bin/sh
+
+PATH=$PATH:/sbin
+
+echo killing RS232_surrogate
+killall RS232_surrogate 1> /dev/null 2>&1
+echo killing RS232_rw
+killall RS232_rw 1> /dev/null 2>&1

@@ -1,0 +1,35 @@
+********************************************************************************
+FILE:			utilities-explanation.txt
+
+DATE:			February 4, 2025
+
+DESCRIPTION:	A short discussion of the SIMPL utility programs.
+
+AUTHOR:         John Collins
+********************************************************************************
+
+General
+=======
+
+So far, there only 3 utility programs; namely simShow, simSlay and simClean. They operate outside of SIMPL, ie. they don't use SIMPL functionalty and compile without the SIMPL library.
+
+simShow
+=======
+
+simShow is a C++ program that runs from the command line and prints to screen a list of all the SIM-enabled programs thought to be currently running. It can be helpful when trying to find out whether a program is SIMPL-enabled or not. Also, in the case of orphaned programs a listing can be helpful if a manual cleanup is necessary. SIMPL tries to keep track of all SIMPL-enabled programs for cleanup purposes but occasionally and under odd circumstances a non-existing program may be thought to be still running.
+
+It takes no command line arguments.
+
+simSlay
+=======
+
+simSlay is a C++ program that kills a SIMPL-enabled program based on its SIMPL name. SIMPL names are unique and there can only be one to a customer.
+
+It takes the SIMPL name of the program to be killed and can be better than directly killing a SIMPL-enabled program because there is cleanup if necessary.
+
+simClean
+========
+
+simClean is a C++ program that runs from the command line and removes any SIMPL message fifos from the SIM_FIFO_PATH (/var/tmp by default).
+
+It takes no command line arguments.

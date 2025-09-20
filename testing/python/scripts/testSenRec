@@ -1,0 +1,9 @@
+#! /bin/sh
+
+python3 ../Py/receiver.py &
+sleep 1
+python3 ../Py/senrec.py &
+sleep 1
+python3 ../Py/sender.py
+killall -q python3 ../Py/senrec.py 1>/dev/null 2>&1
+killall -q python3 ../Py/receiver.py 1>/dev/null 2>&1

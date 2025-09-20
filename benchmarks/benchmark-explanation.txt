@@ -1,0 +1,28 @@
+********************************************************************************
+FILE:			benchmark-explanation.txt
+
+DATE:			January 24, 2025
+
+DESCRIPTION:	A short discussion of the SIMPL-4.0.0 benchmark programs.
+
+AUTHOR:         John Collins
+********************************************************************************
+
+General
+=======
+
+The benchmark program's aim is to provide a scale for the time taken to send a 1024 byte (1 kbyte) message to a receiver and have the receiver reply a 1 kbyte
+message back to the sender. The sent and replied messages are of random content because we are not interested in content, just speed of execution.
+
+Programs
+========
+
+The receiver is a C++ program that receives a 1024 byte message and replies it back again in an endless loop.
+
+The sender is a C++ program that sends a random 1024 byte (whatever the default contents of a 1024 character buffer) message to the receiver and receives the same in the form of a reply. For the purposes of these programs the message content is irrelevant.
+
+The message is sent/received/replied 1,000,000 times. The system time is noted prior to the first round and taken again again after the last. The time taken per kbyte per pass is calculated and displayed to the screen after the sender program has finished.
+
+The receiver has to be terminated manually.
+
+The program compiler flags are set for speed of execution.

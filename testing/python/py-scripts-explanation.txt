@@ -1,0 +1,97 @@
+********************************************************************************
+FILE:			py-scripts-explanation.txt
+
+DATE:			February 4, 2025
+
+DESCRIPTION:	A short description of the SIM python test scripts.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+This text file contains descriptions of the python scripts used for testing. They are listed in alphabetical order. All scripts are Python 3 compatible only.
+
+packBinMsg.py
+=============
+
+This program tests the packing/unpacking methods attached to a class instance of sim. The packing mode is binary. Both the shorter and longer versions are exercised with identical messages to serve as a comparison of the two approaches. What is meant by the long and short versions is that in the long version, each message item is packed/unpacked separately. In the case of the short version each item is packed/unpacked on the same function call. The short version can appear more cleanly if the message content is not overly large.
+
+The message memory format is binary.
+
+It is run as a single script.
+
+This script also serves as a good example of how to pack and unpack messages.
+
+packChrMsg.py
+=============
+
+Essentially the same as packBinMsg.py above but the message memory format is character-based.
+
+receiver.py
+===========
+
+This program is a python SIM receiver. It receives a binary message and deconstructs it (takes it apart and prints the contents to the screen) using the short version and then constructs the same binary message using the long version to reply back. Used with senrec.py and sender.py.
+
+receiverBin_L.py
+================
+
+This program is a python SIM receiver.It receives and replies a binary message and deconstructs the message using the long version and constructs the reply also using the long version of packing.
+
+receiverBin_S.py
+================
+
+The same as receiverBin_L.py except that it uses the short version for packing nd unpacking the message.
+
+
+receiverChr_S.py
+================
+
+Again, the same as receiverBin_S.py except that the message is packed/unpacked in the character-based format.
+
+receiverTrig.py
+===============
+
+A python SIM receiver that receives proxies only from a SIM trigger().
+
+sender.py
+=========
+
+A python SIM sender that constructs the sent message using the short method of packing and then deconstructs the reply using the short method of unpacking. Used in conjuction with senrec.py and receiver.py.
+
+senderBin_L.py
+==============
+
+Essentially the same as sender.py except that the messages are constructed and deconstructed using the long method of packing etc.
+
+senderBin_S.py
+==============
+
+The same as senderBin_L.py except that the messages are constructed and deconstructed using the short method of packing etc.
+
+senderChr_S.py
+==============
+
+The same as senderBin_S.py except that the messages are constructed and deconstructed in the character-based format.
+
+senderTrig.py
+===============
+
+A python SIM sender that sends proxies using a SIM trigger().
+
+senRec.py
+=========
+
+This is a combination sender and receiver. It is designed to receive a binary message from sender.py and use the long form to deconstruct that message. It then use the short form to construct a binary message and send it to receiver.py which then replies a binary message back to senrec.py. senerc.py now uses the short form to deconstruct the binary reply and then constructs a new binary message to reply back the original sender.
+
+              -------------->           ------------->
+    sender.py                 senrec.py                receiver.py
+              <--------------           <-------------
+
+structRec.py
+============
+
+This program receives a simple structured message from structSen.py. Rather than using the somewhat complex canned message contained within the testMsg.py module, it composes and decomposes the messages on the fly using the struct module.
+
+structSen.py
+============
+
+This program sends a simple structured message to structRec.py. Rather than using the somewhat complex canned message contained within the testMsg.py module, it composes and decomposes the messages on the fly using the struct module.

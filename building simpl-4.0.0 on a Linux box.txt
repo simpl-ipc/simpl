@@ -1,0 +1,43 @@
+Building simpl-4.0.0 on a Linux box
+===================================
+
+Installation
+------------
+
+Install the simpl-4.0.0.tar.bz2 tarball in the desired directory, say /home/development for example. Note > is the command line prompt in the following.
+
+Now you have /home/development/simpl-4.0.0.tar.bz2
+
+> cd /home/development
+
+>bunzip2 simpl-4.0.0.tar.bz2
+
+Now you should have /home/development/simpl-4.0.0.tar
+
+>tar -xvf simpl-4.0.0.tar
+
+Now you should have a directory /home/development/simpl-4.0.0
+
+>cd simpl-4.0.0
+
+You are now in the top level simpl-4.0.0 directory.
+
+>make clean
+>make all
+
+Top level Makefile will run all lower level make files and creates the simpl-4.0.0 software tree.
+
+Environment Variables
+---------------------
+
+For simpl python to work properly the PYTHONPATH environment variable must be set as follows: (using the path to simpl-4.0.0 as /home/development/ as above)
+
+export PYTHONPATH=$PYTHONPATH:/home/development/simpl-4.0.0/pymodules
+
+For simpl dynamically linked libraries in C and C++ the LD_LIBRARY_PATH environment variable must be set as follows:
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/development/simpl-4.0.0/dynamic-lib
+
+It is recommended that these environment variables be set either in the /etc/profile file or the /home/username/.profile file. The first case applies to all users and the second case to the one user alone.
+
+For more information see /.../simpl-4.0.0/sim-lib/simlib-explanation.txt.

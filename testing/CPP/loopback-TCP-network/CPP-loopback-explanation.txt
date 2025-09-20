@@ -1,0 +1,101 @@
+********************************************************************************
+FILE:			CPP-loopback-explanation.txt
+
+DATE:			January 24, 2025
+
+DESCRIPTION:	A short description of the SIM C++ test programs.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+Testing the CPP interface to the TCP_surrogate programs can be done at a simpler level w.r.t. hardware by using the loopback interface. In this way a single host computer can be used to test the C/CPP library and the TCP_surrogate interface, at least in the large.
+
+The following CPP test programs are responsible for checking that various aspects
+of the SIM library function correctly. They also provide simple algorithmic
+examples which show how these various aspects of SIM can and should be used.
+
+*** Note: the C/local test programs are the most fundamental of all the test
+programs. As such, they are the most important for testing various aspects of
+SIM and are the first priority. Running the other test programs is important
+but the C/local should be first and foremost.
+
+As these programs can be called via the command line, the command line prompt will be designated as >. As well, most of them are automated when working together by a number of python scripts found in the ./scripts directory.
+
+NOTE: The program /.../bin/TCP_surrogate is to be run prior to using the test programs.
+
+The following test programs are to be found in the ./bin directory.
+
+receiver
+========
+
+This program is largely the same as the local receiver; the difference is mainly that it works in conjunction with sender and trigger by routing messages through the TCP surrogate programs in loopback mode, ie. the receiver, sender and trigger programs all reside on the same host.
+
+The program name attaches as some name entered on the command line. For
+example, "receiver RECEIVER". The name can actually be any string up to 50
+characters long. It is able to receive messages of up to 1024 integers which is
+4KB on a 64-bit machine. It can also receive a proxy which it prints out. It
+replies the 1024 integers back to the sender in the reverse order. It does this
+within an infinite loop which is typical of a receive-based program. It does
+not print out the messages because of the sizes involved, you are of course free
+to do so if you wish.
+
+CPP SIM items tested are:
+1. SRY()		// initialize SIM
+2. Receive()	// receive
+3. Reply()		// reply
+4. ~SRY()		// clean up SIM
+
+sender
+======
+
+This program is very similar to the local sender test program. The main difference lies with the way that Locate is called, that is:
+
+			Locate("localhost", "receiverName", sizeof outMSG, SIM_TCP)
+
+The function entries "localhost" and "SIM_TCP" indicate that the message is to use the TCP surrogates.
+
+The program is a complementary program to receiver. It sends integers valued
+from 0-1023 to the receiver. It sends this message the number of times stated
+on the command line and prints the number of messages sent with each sending.
+
+>sender SENDER REC 5
+
+will try to send 5 messages to the receiver program name attached as REC.
+
+CPP SIM items tested are:
+1. SRY()		// initialize SIM
+2. Locate()		// network receiver locate
+3. Send()		// Send()
+4. ~SRY()		// clean up SIM
+
+trigger
+=======
+
+This program is very similar to the local trigger test program. The main difference lies with the way that Locate is called, that is:
+
+			Locate("localhost", "receivername", sizeof outMsg, SIM_TCP)
+
+The function entries "localhost" and "SIM_TCP" indicate that the message is to use the TCP surrogates.
+
+This program sends a proxy valued 1 minus the limit placed on the command line
+to receiver. It checks that the proxy is handled properly by the required
+functionality. receiver prints out the value of the proxy received. Recall that
+a proxy is a "one off" in that the receiver receives it but does not reply to it
+because Trigger() is unblocked, unlike Send(). ie. It behaves like the top half
+of an Send().
+
+Triggering has another use, it can be used to simply "kick" a receiver. In this
+case, the receiver may not actually interested in the value of the proxy, just
+the kick to make it perform some predefined action. That said however, if you
+would like to send a number of different 'kicks' to the receiver, the proxy
+value can be of service.
+
+>trigger TRIGGER REC 5
+
+will try to send 5 proxies valued 1-5 to the receiver name attached as REC.
+
+CPP SIM items tested are:
+1. SRY()		// initialize SIM
+2. Locate()		// network receiver locate
+3. Trigger()	// Trigger()
+4. ~SRY()		// clean up SIM

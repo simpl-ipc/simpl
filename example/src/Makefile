@@ -1,10 +1,10 @@
 #*******************************************************************************
 # FILE:		Makefile
 #
-# DATE:		February 4, 2025
+# Date:		February 4, 2025
 #
-# DESCRIPTION:	This make file produces a SIMPL C++ benchmarking sender and
-#		receiver.
+# DESCRIPTION:	This make file produces fractal programs used as an example
+#		of SIMPL C++ and Python communications.
 #
 # AUTHOR:	John Collins
 #*******************************************************************************
@@ -13,19 +13,20 @@
 # definitions
 #====================================================================
 OBJ_DIR = ./obj
-LIB_DIR_S = ../../static-lib
-LIB_DIR_D = ../../dynamic-lib
 BIN_DIR = ../bin
-INC_DIR = ../../include
+INC_DIR1 = ../include
+INC_DIR2 = ../../include
+LIB_DIR_D = ../../dynamic-lib
+LIB_DIR_S = ../../static-lib
 
-# default for C++ standard library version to be used if not on comannd line
+# default for C++ standard library version to be used if not on command line
 ifndef STL
 STL = 20
 endif
 
 CXX = g++
-CXXFLAGS = -c -std=gnu++$(STL) -Ofast -Wall -I$(INC_DIR)
-LDFLAGS = -lsimcpp
+CXXFLAGS = -c -std=gnu++$(STL) -O3 -Wall -I$(INC_DIR1) -I$(INC_DIR2)
+LDFLAGS = -lsimcpp -lX11 -lm
 
 # static or dynamic library link
 ifeq ($(DYNAMIC), 1)
@@ -37,32 +38,36 @@ else
 endif
 
 #=====================================================================
-# command line hooks
+# Default target
 #=====================================================================
 all: \
-	$(OBJ_DIR)/receiver.o \
-	$(OBJ_DIR)/sender.o \
-	$(BIN_DIR)/receiver \
+	$(BIN_DIR)/fractals \
 	$(BIN_DIR)/sender
-	@echo SIM benchmark all
+	@-cp fractals.py $(BIN_DIR)
+	@-cp sender.py $(BIN_DIR)
+	@echo fractals all
 
-#=====================================================================
-# compiling
-#=====================================================================
-$(OBJ_DIR)/sender.o: sender.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
-
-$(OBJ_DIR)/receiver.o: receiver.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+title:
+	@echo fractals starting
+	@echo $(LDFLAGS)
 
 #=====================================================================
 # linking
 #=====================================================================
+$(BIN_DIR)/fractals: $(OBJ_DIR)/fractals.o
+	$(CXX) -o $@ $? $(LDFLAGS)
+
 $(BIN_DIR)/sender: $(OBJ_DIR)/sender.o
 	$(CXX) -o $@ $? $(LDFLAGS)
 
-$(BIN_DIR)/receiver: $(OBJ_DIR)/receiver.o
-	$(CXX) -o $@ $? $(LDFLAGS)
+#=====================================================================
+# compiling
+#=====================================================================
+$(OBJ_DIR)/fractals.o: fractals.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+$(OBJ_DIR)/sender.o: sender.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
 #=====================================================================
 #  cleanup
@@ -70,4 +75,4 @@ $(BIN_DIR)/receiver: $(OBJ_DIR)/receiver.o
 clean:
 	@-rm -f $(OBJ_DIR)/*.o
 	@-rm -f $(BIN_DIR)/*
-	@echo SIM benchmark clean
+	@echo fractals clean

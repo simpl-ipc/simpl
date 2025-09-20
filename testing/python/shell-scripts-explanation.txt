@@ -1,0 +1,75 @@
+********************************************************************************
+FILE:			shell-scripts-explanation.txt
+
+DATE:			February 4, 2025
+
+DESCRIPTION:	A short description of the SIM test program scripts.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+The following is a short description of the shell scripts within this directory which are used to automate the testing of python SIM. They are found in the
+./scripts directory. Assuming that the command line prompt is '<' they are run as:
+
+>testScript
+
+testBinCP_L (Python to C++)
+===========
+
+This script runs the C++ receiver in the background and senderBin_L.py as the sender in the foreground. The messages are binary and constructed/deconstructed using the long pack/unpack methods. When finished, the C++ receiver is killed.
+
+testBinCP_S (C++ to Python)
+===========
+
+This script runs receiverBin_S.py in the background and the C++ sender as the sender in the foreground. The messages are binary and constructed/deconstructed using the short pack/unpack methods. When finished, receiverBin_S is killed.
+
+testBinPP_L (Python to Python)
+===========
+
+This script runs receiverBin_L.py in the background and the senderBin_L.py sender as the sender in the foreground. The messages are bianry and constructed/deconstructed using the long pack/unpack methods. When finished, receiverBin_L is killed.
+
+testBinPP_S (Python to Python)
+===========
+
+This script runs receiverBin_S.py in the background and the senderBin_S.py sender as the sender in the foreground. The messages are binary and constructed/deconstructed using the short pack/unpack methods. When finished, receiverBin_S is killed.
+
+testChrPP_S (Python to Python)
+===========
+
+This script runs receiverChr_S.py in the background and the senderChr_S.py sender as the sender in the foreground. The messages are character-based and constructed/deconstructed using the short pack/unpack methods. When finished, receiverChr_S is killed.
+
+testCPPonly (C++ to C++)
+===========
+
+This script uses a C++ sender and receiver. It exists to check the veracity of these two programs given their interaction with the python scripts.
+
+testPackBinMsg
+==============
+
+Tests the binary packing scheme by running packBinMsg.py. The packing/unpacking is done using both the long and short formats.
+
+testPackChrMsg
+==============
+
+Tests the character packing scheme by running packChrMsg.py. The packing/unpacking is done using both the long and short formats.
+
+testSenRec
+==========
+
+This script uses a Python sender, Python sender/receiver and a Python receiver, ie. sender.py, senrec.py and receiver.py. The long and short packing/unpacking methods are both used and the mesage format is binary.
+
+testStruct
+==========
+
+The script uses structSen.py as the sender and structRec.py as the receiver. It exercises the use of structures in the packing/unpacking of messages.
+
+testTrig
+========
+
+This script uses senderTrig.py as the sender and receiverTrig.py as the receiver for a SIM trigger.
+
+*** NOTE ***
+
+It is important that the environment variable PYTHONPATH be set to include the
+directory /.../pymodules so that the python scripts using SRY can import the
+sry module.

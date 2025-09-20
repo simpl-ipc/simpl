@@ -1,0 +1,6 @@
+#! /bin/sh
+
+../bin/receiver &
+sleep 1
+../bin/sender
+killall -q receiver 1>/dev/null 2>&1

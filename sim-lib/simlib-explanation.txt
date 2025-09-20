@@ -1,0 +1,958 @@
+*******************************************************************************
+FILE:			simlib-explanation.txt
+
+DATE:			February 3, 2025
+
+DESCRIPTION:	This file describes in some detail what, where, how and why each 					library function in the SIMPL library works.
+
+AUTHOR:			John Collins
+*******************************************************************************
+
+This doc describes what, where, how and why each library function in the SIMPL library works. They are all written in C for a number of reasons:
+
+1. They are called from C++ methods via an instance of the SRY class.
+2. They are called via the Java Native Interface (JNI) for Java.
+3. They are called via Python objects for Python.
+
+As such, each of C, C++, Python and Java support SIMPL communications and between
+each other.
+
+As well, there is only one source code library. It is saved as libsim.cpp. A symbolic link to this file is called libsim.c. The Makefile compiles libsim.c using gcc and libsim.cpp with g++. Static and dynamically linked libraries are created from both the C and C++ compilers for a total of 4 libraries. They are stored in the /.../static-lib and /.../dynamic-lib directories respectively.
+
+If dynamic libaries are desired to be used there are two ways to make this possible.
+
+1. Export the LD_LIBRARY_PATH shell variable to be /.../dynamic-lib. ie. at the command line type:
+
+>export LD_LIBRARY_PATH=/other paths/:/.../dynamic-lib
+
+and/or place this above command in the following:
+
+/user's home dir/.profile or
+/user's home dir/.bashrc or
+/etc/profile or
+/etc/bash.bashrc
+
+where we above assumed that the shell being used is bash.
+
+2. Another way is to add /.../dynamic-lib to the /etc/ld.so.conf file either by editing this text file or by:
+
+>sudo ldconfig - n /.../dynamic-lib/libsimc.so, and
+>sudo ldconfig - n /.../dynamic-lib/libsimcpp.so
+
+Finally, update the cache by calling:
+
+>ldconfig
+
+Check that the shared libraries have been added:
+
+>ldconfig -p
+
+/**********************************************************************
+FUNCTION:	int openSRY(const char *)
+
+PURPOSE:	Initializes SIMPL module
+
+RETURNS:	success: 0
+			failure: -1
+***********************************************************************/
+
+int openSRY(const char *name)
+
+1. Firstly, check to see if the process has already enabled SIMPL capability.
+Since, there is no need to invoke SIMPL more than time there is only one allowed
+to a customer. This is done by the boolean function sim_check().
+
+2. Get the process identification of this process. This is contained within a 
+global structure variable called 'simParms'; ie. SIMPL parameters. Since the
+process identification (PID) is unique on a computer host it is used as a 
+source of one-off naming of process SIMPL fifos. It is 0 by default and this is
+used for other forms of checking as well in that an application PID is never 0.
+
+3. The process must have a unique name as an identifier for SIMPL communications.
+This is derived based on the PID. Pure sender processes don't need a name and 
+are all called 'sender'.PID. Note that pure senders may also have a name but 
+that will incurr additional resources that are not needed.
+
+4. In order for senders and receivers to send/receive/reply, they coordinate 
+their actions via connected pipes or fifos. These fifos are named in 
+conjunction with the process' SIMPL name and are located in a particular
+directory which can be set via an environment variable. On Linux the default 
+fifo path is the /var/tmp directory. The SIMPL fifo path must check out as
+existing. Now, the SIMPL fifo names are the receive fifo and the reply fifo. They
+function as "triggers" for when a message is being sent/receivedreplied. The 
+receive fifo is called SIMPL_name.pid and the reply is called YSIMPL_name.pid. These are checked out as to whether they are already in use. Id so, the SIMPL name passed in is invalid.
+
+5. If everything is clear to go so far, the send and reply fifos are created 
+enabling trigger communications between receivers and senders. Note that this 
+methodology is not able to be performed on Windows OS because Windows does not 
+support named pipes or fifos as does Linux/Unix/etc.
+
+6. Next, the size of the shared memory which is used for holding message content
+is set to 0 because that means that no shared has yet been set aside for 
+messaging.
+
+7. A certain amount of signal handling is applied in the case of signals like 
+SIGTERM which will knock down the process and may leave SIMPL junk behind. A
+cleanup is initiated in the case of the various trappable signals.   
+
+8. Lastly, tables of surrogates and blocked senders are initialized for later 
+use.
+
+/**********************************************************************
+FUNCTION:	int closeSRY(void)
+
+PURPOSE:	Removes SIMPL functionality upon process exit.
+
+RETURNS:	success: 0
+			failure: -1
+***********************************************************************/
+
+int closeSRY()
+
+1. Firstly, check to see if the process is SIMPL enabled. No point in closing
+what was never opened.
+
+2. Release any reply-blocked senders. The send will fail.
+
+3. Release any surrogates. 
+
+4. Release any shared memory.
+
+5. Delete receive and reply fifos.
+
+6. Set the simParms pid to -1. Recall from above that the pid is used as a flag 
+of sorts.
+
+/**********************************************************************
+FUNCTION:	int closeSRYchild(void)
+
+PURPOSE:	Removes SIMPL functionality from a (forked) child process.
+
+RETURNS:	success: 0
+			failure: -1
+***********************************************************************/
+
+int closeSRYchild()
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Detach from the shared memory
+
+3. Detach from receive and reply fifos
+
+4. Set simParms pid to -1. Recall from above that the pid is used as a flag 
+of sorts.
+
+/**********************************************************************
+FUNCTION:	int Send(int, void *, unsigned, void *, unsigned)
+
+PURPOSE:	This function sends SIMPL messages to other processes.
+
+RETURNS:	success: number of bytes from Reply >= 0
+			failure: -1
+***********************************************************************/
+
+int Send(int fd, void *outBuffer, unsigned outBytes, void *inBuffer, unsigned 
+inBytes)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Check whether the passed in fifo file descriptor is possibly valid.  
+
+3. Calculate the largest message buffer size for this send() based on the size 
+of the message being sent and the size of the expected reply in bytes.
+
+4. Set aside as much shared memory as needed.
+
+5. Copy the message to be sent into the shared memory.
+
+6. Set the atomic fifo message for the receiver which is the sender's shared 
+memory identification; this is needed by the receiver to know which shared 
+memory to attach to in order to read the contents of the sender's message.
+
+7. Write the atomic (int) fifo message to the receiver's fifo. 
+
+8. Wait for the receiver to reply; this will be signalled on the receiver's 
+fifo. At this point the sender is reply-blocked as it waits on reading the 
+receiver's fifo.
+
+9. When the reply from the receiver is finally made, check for problems. In the 
+case of an error and/or ReplyError() has been called by the receiver a -1 will 
+be sent on the fifo.
+
+10. If all is well and there is a replied message, copy the message contents 
+into the waiting buffer.
+
+11. Return the size of the replied message in bytes.
+
+/**********************************************************************
+FUNCTION:	int Trigger(int, int)
+
+PURPOSE:	This function sends a proxy to receiver type process.
+
+RETURNS:	success: 0
+			failure: -1
+***********************************************************************/
+
+int Trigger(int fd, int proxy)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Check the value of the proxy, it must be > 0
+
+3. In order for the receiver to know this is a simply proxy, set the value to 
+its negative. If the proxy is 10 then set it equal to -10. Receiving a -ve 
+number tells the receiver that a proxy has been sent.
+ 
+4. Write the fifo msg out on the receiver's receive fifo.
+
+Note that a trigger is very fast because there is no need for shared memory.
+
+/**********************************************************************
+FUNCTION:	int PostMesssage(int, void *, unsigned, unsigned)
+
+PURPOSE:	This function sends SIMPL messages to other processes, however
+			it does not return a reply. It is essentially the "top half"
+			of a Send().
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Used for example in the RS232_Surrogate.
+***********************************************************************/
+
+int PostMessage(int fd, void *outBuffer, unsigned outBytes, unsigned inBytes)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Calculate the largest required buffer size needed.
+
+3. Create shared memory based on the above size.
+
+4. Set and copy the message into the shared memory.
+
+5, Set and write the receiver's fifo message.
+
+/**********************************************************************
+FUNCTION:	int ReadReply(void *)
+
+PURPOSE:	This function receives SIMPL reply messages from other processes.
+			It is essentially the "bottom half" of a Send(). Follows a call
+			to PostMessage().
+
+RETURNS:	success: size of replied message >=0
+			failure: -1
+
+NOTE:		Used for example in the RS232_Surrogate.
+***********************************************************************/
+
+int ReadReply(void *inBuffer)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Read Receiver's reply fifo message.
+
+3. Copy the reply message (if any) into the message buffer.
+
+/**********************************************************************
+FUNCTION:	int Receive(void **, void *, unsigned)
+
+PURPOSE:	This function receives SIMPL messages from other processes.
+
+RETURNS:	success: message size in bytes
+			failure: -1
+***********************************************************************/
+
+int Receive(void **sender, void *inBuffer, unsigned maxBytes)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Reset the global sender's shmid value to -1 in case Relay() is used.
+
+3. Wait on the receive fifo for message/trigger initiation
+
+4. Set the global sender's shmid value to fifoMsg->shmid for Relay()
+
+5. Check for a proxy and return intermediate value.
+
+6. If not a proxy, then a message. Attach sender's shmem to the calling 
+process.
+
+7. If there is an adequate memory buffer for the incoming message, copy
+the message contents from the sender's shared memory into the receiver's 
+message buffer.
+
+8. Save the sender's send identification in case of problems.
+
+9. Return the size of the incoming message.
+
+/**********************************************************************
+FUNCTION:	int Reply(void *, void *, unsigned)
+
+PURPOSE:	This function replies SIMPL messages to sender processes.
+
+RETURNS:	success: number of reply bytes (nbytes) >= 0
+			failure: -1
+***********************************************************************/
+
+int Reply(void *sender, void *outBuffer, unsigned nbytes)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Set up necessary parameters for the the fifo communications and the sender's 
+shared memory. 
+
+3. Check to make sure that the sender's reply buffer is adequate.
+
+4. If all is good, set the message for the fifo trigger and copy the replied 
+message into the sender's shared memory.
+
+5. Detach from the sender's shared memory. 
+
+6. Open, write and close the fifo, thus signalling the sender that a reply has 
+been made.
+
+7. Take the sender off the array of senders awaiting a reply from this receiver.
+
+8. Return the size of the replied message (in bytes).
+
+/**********************************************************************
+FUNCTION:	int ReplyError(void *)
+
+PURPOSE:	This function replies an error condition to the sender.
+
+RETURNS:	success: 0
+			failure: -1
+***********************************************************************/
+
+int ReplyError(void *sender)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. This function is called if an error arises in a receiver and it is unable to 
+reply to a sender in the usual way. The situation is one where the a sender has 
+sent a message to a receiver and the sender is awaiting a reply; ie. it is 
+reply-blocked. The receiver has saved the sender to a table of reply-blocked 
+senders. Since the sender is going to be replied to by this function it is then 
+removed from the reply-blocked sender table.
+
+3. Line up a pointer on the fifo message to be replied to the sender
+
+4. Set up the fifo path and name
+
+5. Detach the sender's shared memory from this process because there will be no 
+message replied back to the sender.
+
+6. Build the fifo message, -1 indicates an error condition
+
+7. Open the fifo, write the error message and close the fifo.
+
+8. Return success in operation.
+
+/**********************************************************************
+FUNCTION:	int Relay(void *, int)
+
+PURPOSE:	This function relays a SIMPL message to another process.
+
+RETURNS:	success: 0
+			failure: -1
+***********************************************************************/
+
+int Relay(void *sender, int fd)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Set fifo message shmid to the value of the volatile global _sim_sender_shmid.
+
+3. Write the message to the receiver's fifo.
+
+4. Remove the sender id from the sender table.
+
+5. Set the _sim_sender_shmid to default = -1.
+
+6. Detach receiver from sender's shmem.
+
+7. Return success.
+
+/**********************************************************************
+FUNCTION:	int returnProxy(int)
+
+PURPOSE:	Return the true value of a received proxy.
+
+RETURNS:	The value of the proxy should be >= 1.
+			(the value entered should be <= -2)
+***********************************************************************/
+
+int returnProxy(int value)
+
+This function derives the true value of a proxy. The reason for its necessity is 
+as follows: SIMPL at its most basic level works by programs sending messages to
+receivers which then reply a response to the sending process. This synchronized 
+interprocess message (SIMPL) passing is accomplished by fifo triggering and shared memory.
+
+The fifo triggering coordinates the sending/receiving/replying actions by 
+informing a process that it is now time to read some shared memory. The fifo 
+triggering message has been kept as atomic as possible for reasons of 
+efficiency; ie. it is a C int. This int is found in a structure called FIFO_MSG.
+Its structure member name is 'schmid', short for shared memory identification 
+number. The reason for this is that when a sender calls Send(), it's message is 
+stored in shared memory owned by the sender. This shared memory id is sent via 
+the fifo so the receiver knows what shared memory to access for receiving 
+(reading the sender's shared memory) and replying (writng to the sender's 
+shared memory).
+
+So, the FIFO_MSG contains the shared memory id of the sender's shmem. This 
+value is an integer >= 1. This is in the case of normal send/receive/reply 
+messaging.
+
+However, suppose we want to merely trigger a receiver, ie. give it a kick with 
+a single integer value. Naturally, the value will be >= 1. This is accomplished 
+by the sender making a call to Trigger(). Trigger() accepts a 'proxy' value >= 
+Now we have a problem, numbers >= 1 which are received by a receiver represent 
+sender shared memory id's. The way around this is to take the negative of the 
+passing proxy value so that the proxy is <= -1. Eg. passed in proxy value is 1. 
+The internally handled value is then -1. The receiver (Receive()) subtracts 1 
+again from the proxy value is so that our example proxy becomes -2. The reason 
+for this is that Receive() returns a -1 in the case of an error. In our example, 
+Receive() will return -2.
+
+In order to retrieve the original value of the proxy we call returnProxy() 
+which adds 1 and returns the absolute value. In our example -2 +1 = -1,
+abs(-1) = 1.
+
+/**********************************************************************
+FUNCTION:	int Locate(const char *, const char *, int, const int)
+
+PURPOSE:	Main purpose is to decide whether to use local or remote
+			name locating based on the type of host name string, if any.
+			Returns the fd of the receive fifo of a SIMPL receiver.
+
+RETURNS:	success: >= 0
+			failure: -1
+***********************************************************************/
+
+int Locate(const char *hostName, const char *processName, int msgSize,
+		 												  const int protocol)
+
+1. Check whether the calling process is SIMPL enabled.
+
+2. Check command line args.
+
+3. If there is a null string in the hostName field then this is a local host name locate call.
+
+3a. Determine and open the local receiver's fifo based on the processName.
+Return the file descriptor to the fifo.
+
+4. If the aforementioned hostName field is not empty, then it is assumed that the original call is a remote name locate. This may be a loopback call used in testing the remote surrogates. In such a case, the hostName will be "localhost".
+
+5. Next, the type of communication protocol is chosen based on the passed in argument called 'protocol'.
+
+6. Run a local name locate for the relevant surrogate_R receiver process.
+
+7. Send a query for a surrogate_r child and based on the reply, set the name of the surrogate_r program that will handle the receiver side of the communication.
+
+8. Local name locate the relevant surrogate_r receiver program.
+
+9. Send the information to the surrogate_r receiver regarding the remote receiver.
+
+10. If successful, add the surrogate_r process to the remote receiver table (used for later cleanup)
+
+11. Return the surrogate_r's search results.
+
+/**********************************************************************
+FUNCTION:	bool chkSender(void *sender)
+
+PURPOSE:	Checks on sender's existence. Called by a receiver between
+			Receive() and Reply().
+
+RETURNS:	sender exists: 0
+			sender does not exist: -1
+***********************************************************************/
+
+bool chkSender(void *sender)
+
+1. Based on the pid of the sender, use getpriority() to ascertain whether the sender process is still running.
+
+2. If yes, return true.
+
+3. If no, remove the receive and reply fifos if they exist and return false.
+
+/**********************************************************************
+FUNCTION:	bool chkReceiver(const char *receiverSIMPLname, pid_t pid)
+
+PURPOSE:	Can be used between multiple sends to the same receiver.
+
+RETURNS:	receiver exists: 0
+			receiver does not exist: -1
+***********************************************************************/
+
+bool chkReceiver(const char *name, pid_t pid)
+
+1. Essentially the same as chkSender().
+
+/**********************************************************************
+FUNCTION:	int getSenderName(void *, char *senderName)
+
+PURPOSE:	Returns the local sender's SIMPL name after a Send() call.
+
+NOTE:		If a garbage pointer is passed in, a garbage value will be returned.
+			As well, make ceertain that the pointer sendewrName that is passed
+			in points to a character array that is large enough to accomodate
+			the the SIMPL name or the memcpy will fail.
+
+RETURNS:	sender exists: set sender's SIMPL name and return 0
+			sender shmem ptr is NULL: -1
+***********************************************************************/
+
+int getSenderName(void *sender, char *senderName)
+
+1. Return the SIMPL name of a sender based on the sender's id.
+
+/**********************************************************************
+FUNCTION:	pid_t getSenderPid(void *)
+
+PURPOSE:	Returns the value of the local sender's pid after a Send() call.
+
+NOTE:		If a garbage pointer is passed in, a garbage value will be returned.
+
+RETURNS:	sender exists: pid_t
+			sender shmem ptr is NULL: -1
+***********************************************************************/
+
+pid_t getSenderPid(void *sender)
+
+1. Return the pid of a sender based on the sender's id.
+
+/**********************************************************************
+FUNCTION:	int getSenderShmemSize(void *)
+
+PURPOSE:	Returns the value of the local sender's shmem size in bytes after a
+			Send() call.
+
+NOTE:		If a garbage pointer is passed in, a garbage value will be returned.
+
+RETURNS:	sender exists: int
+			sender shmem ptr is NULL: -1
+***********************************************************************/
+
+pid_t getSenderShmemSize(void *sender)
+
+1. Return the shared memory size of a sender based on the sender's id.
+
+/**********************************************************************
+FUNCTION:	int getSenderMsgSize(void *)
+
+PURPOSE:	Returns the value of the local sender's message size in bytes after
+			a Send() call.
+
+NOTE:		If a garbage pointer is passed in, a garbage value will be returned.
+
+RETURNS:	sender exists: int
+			sender shmem ptr is NULL: -1
+***********************************************************************/
+
+int getSenderMsgSize(void *sender)
+
+1. Return the message size coming from a sender based on the sender's id.
+
+/**********************************************************************
+FUNCTION:	int getSenderRplySize(void *)
+
+PURPOSE:	Returns the value of the local sender's reply message size in bytes
+			after a Send() call.
+
+NOTE:		If a garbage pointer is passed in, a garbage value will be returned.
+
+RETURNS:	sender exists: int
+			sender shmem ptr is NULL: -1
+***********************************************************************/
+
+int getSenderRplySize(void *sender)
+
+1. Return the maximum allowed reply message size going back to a sender based on the sender's id.
+
+/**********************************************************************
+FUNCTION:	inline int rfd(void)
+
+PURPOSE:	Return the file descriptor to the receive fifo.
+
+RETURNS:	success: a file descriptor > 2
+			failure: -1
+
+NOTE:		Often used in conjunction with a poll() or select() call.
+***********************************************************************/
+
+inline int rfd(void)
+
+1. Return the file descriptor of a receive fifo.
+
+/**********************************************************************
+FUNCTION:	inline int yfd(void)
+
+PURPOSE:	Return the file descriptor to the reply fifo.
+
+RETURNS:	success: a file descriptor > 2
+			failure: -1
+
+NOTE:		Often used in conjunction with a poll() or select() call.
+***********************************************************************/
+
+inline int yfd(void)
+
+1. Return the file descriptor of a reply fifo.
+
+/**********************************************************************
+FUNCTION:	void simRcopy(void *, void *, unsigned)
+
+PURPOSE:	Copy unsigned nbytes from the sender's shmem pointer
+			to the desired address void *dst
+
+			Follows a Receive(&id, NULL, 0) call.
+
+RETURNS:	nothing
+***********************************************************************/
+
+void simRcopy(void *sender, void *dst, unsigned nbytes)
+
+1. Copy a received message directly from the sender's shared memory.
+
+/**********************************************************************
+FUNCTION:	void simScopy(void *, unsigned)
+
+PURPOSE:	Copy unsigned nbytes from the sender's global shmem pointer
+			to the desired address void *
+
+			Follows a Send(id, void *, outSize, NULL, inSize) call
+
+RETURNS:	nothing
+***********************************************************************/
+
+void simScopy(void *dst, unsigned nbytes)
+
+1. Copy a replied message directly from the sender's shared memory.
+
+/********************************************************************/
+/****************** MESSAGE SHARED MEMORY FUNCTIONS *****************/
+/********************************************************************/
+
+/**********************************************************************
+FUNCTION:	int createShmem(unsigned)
+
+PURPOSE:	Create and attach shared memory used for a message passing
+			buffer.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by Send() and PostMessage().
+**********************************************************************/
+
+int createShmem(unsigned bufSize)
+
+1. Get the system's memory page size.
+
+2. Calculate how much shared memory is required based on the page size and the message size.
+
+3. Create the shared memory.
+
+4. Attach a pointer to the shared memory.
+
+5. Set the shmem to be released if the process owning it dies by an untrappable signal.
+
+/**********************************************************************
+FUNCTION:	int detachShmem(void)
+
+PURPOSE:	Detach shared memory used for a message passing	buffer.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by closeSRY(), closeSRYchild(), Send(), PostMessage().
+**********************************************************************/
+
+int detachShmem()
+
+1. Detach shared memory.
+
+/********************************************************************/
+/************************* FIFO FUNCTIONS ***************************/
+/********************************************************************/
+
+/**********************************************************************
+FUNCTION:	int createFifos(void)
+
+PURPOSE:	Name, create and open receive and reply fifos.
+
+RETURNS:	success (valid fifo fd): 0
+			failure (no valid fifo): -1
+
+NOTE:		Called by openSRY().
+***********************************************************************/
+
+int createFifos()
+
+1. Set the path and name of the receive and reply fifos.
+
+2. Create each fifo.
+
+3. Set the fifo file attributes.
+
+4. Open each fifo; the file descriptors are global.
+
+/**********************************************************************
+FUNCTION:	int detachFifos(void)
+
+PURPOSE:	Close receive and reply fifo file descriptors.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by closeSRYchild(), deleteFifos().
+***********************************************************************/
+
+int detachFifos()
+
+1. Close the file descriptors to the receive and reply fifos.
+
+/**********************************************************************
+FUNCTION:	int deleteFifos(void)
+
+PURPOSE:	Remove receive and reply fifos.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by closeSRY().
+***********************************************************************/
+
+int deleteFifos()
+
+1. Set the name of the receive and reply fifos.
+
+2. If the file global descriptor indicates that either of the fifos are open, close them.
+
+3. If either of the fifos exist, remove them.
+
+/**********************************************************************
+FUNCTION:	int readFifoMsg(int, char *)
+
+PURPOSE:	read any pending bytes from specified fifo fd.
+
+RETURNS:	success: sizeof FIFO_MSG
+			failure: != sizeof FIFO_MSG
+
+NOTE"		Called by Send, ReadReply(), Receive().
+**********************************************************************/
+
+int readFifoMsg(int fd, char *buf)
+
+1. Read a FIFO_MSG from the specifed receive or reply fifo.
+
+/**********************************************************************
+FUNCTION:	int getFifoName(const char *, char *)
+
+PURPOSE:	Find a receive fifo based on the SIMPL name.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by Locate().
+***********************************************************************/
+
+int getFifoName(const char *simName, char *fifoName)
+
+1. Open the directory where receive and reply fifos are kept. The directory name is global.
+
+2. Set the fifo name and path based on the SIMPL name.
+
+3. Search the fifo directory for a match.
+
+4. Return success or failure.
+
+/********************************************************************/
+/************************* SIGNAL FUNCTIONS *************************/
+/********************************************************************/
+
+/**********************************************************************
+FUNCTION:	initSignalHandling(void)
+
+PURPOSE:	Set up any necessary signal handling.
+
+RETURNS:	nothing
+
+NOTE:		Called by openSRY().
+***********************************************************************/
+
+void initSignalHandling()
+
+1. Set the signals to be trapped. Note that not all signals can be trapped such as SIGKILL. Trapping the signals allows SRY cleanup of fifos etc.
+
+/**********************************************************************
+FUNCTION:	void hndlSignals(int)
+
+PURPOSE:	Called as a response to a trapped signal.
+
+RETURNS:	nothing
+
+NOTE:		Called by initSignalHandling().
+***********************************************************************/
+
+void hndlSignals(int signo)
+
+1. Take the appropriate action based on the signal type. Usually the action taken ia call to closeSRY() in order to clean up the SRY bits.
+
+/********************************************************************/
+/********************* MISCELLANEOUS FUNCTIONS **********************/
+/********************************************************************/
+
+/**********************************************************************
+FUNCTION:	bool sim_check(void)
+
+PURPOSE:	an indicator that the calling process is indeed registered as a SIMPL      			process. No point in calling SRY functionality if the process is not 			   	SIMPL enabled.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by openSRY(), closeSRY(), closeSRYchild(), Send(), 					            PostMessage(), ReadReply(), Trigger(), Receive(), Reply(),
+			ReplyError(), Relay(), Locate().
+**********************************************************************/
+
+inline bool sim_check()
+
+1. Check to see if a process is SIMPL enabled.
+
+/**********************************************************************
+FUNCTION:	void exitFunc(void)
+
+PURPOSE:	Clean up when process exits. Called by atexit() and as the
+			signal handler.
+
+RETURNS:	nothing
+
+NOTE:		Called by openSRY()'s atexit() call.
+***********************************************************************/
+
+inline void exitFunc()
+
+1. Call closeSRY() when the program ends.
+
+/**********************************************************************
+FUNCTION:	int sryLog(const char *, ...)
+
+PURPOSE:	sry errors/messages are recorded to a text file that is
+			not	allowed to grow past a certain limit.
+
+RETURNS:	int
+
+NOTE:		Called by any program/function that wants to log a formatted text 					message.
+**********************************************************************/
+
+int sryLog(const char *format, ...)
+
+1. Get the system date and time.
+
+2. Format the message to be logged.
+
+3. Print the message to the screen if set.
+
+4. Find the log file if it exists. Open for append if the file size is still acceptable, if not open for create (ie. reset the file size). If the file does not exist, create one.
+
+5. Write the mesage and close the file.
+
+/**********************************************************************
+FUNCTION:	int saveSenderId(void *)
+
+PURPOSE:	This function adds a reply blocked sender to the global
+			array.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by Receive(). In the case that the receiver crashes prior to 				replying to senders, the clean up routines will use this table to call
+			ReplyError() and release the senders.
+***********************************************************************/
+
+int saveSenderId(void *sender)
+
+1. Save the reply-blocked sender id to a global array.
+
+/**********************************************************************
+FUNCTION:	int removeSenderId(void *)
+
+PURPOSE:	This function removes a reply blocked sender from the global
+			array.
+
+RETURNS:	success: 0
+			failure: -1
+
+NOTE:		Called by Reply(), ReplyError(), Relay()
+***********************************************************************/
+
+int removeSenderId(void *sender)
+
+1. Find and reset the entry in the global array.
+
+/**********************************************************************
+FUNCTION:	int getLocalHostName(char *)
+
+PURPOSE:	Gets the local host's name either from a set environment
+			variable or the hostname file.
+
+RETURNS:	success: = 0
+			failure: -1
+
+NOTE:		Currently not called by any of the other functions here.
+***********************************************************************/
+
+int getLocalHostName(char *name)
+
+1. Check the HOSTNAME environment varible for the local host name.
+
+2. Failing the above, check the /etc/hostname file for the local host name.
+
+3. Return any result.
+
+/**********************************************************************
+FUNCTION:	pid_t chkNamePid(const char *name)
+
+PURPOSE:	return the receiver's pid if it exists based on its SIMPL name
+
+RETURNS:	receiver exists, pid >= 0
+			receiver does not exist, pid = -1
+
+NOTE:		Called by chkReceiver(), openSRY(), Locate()
+***********************************************************************/
+
+pid_t chkNamePid(const char *name)
+
+1. Open the directory where the receive and reply fifos are located.
+
+2. Make the fifo name based on the SIMPL name.
+
+3. Check for that entry.
+
+4. If found, extract the pid from the fifo name.
+
+5. Return the pid.
+
+/**********************************************************************
+FUNCTION:	bool chkStatus(const pid_t pid, const char *name)
+
+PURPOSE:	return the SIMPL process' status based on its process id and SIMPL 					name
+
+RETURNS:	SIMPL program exists, true
+			SIMPL program does not exist, false
+
+NOTE:       Called by openSRY(), Locate(), chkSender(), chkReceiver()
+***********************************************************************/
+
+bool chkStatus(const pid_t pid, const char *name)
+
+1. Get the priority of the program based on its pid.
+
+2. If getpriority() fails and errno is set to search error, assume that the
+program is not running.
+
+3. If not running, remove the receiver and reply fifos if they exist.
+
+4. Return true if program running, false if not running.

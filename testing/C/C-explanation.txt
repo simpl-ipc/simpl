@@ -1,0 +1,17 @@
+********************************************************************************
+FILE:			C-explanation.txt
+
+DATE:			January 24, 2025
+
+DESCRIPTION:	A short description of the SIM C test program arangements.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+The test programs are segregated to several directories:
+1. local,
+2. loopback-TCP-network,
+3. TCP-network,
+4. RS232-network.
+
+One of the reasons for this segregation is that the networked-based programs are somewhat more extensive "under the hood" than the local. Since this is the case, the network based-programs actually test more aspects of SIM than their locally-based cousins. By locally-based it is meant that the senders and receivers are both running on the same host computer. The loopback-TCP-network uses TCP/IP, but again the senders and receivers reside on the same computer host. The TCP-network and RS232-network programs must be run on at least 2 different host computers.

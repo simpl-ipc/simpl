@@ -1,0 +1,159 @@
+********************************************************************************
+FILE:			python-explanation.txt
+
+DATE:			January 23, 2025
+
+DESCRIPTION:	This file contains an explanation of the SIMPL-Python workings.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+This text file attempts to explain how SIMPL works w.r.t. Python. Python 3 is the only Python version supported; earlier Python versions have been dropped from the SIMPL programme.
+
+Firstly, Python SIMPL works through a C library of wrapped function calls. The source code is called simcmodule.c. The C functions that are wrapped for Python compatibility are taken directly from the SIMPL C static library. Note that not all of the C library functions available have a Python equivalent.
+
+The SIMPL module for Python 3 is called sim.py. It imports the wrapped C library calls through a shared object called simc.so. simc.so is created by the ./src/Makefile from the C library.
+
+The sim.py file contains the definitions for two separate classes, Msg and SRY. Msg contains functions and definitions used in constructing and deconstructing SIMPL messages. SRY contains the SIMPL functions such as Receive() and Send(). SRY inherits from Msg so that instances of SRY may use the Msg functionality within an SRY instance.
+
+A special module called testMsg.py has been made which contains 4 functions related to testing:
+
+1. constructMsg_L() which packs a canned message using every available data type. The reason for _L in the name is that each data type is packed to the message buffer separately, ie. the long way.
+
+2. constructMsg_S() which packs a canned message using every available data type. The reason for _S in the name is that each data type is packed to the message buffer at the same time, ie. the short way.
+
+3. deconstructMsg_L() which unpacks the canned message and prints the message element to the screen. The reason for _L in the name is that each data type is unpacked from the message buffer separately, ie. the long way.
+
+4. deconstructMsg_S() which unpacks the canned message and prints the message element to the screen. The reason for _S in the name is that each data type is packed to the message buffer at the same time, ie. the short way, and then printed to the screen.
+
+Aside from testing all the available methods used for constructing and deconstructing SIMPL messages, testMsg.py provides an example of how to use these methods.
+
+Testing for SIMPL-Python is done via the /.../testing/python/* files.
+
+simc.py, simc.so and testMsg.py are all contained in the working directory /.../python/modules as well as /.../pymodules. The latter directory is used in the exported variable PYTHONPATH.
+
+This directory contains:
+
+buildsrypython.py
+=================
+This is a python script designed to run under python 3. It builds the `C'
+library simc.so used by the python extensions found in sim.py. The top level make file in the /.../python directory is called from this script and builds everything from scratch.
+
+Makefile
+========
+Top level make for all python bits and pieces. This make file is called by the
+top level /.../Makefile and the python script buildsrypython.py.
+
+src
+===
+Contains the `C' extension code simcmodule.c used by the sim.py module to enable
+SIMPL message communications.
+
+modules
+=======
+Contains the sry.py module and the `C' extension library sryc.so. When sry
+capabilities are desired, a python script merely imports the sry.py module. The
+sry.py imports the sryc.so shared object. As well, the testMsg.py module is kept here and is important for test purposes.
+
+================================================================================
+
+---------------------------------
+Class SRY Methods found in sim.py
+---------------------------------
+
+instanceName = sim.SRY(sim name, max msg size)
+++++++++++++++++++++++++++++++++++++++++++++++
+
+return value, sender id = receive() -receive a message or proxy
+
+return value = reply(senderId) -reply to a sender
+
+true proxy value = returnProxy(received proxy value) -get real proxy value
+
+receiver id = nameLocate(hostName, receiverName, size, protocol) -find receiver
+
+return value = send(receiverId)  -send message to a receiver
+
+return value = trigger(receiverId, proxy) -send a proxy to a receiver
+
+
+size = maxRplySize(senderId) - return a sender's reply msg buffer size
+yes/no = chkSender(senderId) - return a 0 for yes, -1 for no
+yes/no = chkReceiver(senderId) - return a 0 for yes, -1 for no
+
+
+rfd = rfd() -return receive fifo fd, useful for select()
+
+yfd = yfd() - return reply fifo fd
+
+---------------------------------
+Class Msg Methods found in sim.py
+---------------------------------
+
+*** this class is inherited by the SRY class.
+
+Packing Methods
+---------------
+
+packMsg(action, form, *args)
+packBool(p, action)
+packChar(p, action)
+packShort(p, action)
+packInt(p, action)
+packLong(p, action)
+packFloat(p, action)
+packDouble(p, action)
+packString(p, action)
+packBoolArray(p, action)
+packShortArray(p, action)
+packIntArray(p, action)
+packLongArray(p, action)
+packFloatArray(p, action)
+packDoubleArray(p, action)
+
+Note: we refer to packMsg() as the 'short' version, the remainder comprise
+the 'long' version. The reason for this should be clear from the test code.
+
+Unpacking Methods/Functions
+---------------------------
+
+unpackMsg(action, form)
+unpackBool(action)
+unpackChar(action)
+unpackShort(action)
+unpackInt(action)
+unpackLong(action)
+unpackFloat(action)
+unpackDouble(action)
+unpackString(i, action)
+unpackBoolArray(i, action)
+unpackShortArray(i, action)
+unpackIntArray(i, action)
+unpackLongArray(i, action)
+unpackFloatArray(i, action)
+unpackDoubleArray(i, action)
+
+Note: we refer to unpackMsg() as the 'short' version, the remainder comprise
+the 'long' version.
+
+Miscellaneous Methods/Functions
+-------------------------------
+
+crossCopy() -copies the contents of the outgoing message buffer to the incoming
+            message buffer for reasons of testing and verification.
+
+returnInMsgBuffer() -returns the contents of the incoming message buffer.
+
+returnOutMsgBuffer() -returns the contents of the outgoing message buffer.
+
+loadOutMsgBuffer(message) -loads the contents of the outgoing message buffer.
+
+setInMsgByteOrder(order) -sets the byte order on incoming messages.
+
+setOutMsgByteOrder(order) -sets the byte order on outgoing messages.
+
+setDMs(dataModel, dataType) -setDMs() sets the C variable sizes on the various
+        data models (DMs, incoming messages or outgoing messages or tclSurrogate
+        commands) depending on the data models.	Note that _int32 or int32 and
+        long long are NOT supported. Don't use them as part of the contents of your messages on the C side of things. The sizes are set in bytes rather
+        than bits where 1 byte = 8 bits.

@@ -1,0 +1,24 @@
+#! /bin/sh
+
+
+
+#../C-CPP/local/C/bin/receiver rec1 &
+../C-CPP/local/C/bin/poller poll1
+
+sleep 5
+
+#../C-CPP/local/C/bin/sender rec1  10
+#../C-CPP/local/C/bin/sender rec1  10
+#../C-CPP/local/C/bin/sender rec1  10
+#../C-CPP/local/C/bin/sender rec1  10
+#../C-CPP/local/C/bin/sender rec1  10
+
+../C-CPP/local/C/bin/trigger poll1  1
+#../C-CPP/local/C/bin/sender poll1  1
+#../C-CPP/local/C/bin/sender poll1  10
+#../C-CPP/local/C/bin/sender poll1  10
+#../C-CPP/local/C/bin/sender poll1  10
+#../C-CPP/local/C/bin/sender poll1  10
+
+#killall -q receiver 1>/dev/null 2>&1
+#killall -q poller 1>/dev/null 2>&1

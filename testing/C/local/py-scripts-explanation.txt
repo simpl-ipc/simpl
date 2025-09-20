@@ -1,0 +1,103 @@
+********************************************************************************
+FILE:			py-scripts-explanation.txt
+
+DATE:			February 4, 2025
+
+DESCRIPTION:	A short description of the SIM C test program scripts.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+This text file contains descriptions of the python scripts used for testing. They are listed in alphabetical order. All scripts are Python 3 compatible only. The purpose of the scripts is to automate the testing by starting and stopping the various test program senders and receivers.
+
+The scripts are run from the command line. Assume that the command line prompt is > for these descriptions.
+
+NOTE: All of these scripts are equipped to run a number of concurrent SIM-enabled programs. The number is entered on the command line and can literally be anything. By entering a number that is too large you can 'overwhelm' the operating system. This can be a good test for finding out the limitations of a system and thus preventing problems.
+
+sen-poll.py
+===========
+
+This script runs a number of concurrent sender and polling receiver programs.
+
+Its run by:
+
+>python3 sen-poll.py #
+
+where "#" is the number of concurrent send/poll pairs of SIM programs to be run.
+
+sen-rec.py
+==========
+
+This script runs a number of concurrent sender and receiver programs.
+
+Its run by:
+
+>python3 sen-rec.py #
+
+where "#" is the number of concurrent send/receive pairs of SIM programs to be run.
+
+sen-relay-rec.py
+================
+
+This script runs a number of concurrent sender, receiver/relay and receiver programs.
+
+Its run by:
+
+>python3 sen-relay-rec.py #
+
+where "#" is the number of concurrent send/relay/receive triples of SIM programs to be run.
+
+sen-select.py
+=============
+
+This script runs a number of concurrent senders and selecting receivers.
+
+Its run by:
+
+>python3 sen-select.py #
+
+where "#" is the number of concurrent send/select pairs of SIM programs to be run.
+
+sen-senrec-rec.py
+=================
+
+This script runs a number of concurrent sender, sender/receiver and receiver programs.
+
+Its run by:
+
+>python3 sen-senrec-rec.py #
+
+where "#" is the number of concurrent send/sender-receiver/receive triples of SIM programs to be run.
+
+trig-poll.py
+============
+
+This script runs a number of concurrent trigger and polling receiver programs.
+
+Its run by:
+
+>python3 trig-poll.py #
+
+where "#" is the number of concurrent trigger/poll pairs of SIM programs to be run.
+
+trig-rec.py
+===========
+
+This script runs a number of concurrent trigger and receiver programs.
+
+Its run by:
+
+>python3 trig-rec.py #
+
+where "#" is the number of concurrent trigger/receive pairs of SIM programs to be run.
+
+trig-select.py
+==============
+
+This script runs a number of concurrent triggers and selecting receivers.
+
+Its run by:
+
+>python3 trig-select.py #
+
+where "#" is the number of concurrent trigger/select pairs of SIM programs to be run.

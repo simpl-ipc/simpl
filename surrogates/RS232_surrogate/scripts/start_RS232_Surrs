@@ -1,0 +1,25 @@
+#*******************************************************************************
+# FILE:			start_RS232_Surrs
+#
+# DATE:			February 6, 2025
+#
+# DESCRIPTION:  This shell script performs the following:
+#				1. kills the current (if any) rs232 surrogates, and
+#				2. starts new surrogate parent processes.
+#
+# AUTHOR:		John Collins
+#*******************************************************************************
+
+#!/bin/sh
+
+PATH=$PATH:/sbin
+
+echo killing RS232_surrogate
+killall RS232_surrogate 1> /dev/null 2>&1
+echo killing RS232_rw
+killall RS232_rw 1> /dev/null 2>&1
+sleep 1
+echo starting RS232_rw
+../bin/RS232_rw &
+echo starting RS232_surrogate
+../bin/RS232_surrogate &

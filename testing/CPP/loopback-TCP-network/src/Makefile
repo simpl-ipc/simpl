@@ -1,30 +1,32 @@
 #*******************************************************************************
+#
 # FILE:		Makefile
 #
 # DATE:		February 4, 2025
 #
-# DESCRIPTION:	This make file produces a SIMPL C++ benchmarking sender and
-#		receiver.
+# DESCRIPTION:	This make file produces the test programs for SIM.
 #
 # AUTHOR:	John Collins
+#
 #*******************************************************************************
 
 #====================================================================
 # definitions
 #====================================================================
-OBJ_DIR = ./obj
-LIB_DIR_S = ../../static-lib
-LIB_DIR_D = ../../dynamic-lib
+
+OBJ_DIR = ../obj
+LIB_DIR_S = ../../../../static-lib
+LIB_DIR_D = ../../../../dynamic-lib
 BIN_DIR = ../bin
-INC_DIR = ../../include
+INC_DIR = ../../../../include
 
 # default for C++ standard library version to be used if not on comannd line
 ifndef STL
-STL = 20
+	STL = 20
 endif
 
 CXX = g++
-CXXFLAGS = -c -std=gnu++$(STL) -Ofast -Wall -I$(INC_DIR)
+CXXFLAGS = -c -std=gnu++$(STL) -O3 -Wall -I$(INC_DIR)
 LDFLAGS = -lsimcpp
 
 # static or dynamic library link
@@ -32,7 +34,7 @@ ifeq ($(DYNAMIC), 1)
 	# dynamic
 	LDFLAGS += -L$(LIB_DIR_D) -Wl,-R$(LIB_DIR_D)
 else
-	# static
+	#static
 	LDFLAGS += -L$(LIB_DIR_S)
 endif
 
@@ -40,28 +42,33 @@ endif
 # command line hooks
 #=====================================================================
 all: \
-	$(OBJ_DIR)/receiver.o \
-	$(OBJ_DIR)/sender.o \
 	$(BIN_DIR)/receiver \
-	$(BIN_DIR)/sender
-	@echo SIM benchmark all
+	$(BIN_DIR)/sender \
+	$(BIN_DIR)/trigger
+	@echo testing all
 
 #=====================================================================
 # compiling
 #=====================================================================
+$(OBJ_DIR)/receiver.o: receiver.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
 $(OBJ_DIR)/sender.o: sender.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-$(OBJ_DIR)/receiver.o: receiver.cpp
+$(OBJ_DIR)/trigger.o: trigger.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
 #=====================================================================
 # linking
 #=====================================================================
+$(BIN_DIR)/receiver: $(OBJ_DIR)/receiver.o
+	$(CXX) -o $@ $? $(LDFLAGS)
+
 $(BIN_DIR)/sender: $(OBJ_DIR)/sender.o
 	$(CXX) -o $@ $? $(LDFLAGS)
 
-$(BIN_DIR)/receiver: $(OBJ_DIR)/receiver.o
+$(BIN_DIR)/trigger: $(OBJ_DIR)/trigger.o
 	$(CXX) -o $@ $? $(LDFLAGS)
 
 #=====================================================================
@@ -70,4 +77,4 @@ $(BIN_DIR)/receiver: $(OBJ_DIR)/receiver.o
 clean:
 	@-rm -f $(OBJ_DIR)/*.o
 	@-rm -f $(BIN_DIR)/*
-	@echo SIM benchmark clean
+	@echo testing clean

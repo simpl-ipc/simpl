@@ -1,0 +1,18 @@
+********************************************************************************
+FILE:			python-explanation.txt
+
+DATE:			February 4, 2025
+
+DESCRIPTION:	A short description of the SIM-Python test programs.
+
+AUTHOR:			John Collins
+********************************************************************************
+
+This text file describes the testing programs for SIM-Python. These testing programs attempt to test all of the available tools for sending/receiving SIM messages within Python. Python 3 is the only supported version; earlier versions have been dropped by the SIM programme.
+
+/.../testing /python contains the following directories:
+
+./bin which contains C++ exectuables receiver and sender.
+./C++ which contains the C++ source code for the executables receiver and sender.
+./Py which contains the python test scripts.
+./scripts which contains shell scripts that automate the python and binary test programs.
